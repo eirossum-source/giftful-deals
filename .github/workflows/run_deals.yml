@@ -1,0 +1,57 @@
+name: Run deals
+
+on:
+  schedule:
+    - cron: "0 7 * * 1"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: "pip"
+          cache-dependency-path: scraper/requirements.txt
+
+      - name: Install Python dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r scraper/requirements.txt
+
+      - name: Install Playwright Chromium
+        run: python -m playwright install --with-deps chromium
+
+      - name: Run deal scraper
+        env:
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          TO_EMAIL: ${{ secrets.TO_EMAIL }}
+        run: python scraper/main.py
+
+      - name: Commit updated deals page
+        run: |
+          git config user.name  "giftful-deals-bot"
+          git config user.email "giftful-deals-bot@users.noreply.github.com"
+          if [ -n "$(git status --porcelain docs/index.html)" ]; then
+            git add docs/index.html
+            git commit -m "chore: update deals page"
+            git push
+          else
+            echo "No changes to docs/index.html"
+          fi
+
+      - name: Upload errors.log
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: errors-log
+          path: errors.log
+          if-no-files-found: ignore

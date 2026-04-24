@@ -5,8 +5,8 @@ from pathlib import Path
 from typing import Callable, Optional
 
 from error_log import ErrorLog
-from filter import Deal, is_deal
-from giftful import fetch_list
+from filter import Deal, StoreEvaluation, evaluate_store, is_deal
+from giftful import StoreLink, fetch_list
 from html_builder import render
 from price_checker import check_price as real_check_price
 from coupon_checker import lookup as real_lookup
@@ -50,21 +50,41 @@ def run(
 
     deals: list[Deal] = []
     for item in items:
-        try:
-            price_result = check_price(item.url, session=session, error_log=log)
-            promos = lookup_coupons(item.domain, session=session, error_log=log)
-            ok, types = is_deal(item, price_result, promos)
-            if ok:
-                deals.append(
-                    Deal(
-                        item=item,
-                        price_result=price_result,
-                        promos=promos,
-                        deal_types=types,
+        if item.store_urls:
+            evaluations: list[StoreEvaluation] = []
+            for store in item.store_urls:
+                try:
+                    price_result = check_price(store.url, session=session, error_log=log)
+                    promos = lookup_coupons(store.domain, session=session, error_log=log)
+                    ok, types = evaluate_store(store, price_result, promos)
+                    evaluations.append(
+                        StoreEvaluation(
+                            store=store,
+                            price_result=price_result,
+                            promos=promos,
+                            deal_types=types,
+                        )
                     )
-                )
-        except Exception as exc:
-            log.error(f"{item.name} ({item.url}): {exc}")
+                except Exception as exc:
+                    log.error(f"{item.name} ({store.url}): {exc}")
+            if any(ev.deal_types for ev in evaluations):
+                deals.append(Deal(item=item, store_evaluations=evaluations))
+        else:
+            try:
+                price_result = check_price(item.url, session=session, error_log=log)
+                promos = lookup_coupons(item.domain, session=session, error_log=log)
+                ok, types = is_deal(item, price_result, promos)
+                if ok:
+                    deals.append(
+                        Deal(
+                            item=item,
+                            price_result=price_result,
+                            promos=promos,
+                            deal_types=types,
+                        )
+                    )
+            except Exception as exc:
+                log.error(f"{item.name} ({item.url}): {exc}")
 
     html = render(deals, generated_at=now)
     output_path.parent.mkdir(parents=True, exist_ok=True)

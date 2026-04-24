@@ -3,8 +3,8 @@ from datetime import date, datetime
 from bs4 import BeautifulSoup
 
 from coupon_checker import PromoCode
-from filter import Deal, DealType
-from giftful import Item
+from filter import Deal, DealType, StoreEvaluation
+from giftful import Item, StoreLink
 from html_builder import render
 from price_checker import PriceResult
 
@@ -136,3 +136,88 @@ def test_placeholder_image_used_when_missing():
     img = soup.select_one(".deal-card img")
     assert img is not None
     assert img.get("src")  # non-empty placeholder
+
+
+# --- Slice D: multi-store card rendering ---
+
+
+def _store_eval(url, display_name, listed, current, promos=None):
+    store = StoreLink(url=url, display_name=display_name, listed_price=listed)
+    price = PriceResult(current_price=current, sale_detected=False)
+    types = []
+    if current < listed:
+        types.append(DealType.PRICE_DROP)
+    if promos:
+        types.append(DealType.PROMO)
+    return StoreEvaluation(store=store, price_result=price, promos=promos or [], deal_types=types)
+
+
+def _multi_deal(name="Widget", image_url=""):
+    item = Item(name=name, listed_price=200.0, image_url=image_url)
+    ev1 = _store_eval("https://amazon.com/p/widget", "Amazon", 200.0, 149.0)
+    ev2 = _store_eval("https://bestbuy.com/p/widget", "Best Buy", 200.0, 169.0)
+    return Deal(item=item, store_evaluations=[ev1, ev2])
+
+
+def test_multi_store_card_shows_winner_section():
+    deal = _multi_deal()
+    html_out = render([deal], generated_at=NOW)
+    soup = BeautifulSoup(html_out, "lxml")
+    card = soup.select_one(".deal-card")
+    winner_section = card.select_one(".store-winner")
+    assert winner_section is not None
+    assert "Amazon" in winner_section.get_text()
+
+
+def test_multi_store_card_shows_secondary_stores():
+    deal = _multi_deal()
+    html_out = render([deal], generated_at=NOW)
+    soup = BeautifulSoup(html_out, "lxml")
+    card = soup.select_one(".deal-card")
+    secondary = card.select(".store-alt")
+    assert len(secondary) == 1
+    assert "Best Buy" in secondary[0].get_text()
+
+
+def test_multi_store_card_winner_link_is_shop_url():
+    deal = _multi_deal()
+    html_out = render([deal], generated_at=NOW)
+    soup = BeautifulSoup(html_out, "lxml")
+    card = soup.select_one(".deal-card")
+    link = card.select_one("a")
+    assert "amazon.com" in link["href"]
+
+
+def test_multi_store_card_data_store_includes_all_domains():
+    deal = _multi_deal()
+    html_out = render([deal], generated_at=NOW)
+    soup = BeautifulSoup(html_out, "lxml")
+    card = soup.select_one(".deal-card")
+    domains = card["data-store"].split()
+    assert "amazon.com" in domains
+    assert "bestbuy.com" in domains
+
+
+def test_filter_bar_includes_all_store_domains_from_multi_store():
+    deal = _multi_deal()
+    html_out = render([deal], generated_at=NOW)
+    soup = BeautifulSoup(html_out, "lxml")
+    store_buttons = soup.select("[data-filter-store]")
+    store_values = {b["data-filter-store"] for b in store_buttons}
+    assert "amazon.com" in store_values
+    assert "bestbuy.com" in store_values
+
+
+def test_multi_store_winner_promos_in_winner_section():
+    promo = [PromoCode(code="AMZN10", description="10% off", expiry=date(2099, 1, 1))]
+    item = Item(name="Widget", listed_price=200.0, image_url="")
+    ev1 = _store_eval("https://amazon.com/p/w", "Amazon", 200.0, 149.0, promos=promo)
+    ev2 = _store_eval("https://bestbuy.com/p/w", "Best Buy", 200.0, 169.0)
+    deal = Deal(item=item, store_evaluations=[ev1, ev2])
+    html_out = render([deal], generated_at=NOW)
+    soup = BeautifulSoup(html_out, "lxml")
+    card = soup.select_one(".deal-card")
+    winner_section = card.select_one(".store-winner")
+    chip = winner_section.select_one(".promo-chip")
+    assert chip is not None
+    assert chip["data-code"] == "AMZN10"

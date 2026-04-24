@@ -28,47 +28,117 @@ def _fmt_price(p: float) -> str:
     return f"${p:,.2f}"
 
 
-def _card_html(deal: Deal) -> str:
-    item = deal.item
-    price = deal.price_result
-    price_parts = []
-    if price.current_price is not None and price.current_price < item.listed_price:
-        price_parts.append(
+def _price_parts_html(current_price, reference_price: float) -> str:
+    if current_price is not None and current_price < reference_price:
+        return (
             f'<span style="color:#888;text-decoration:line-through">'
-            f"{_fmt_price(item.listed_price)}</span> "
-            f'<strong style="color:{ACCENT}">{_fmt_price(price.current_price)}</strong>'
+            f"{_fmt_price(reference_price)}</span> "
+            f'<strong style="color:{ACCENT}">{_fmt_price(current_price)}</strong>'
         )
-    elif price.current_price is not None:
-        price_parts.append(
-            f'<strong style="color:{ACCENT}">{_fmt_price(price.current_price)}</strong>'
-        )
-    else:
-        price_parts.append(
-            f'<span style="color:#888">Listed {_fmt_price(item.listed_price)}</span>'
-        )
+    if current_price is not None:
+        return f'<strong style="color:{ACCENT}">{_fmt_price(current_price)}</strong>'
+    return f'<span style="color:#888">Listed {_fmt_price(reference_price)}</span>'
 
+
+def _badges_html(deal_types) -> str:
     badges = []
-    if DealType.SALE in deal.deal_types:
+    if DealType.SALE in deal_types:
         badges.append(
             '<span style="background:#c73c3c;color:#fff;font-size:11px;'
             'padding:2px 8px;border-radius:999px;margin-left:6px">SALE</span>'
         )
-    if DealType.PROMO in deal.deal_types:
+    if DealType.PROMO in deal_types:
         badges.append(
             f'<span style="background:{ACCENT};color:#fff;font-size:11px;'
             'padding:2px 8px;border-radius:999px;margin-left:6px">PROMO</span>'
         )
+    return "".join(badges)
 
-    promo_lines = ""
-    for promo in deal.promos:
+
+def _promos_html(promos) -> str:
+    parts = []
+    for promo in promos:
         code = html_mod.escape(promo.code)
         desc = html_mod.escape(promo.description or "")
-        promo_lines += (
+        parts.append(
             f'<div style="margin-top:8px;font-family:ui-monospace,Menlo,monospace;'
             f"font-size:13px;color:{ACCENT};background:#f3faf6;"
             f'border:1px dashed {ACCENT};padding:6px 10px;border-radius:8px">'
             f'<strong>{code}</strong> <span style="color:#555">{desc}</span></div>'
         )
+    return "".join(parts)
+
+
+def _multi_card_html(deal: Deal) -> str:
+    item = deal.item
+    winner = deal.winner
+    name = html_mod.escape(item.name)
+    winner_url = html_mod.escape(winner.store.url)
+    winner_name = html_mod.escape(winner.store.display_name)
+
+    price_html = _price_parts_html(
+        winner.price_result.current_price, winner.store.listed_price
+    )
+    badges = _badges_html(winner.deal_types)
+    promos = _promos_html(winner.promos)
+
+    alt_lines = []
+    for ev in deal.store_evaluations:
+        if ev is winner:
+            continue
+        p = ev.price_result
+        price_text = (
+            _fmt_price(p.current_price)
+            if p.current_price is not None
+            else _fmt_price(ev.store.listed_price)
+        )
+        alt_lines.append(
+            f'<div style="margin-top:4px;font-size:13px">'
+            f'<a href="{html_mod.escape(ev.store.url)}" '
+            f'style="color:{ACCENT};text-decoration:none">'
+            f"{html_mod.escape(ev.store.display_name)}</a>"
+            f' <span style="color:#888">{price_text}</span></div>'
+        )
+
+    secondary = ""
+    if alt_lines:
+        secondary = (
+            f'<div style="border-top:1px solid #e7ebe9;margin-top:12px;padding-top:10px">'
+            f'<div style="font-size:11px;color:#888;margin-bottom:4px">Also available at:</div>'
+            f'{"".join(alt_lines)}</div>'
+        )
+
+    return (
+        '<tr><td style="padding:0 0 16px">'
+        f'<table cellpadding="0" cellspacing="0" width="100%" '
+        f'style="background:#fff;border:1px solid #e7ebe9;border-radius:12px">'
+        '<tr><td style="padding:16px">'
+        f'<div style="font-size:12px;color:#888;font-weight:600;text-transform:uppercase">'
+        f"{winner_name}</div>"
+        f'<a href="{winner_url}" style="text-decoration:none;color:#1a1d1b">'
+        f'<div style="font-size:17px;font-weight:600;margin-top:4px">{name}</div>'
+        "</a>"
+        f'<div style="margin-top:8px;font-size:15px">{price_html}{badges}</div>'
+        f"{promos}"
+        f"{secondary}"
+        f'<div style="margin-top:12px">'
+        f'<a href="{winner_url}" '
+        f'style="color:{ACCENT};font-weight:600;text-decoration:none">'
+        f"View at {winner_name} &rarr;</a>"
+        "</div>"
+        "</td></tr></table></td></tr>"
+    )
+
+
+def _card_html(deal: Deal) -> str:
+    if deal.store_evaluations:
+        return _multi_card_html(deal)
+
+    item = deal.item
+    price = deal.price_result
+    price_html = _price_parts_html(price.current_price, item.listed_price)
+    badges = _badges_html(deal.deal_types)
+    promos = _promos_html(deal.promos)
 
     name = html_mod.escape(item.name)
     url = html_mod.escape(item.url)
@@ -83,8 +153,8 @@ def _card_html(deal: Deal) -> str:
         f'<a href="{url}" style="text-decoration:none;color:#1a1d1b">'
         f'<div style="font-size:17px;font-weight:600;margin-top:4px">{name}</div>'
         "</a>"
-        f'<div style="margin-top:8px;font-size:15px">{"".join(price_parts)}{"".join(badges)}</div>'
-        f"{promo_lines}"
+        f'<div style="margin-top:8px;font-size:15px">{price_html}{badges}</div>'
+        f"{promos}"
         f'<div style="margin-top:12px">'
         f'<a href="{url}" '
         f'style="color:{ACCENT};font-weight:600;text-decoration:none">View at {store} &rarr;</a>'
@@ -93,8 +163,20 @@ def _card_html(deal: Deal) -> str:
     )
 
 
+def _collect_domains(deals: List[Deal]) -> set:
+    domains: set = set()
+    for d in deals:
+        if d.store_evaluations:
+            for ev in d.store_evaluations:
+                if ev.store.domain:
+                    domains.add(ev.store.domain)
+        elif d.item.domain:
+            domains.add(d.item.domain)
+    return domains
+
+
 def build_html(deals: List[Deal]) -> str:
-    stores = {d.item.domain for d in deals}
+    stores = _collect_domains(deals)
     n = len(deals)
     if n == 0:
         summary = (
@@ -141,32 +223,60 @@ def build_html(deals: List[Deal]) -> str:
     )
 
 
+def _text_price_str(current_price, reference_price: float) -> str:
+    if current_price is not None and current_price < reference_price:
+        return f"{_fmt_price(reference_price)} -> {_fmt_price(current_price)}"
+    if current_price is not None:
+        return _fmt_price(current_price)
+    return f"Listed {_fmt_price(reference_price)} (current unavailable)"
+
+
+def _text_multi_deal(d: Deal, lines: List[str]) -> None:
+    winner = d.winner
+    lines.append(f"- {d.item.name} ({winner.store.display_name})")
+    lines.append(f"  {_text_price_str(winner.price_result.current_price, winner.store.listed_price)}")
+    for promo in winner.promos:
+        lines.append(f"  Code: {promo.code} — {promo.description}")
+    lines.append(f"  {winner.store.url}")
+    for ev in d.store_evaluations:
+        if ev is winner:
+            continue
+        p = ev.price_result
+        price_text = (
+            _fmt_price(p.current_price)
+            if p.current_price is not None
+            else _fmt_price(ev.store.listed_price)
+        )
+        lines.append(f"  Also at: {ev.store.display_name} — {price_text}")
+        lines.append(f"    {ev.store.url}")
+    lines.append("")
+
+
+def _text_legacy_deal(d: Deal, lines: List[str]) -> None:
+    item = d.item
+    price = d.price_result
+    lines.append(f"- {item.name} ({item.domain})")
+    lines.append(f"  {_text_price_str(price.current_price, item.listed_price)}")
+    for promo in d.promos:
+        lines.append(f"  Code: {promo.code} — {promo.description}")
+    lines.append(f"  {item.url}")
+    lines.append("")
+
+
 def build_text(deals: List[Deal]) -> str:
     lines: List[str] = ["Isaac's Deals", ""]
     if not deals:
         lines.append("No deals this week.")
         lines.append("")
     else:
-        stores = {d.item.domain for d in deals}
+        stores = _collect_domains(deals)
         lines.append(f"{len(deals)} deals found across {len(stores)} stores.")
         lines.append("")
         for d in deals:
-            item = d.item
-            price = d.price_result
-            if price.current_price is not None and price.current_price < item.listed_price:
-                price_str = (
-                    f"{_fmt_price(item.listed_price)} -> {_fmt_price(price.current_price)}"
-                )
-            elif price.current_price is not None:
-                price_str = _fmt_price(price.current_price)
+            if d.store_evaluations:
+                _text_multi_deal(d, lines)
             else:
-                price_str = f"Listed {_fmt_price(item.listed_price)} (current unavailable)"
-            lines.append(f"- {item.name} ({item.domain})")
-            lines.append(f"  {price_str}")
-            for promo in d.promos:
-                lines.append(f"  Code: {promo.code} — {promo.description}")
-            lines.append(f"  {item.url}")
-            lines.append("")
+                _text_legacy_deal(d, lines)
     lines.append(f"Full page: {PAGE_URL}")
     lines.append(f"Manual run: {ACTIONS_URL}")
     return "\n".join(lines)

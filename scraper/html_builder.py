@@ -36,7 +36,101 @@ def _deal_type_values(deal: Deal) -> str:
     return " ".join(t.value for t in deal.deal_types)
 
 
+def _promo_chips_html(promos) -> str:
+    parts = []
+    for promo in promos:
+        code = html.escape(promo.code)
+        desc = html.escape(promo.description or "")
+        parts.append(
+            f'<button type="button" class="promo-chip" '
+            f'data-code="{code}" aria-label="Copy code {code}">'
+            f'<span class="promo-code">{code}</span>'
+            f'<span class="promo-desc">{desc}</span>'
+            f'<span class="promo-copied" aria-hidden="true">Copied!</span>'
+            f"</button>"
+        )
+    return "".join(parts)
+
+
+def _price_block_html(current_price, reference_price) -> str:
+    if current_price is not None and current_price < reference_price:
+        return (
+            f'<span class="price-listed">{_fmt_price(reference_price)}</span>'
+            f'<span class="price-current">{_fmt_price(current_price)}</span>'
+        )
+    if current_price is not None:
+        return f'<span class="price-current">{_fmt_price(current_price)}</span>'
+    return (
+        f'<span class="price-listed">{_fmt_price(reference_price)}</span>'
+        '<span class="price-unavailable">Current price unavailable</span>'
+    )
+
+
+def _multi_card_html(deal: Deal) -> str:
+    item = deal.item
+    winner = deal.winner
+    img = html.escape(item.image_url) if item.image_url else PLACEHOLDER_SVG
+
+    all_domains = " ".join(ev.store.domain for ev in deal.store_evaluations)
+    all_types = " ".join({t.value for ev in deal.store_evaluations for t in ev.deal_types})
+
+    badges = []
+    if DealType.PRICE_DROP in winner.deal_types and winner.price_result.current_price is not None:
+        pct = _pct_drop(winner.store.listed_price, winner.price_result.current_price)
+        badges.append(f'<span class="badge badge-drop">-{pct}%</span>')
+    if DealType.SALE in winner.deal_types:
+        badges.append('<span class="badge badge-sale">SALE</span>')
+    if DealType.PROMO in winner.deal_types:
+        badges.append('<span class="badge badge-promo">PROMO</span>')
+
+    alt_items = []
+    for ev in deal.store_evaluations:
+        if ev is winner:
+            continue
+        p = ev.price_result
+        price_text = (
+            _fmt_price(p.current_price)
+            if p.current_price is not None
+            else _fmt_price(ev.store.listed_price)
+        )
+        alt_items.append(
+            f'<li class="store-alt">'
+            f'<a href="{html.escape(ev.store.url)}" target="_blank" rel="noopener noreferrer">'
+            f"{html.escape(ev.store.display_name)}</a>"
+            f'<span class="store-alt-price">{price_text}</span>'
+            f"</li>"
+        )
+
+    secondary_html = (
+        f'<ul class="stores-secondary">{"".join(alt_items)}</ul>' if alt_items else ""
+    )
+
+    return (
+        f'<article class="deal-card" '
+        f'data-types="{html.escape(all_types)}" '
+        f'data-store="{html.escape(all_domains)}">'
+        f'<a href="{html.escape(winner.store.url)}" target="_blank" rel="noopener noreferrer">'
+        f'<div class="thumb"><img src="{img}" alt="{html.escape(item.name)}" loading="lazy"/>'
+        f'<div class="badges">{"".join(badges)}</div>'
+        f"</div>"
+        f'<h3 class="deal-name">{html.escape(item.name)}</h3>'
+        f"</a>"
+        f'<div class="store-winner">'
+        f'<div class="winner-name">{html.escape(winner.store.display_name)}</div>'
+        f'<div class="price-block">'
+        f'{_price_block_html(winner.price_result.current_price, winner.store.listed_price)}'
+        f"</div>"
+        f'<div class="promos">{_promo_chips_html(winner.promos)}</div>'
+        f"</div>"
+        f"{secondary_html}"
+        f"</article>"
+    )
+
+
 def _card_html(deal: Deal) -> str:
+    if deal.store_evaluations:
+        return _multi_card_html(deal)
+
     item = deal.item
     price = deal.price_result
     img = html.escape(item.image_url) if item.image_url else PLACEHOLDER_SVG
@@ -54,35 +148,6 @@ def _card_html(deal: Deal) -> str:
     if DealType.PROMO in deal.deal_types:
         badges.append('<span class="badge badge-promo">PROMO</span>')
 
-    price_block_parts = []
-    if price.current_price is not None and price.current_price < item.listed_price:
-        price_block_parts.append(
-            f'<span class="price-listed">{_fmt_price(item.listed_price)}</span>'
-            f'<span class="price-current">{_fmt_price(price.current_price)}</span>'
-        )
-    elif price.current_price is not None:
-        price_block_parts.append(
-            f'<span class="price-current">{_fmt_price(price.current_price)}</span>'
-        )
-    else:
-        price_block_parts.append(
-            f'<span class="price-listed">{_fmt_price(item.listed_price)}</span>'
-            '<span class="price-unavailable">Current price unavailable</span>'
-        )
-
-    promo_chips = []
-    for promo in deal.promos:
-        code = html.escape(promo.code)
-        desc = html.escape(promo.description or "")
-        promo_chips.append(
-            f'<button type="button" class="promo-chip" '
-            f'data-code="{code}" aria-label="Copy code {code}">'
-            f'<span class="promo-code">{code}</span>'
-            f'<span class="promo-desc">{desc}</span>'
-            f'<span class="promo-copied" aria-hidden="true">Copied!</span>'
-            f"</button>"
-        )
-
     tags = " ".join(
         f'<span class="tag tag-{t.value}">{t.value.replace("_", " ")}</span>'
         for t in deal.deal_types
@@ -98,8 +163,10 @@ def _card_html(deal: Deal) -> str:
         f"</div>"
         f'<h3 class="deal-name">{html.escape(item.name)}</h3>'
         f"</a>"
-        f'<div class="price-block">{"".join(price_block_parts)}</div>'
-        f'<div class="promos">{"".join(promo_chips)}</div>'
+        f'<div class="price-block">'
+        f'{_price_block_html(price.current_price, item.listed_price)}'
+        f"</div>"
+        f'<div class="promos">{_promo_chips_html(deal.promos)}</div>'
         f'<div class="tags">{tags}</div>'
         f'<div class="store">{html.escape(item.domain)}</div>'
         f"</article>"
@@ -107,7 +174,15 @@ def _card_html(deal: Deal) -> str:
 
 
 def _filter_bar(deals: List[Deal]) -> str:
-    stores = sorted({d.item.domain for d in deals})
+    domains: set = set()
+    for d in deals:
+        if d.store_evaluations:
+            for ev in d.store_evaluations:
+                if ev.store.domain:
+                    domains.add(ev.store.domain)
+        elif d.item.domain:
+            domains.add(d.item.domain)
+    stores = sorted(domains)
     type_buttons = [
         ('<button type="button" class="chip chip-active" data-filter-type="all">All</button>'),
         '<button type="button" class="chip" data-filter-type="price_drop">Price Drop</button>',
@@ -183,6 +258,13 @@ main{max-width:1200px;margin:0 auto;padding:0 24px 64px}
 .tags{padding:12px 16px;display:flex;flex-wrap:wrap;gap:6px}
 .tag{font-size:11px;color:var(--muted);background:var(--chip);padding:3px 8px;border-radius:6px;text-transform:capitalize}
 .store{padding:0 16px 16px;color:var(--muted);font-size:12px}
+.store-winner{padding:8px 16px 4px}
+.winner-name{font-size:12px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.04em;margin-bottom:4px}
+.stores-secondary{list-style:none;margin:0;padding:0 16px 12px;display:flex;flex-direction:column;gap:4px}
+.store-alt{display:flex;align-items:baseline;justify-content:space-between;font-size:13px}
+.store-alt a{color:var(--accent);text-decoration:none}
+.store-alt a:hover{text-decoration:underline}
+.store-alt-price{color:var(--muted);font-size:12px}
 .empty-state{text-align:center;padding:96px 24px}
 .empty-state .empty-icon{font-size:56px;margin-bottom:12px}
 .empty-state h2{font-size:24px;margin:0 0 6px}
@@ -202,7 +284,7 @@ _JS = """
       const types = (card.dataset.types || '').split(' ');
       const store = card.dataset.store || '';
       const typeOk = state.type === 'all' || types.includes(state.type);
-      const storeOk = state.store === 'all' || store === state.store;
+      const storeOk = state.store === 'all' || store.split(' ').includes(state.store);
       card.style.display = (typeOk && storeOk) ? '' : 'none';
     }
   }

@@ -2,39 +2,205 @@ from unittest.mock import MagicMock
 
 import pytest
 
-from giftful import GiftfulEmptyListError, Item, parse_items, resolve_redirect
+from giftful import (
+    Category,
+    GiftfulEmptyListError,
+    Item,
+    StoreLink,
+    parse_categories,
+    parse_items,
+    parse_modal,
+    resolve_redirect,
+)
 
 
-def test_parses_items_from_fixture(read_fixture):
-    html = read_fixture("giftful_page.html")
+# ---------- StoreLink ----------
 
+
+def test_storelink_exposes_url_display_name_listed_price():
+    s = StoreLink(
+        url="https://shop.example/p",
+        display_name="shop.example",
+        listed_price=12.5,
+    )
+    assert s.url == "https://shop.example/p"
+    assert s.display_name == "shop.example"
+    assert s.listed_price == 12.5
+
+
+def test_storelink_domain_extracts_from_url():
+    s = StoreLink(
+        url="https://www.example.com/product/123",
+        display_name="example",
+        listed_price=10.0,
+    )
+    assert s.domain == "www.example.com"
+
+
+# ---------- Category ----------
+
+
+def test_category_exposes_name_url_item_count():
+    c = Category(
+        name="Accessories",
+        url="https://giftful.com/wishlists/abc",
+        item_count=12,
+    )
+    assert c.name == "Accessories"
+    assert c.url == "https://giftful.com/wishlists/abc"
+    assert c.item_count == 12
+
+
+# ---------- Item (legacy + new shape) ----------
+
+
+def test_item_accepts_legacy_url_kwarg():
+    item = Item(
+        name="Thing",
+        url="https://shop.example.com/thing",
+        listed_price=10.0,
+        image_url="i.jpg",
+    )
+    assert item.name == "Thing"
+    assert item.url == "https://shop.example.com/thing"
+    assert item.domain == "shop.example.com"
+    assert item.listed_price == 10.0
+    assert item.image_url == "i.jpg"
+
+
+def test_item_url_falls_back_to_first_store_when_legacy_empty():
+    stores = [
+        StoreLink(url="https://a.com/p", display_name="a", listed_price=10.0),
+        StoreLink(url="https://b.com/p", display_name="b", listed_price=11.0),
+    ]
+    item = Item(name="X", listed_price=10.0, store_urls=stores)
+    assert item.url == "https://a.com/p"
+    assert item.domain == "a.com"
+
+
+def test_item_domain_works_for_legacy_and_new_construction():
+    legacy = Item(name="L", url="https://legacy.com/p", listed_price=1.0)
+    new = Item(
+        name="N",
+        listed_price=1.0,
+        store_urls=[StoreLink("https://new.com/p", "new.com", 1.0)],
+    )
+    assert legacy.domain == "legacy.com"
+    assert new.domain == "new.com"
+
+
+# ---------- parse_categories ----------
+
+
+def test_parse_categories_extracts_three_entries_with_name_and_count(read_fixture):
+    html = read_fixture("giftful_profile.html")
+    cats = parse_categories(html, base_url="https://giftful.com/isaacrossum")
+
+    assert [c.name for c in cats] == ["Athleisure", "Accessories", "Tech"]
+    assert [c.item_count for c in cats] == [25, 12, 3]
+
+
+def test_parse_categories_resolves_relative_hrefs_against_base_url(read_fixture):
+    html = read_fixture("giftful_profile.html")
+    cats = parse_categories(html, base_url="https://giftful.com/isaacrossum")
+
+    assert cats[0].url == "https://giftful.com/wishlists/iU4fssUTAYgfsXJZunIs"
+    assert cats[1].url == "https://giftful.com/wishlists/QBJFkBAfyvWxRFlpEKGU"
+    assert cats[2].url == "https://giftful.com/wishlists/I20ImZMQzD2YbLcexYYW"
+
+
+def test_parse_categories_on_empty_html_returns_empty_list():
+    assert parse_categories("", base_url="https://giftful.com/x") == []
+    assert parse_categories(
+        "<html><body></body></html>", base_url="https://giftful.com/x"
+    ) == []
+
+
+# ---------- parse_items ----------
+
+
+def test_parse_items_extracts_three_items_with_name_price_image(read_fixture):
+    html = read_fixture("giftful_category.html")
     items = parse_items(html)
 
     assert len(items) == 3
-    assert items[0] == Item(
-        name="Wireless Headphones",
-        url="https://shop.example.com/products/headphones",
-        listed_price=199.00,
-        image_url="https://cdn.example.com/img/headphones.jpg",
-    )
-    assert items[1].name == "Burr Coffee Grinder"
-    assert items[1].listed_price == 249.99
-    assert items[2].url == "https://gear.example.org/backpack-40l"
+    assert items[0].name == "Nike Club washed shorts in brown"
+    assert items[0].listed_price == 65.0
+    assert items[0].image_url == "https://cdn.example.test/items/shorts-light.jpg"
+    assert items[1].name == "Museum Classic Watch"
+    assert items[2].name == "Good Quality Human Cap"
+    assert items[2].listed_price == 45.0
 
 
-def test_parse_items_raises_on_empty():
-    with pytest.raises(GiftfulEmptyListError, match="no items"):
-        parse_items("<html><body></body></html>")
+def test_parse_items_handles_missing_brand_icon(read_fixture):
+    html = read_fixture("giftful_category.html")
+    items = parse_items(html)
+
+    # 3rd fixture item intentionally has no <img alt="Brand Icon"> — parser
+    # must still succeed and keep the item in the list.
+    assert items[2].name == "Good Quality Human Cap"
 
 
-def test_item_exposes_domain():
-    item = Item(
-        name="x",
-        url="https://shop.example.com/products/thing",
-        listed_price=10.0,
-        image_url="",
-    )
-    assert item.domain == "shop.example.com"
+def test_parse_items_handles_comma_in_price(read_fixture):
+    html = read_fixture("giftful_category.html")
+    items = parse_items(html)
+
+    # "$1,095" must parse to 1095.0 (not 1.095 or raise)
+    assert items[1].listed_price == 1095.0
+
+
+def test_parse_items_sets_category_name_when_provided(read_fixture):
+    html = read_fixture("giftful_category.html")
+    items = parse_items(html, category_name="Accessories")
+
+    assert all(i.category == "Accessories" for i in items)
+
+
+def test_parse_items_on_empty_html_returns_empty_list():
+    assert parse_items("") == []
+    assert parse_items("<html><body></body></html>") == []
+
+
+# ---------- parse_modal ----------
+
+
+def test_parse_modal_extracts_item_name_and_listed_price(read_fixture):
+    html = read_fixture("giftful_item_modal.html")
+    name, listed_price, _stores = parse_modal(html)
+
+    assert name == "Nike Club washed shorts in brown"
+    assert listed_price == 65.0
+
+
+def test_parse_modal_extracts_four_unique_retailers_in_dom_order(read_fixture):
+    html = read_fixture("giftful_item_modal.html")
+    _name, _price, stores = parse_modal(html)
+
+    assert [s.display_name for s in stores] == [
+        "asos.com",
+        "dtlr.com",
+        "dickssportinggoods.com",
+        "urbanoutfitters.com",
+    ]
+    assert [s.listed_price for s in stores] == [65.0, 9.98, 55.0, 55.0]
+
+
+def test_parse_modal_first_retailer_is_primary_asos_card(read_fixture):
+    html = read_fixture("giftful_item_modal.html")
+    _name, _price, stores = parse_modal(html)
+
+    assert stores[0].display_name == "asos.com"
+    assert "skimresources.com" in stores[0].url
+
+
+def test_parse_modal_on_empty_html_returns_none_none_empty():
+    name, listed_price, stores = parse_modal("")
+    assert name is None
+    assert listed_price is None
+    assert stores == []
+
+
+# ---------- resolve_redirect (preserved) ----------
 
 
 def test_resolve_redirect_follows_final_url():
@@ -59,3 +225,11 @@ def test_resolve_redirect_returns_original_on_failure():
     assert (
         resolve_redirect("https://bit.ly/xyz", session) == "https://bit.ly/xyz"
     )
+
+
+# ---------- GiftfulEmptyListError ----------
+
+
+def test_giftful_empty_list_error_can_be_raised():
+    with pytest.raises(GiftfulEmptyListError, match="no items"):
+        raise GiftfulEmptyListError("no items")

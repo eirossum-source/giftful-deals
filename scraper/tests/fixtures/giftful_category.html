@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Accessories | Giftful</title>
+  </head>
+  <body>
+    <!--
+      Trimmed from live giftful.com/wishlists/<id> markup.
+      Each item on the real site is a <button> with:
+        - two <img alt="Feature Image"> (light / dark mode duplicates)
+        - a block containing: item name, brand icon, price
+      Three items kept (live category typically has ~25).
+      The third item intentionally omits a brand icon, to exercise the
+      "brand icon may be absent" path.
+    -->
+    <div>
+      <button type="button">
+        <div>
+          <img
+            alt="Feature Image"
+            src="https://cdn.example.test/items/shorts-light.jpg"
+          />
+          <img
+            alt="Feature Image"
+            class="hidden dark:flex"
+            src="https://cdn.example.test/items/shorts-dark.jpg"
+          />
+        </div>
+        <div class="ml-1 mt-2">
+          <div class="leading-5 text-sm">Nike Club washed shorts in brown</div>
+          <div class="text-sm flex items-center">
+            <div class="rounded overflow-hidden">
+              <img
+                alt="Brand Icon"
+                src="https://cdn.example.test/brands/asos.png"
+              />
+            </div>
+            <div>$65</div>
+          </div>
+        </div>
+      </button>
+
+      <button type="button">
+        <div>
+          <img
+            alt="Feature Image"
+            src="https://cdn.example.test/items/watch-light.jpg"
+          />
+        </div>
+        <div class="ml-1 mt-2">
+          <div class="leading-5 text-sm">Museum Classic Watch</div>
+          <div class="text-sm flex items-center">
+            <div class="rounded overflow-hidden">
+              <img
+                alt="Brand Icon"
+                src="https://cdn.example.test/brands/movado.png"
+              />
+            </div>
+            <div>$1,095</div>
+          </div>
+        </div>
+      </button>
+
+      <button type="button">
+        <div>
+          <img
+            alt="Feature Image"
+            src="https://cdn.example.test/items/cap-light.jpg"
+          />
+        </div>
+        <div class="ml-1 mt-2">
+          <div class="leading-5 text-sm">Good Quality Human Cap</div>
+          <div class="text-sm flex items-center">
+            <div>$45</div>
+          </div>
+        </div>
+      </button>
+    </div>
+  </body>
+</html>

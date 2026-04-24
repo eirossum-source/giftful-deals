@@ -1,0 +1,145 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Giftful</title>
+  </head>
+  <body>
+    <!--
+      Trimmed Giftful item-modal markup ([role="dialog"], Headless UI panel).
+      Real modals contain:
+        - h3 with item name (font-gelica span inside)
+        - listed price div beneath h3
+        - image wrapper anchor (same URL as the "View Online" button)
+        - a.btn-submit "View Online" primary link
+        - one or more retailer-card anchors containing <div class="flex-1">
+          with the store display name and a price div
+
+      Parser's stable selector for retailer cards:
+        [role="dialog"] a:has(div.flex-1)
+      (excludes image-wrapper + btn-submit; captures primary-card + alternates)
+
+      This fixture has 4 retailer cards with distinct URLs and prices, so
+      dedup is NOT needed at the anchor level but IS needed across the
+      3 skimresources anchors (image/button/primary-card share one URL).
+      Structured to match the live DOM for the Nike-shorts item.
+    -->
+    <div role="dialog" aria-modal="true" id="headlessui-dialog-real">
+      <div>
+        <div id="headlessui-dialog-panel-real">
+          <div>
+            <!-- close / menu buttons removed for fixture clarity -->
+            <div>
+              <!-- LEFT: image wrapped by the primary retailer link -->
+              <div>
+                <div
+                  style="background-image: url('https://cdn.example.test/items/shorts-light.jpg');"
+                >
+                  <a
+                    href="https://go.skimresources.com/?id=126111X1597379&xs=1&url=https%3A%2F%2Fwww.asos.com%2Fus%2Fnike%2Fnike-club-washed-shorts-in-brown%2Fprd%2F209187461&sref=https%3A%2F%2Fgiftful.com%2Fwishlists%2FiU4fssUTAYgfsXJZunIs"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <img
+                      alt="Nike Club washed shorts in brown"
+                      src="https://cdn.example.test/items/shorts-light.jpg"
+                    />
+                  </a>
+                </div>
+              </div>
+
+              <!-- RIGHT: name / price / links -->
+              <div>
+                <h3>
+                  <span class="font-gelica">Nike Club washed shorts in brown</span>
+                </h3>
+                <div class="text-xl">
+                  <div class="flex items-center">
+                    <div>$65</div>
+                  </div>
+                </div>
+
+                <!-- Primary "View Online" button -->
+                <div>
+                  <a
+                    class="btn-submit"
+                    href="https://go.skimresources.com/?id=126111X1597379&xs=1&url=https%3A%2F%2Fwww.asos.com%2Fus%2Fnike%2Fnike-club-washed-shorts-in-brown%2Fprd%2F209187461&sref=https%3A%2F%2Fgiftful.com%2Fwishlists%2FiU4fssUTAYgfsXJZunIs"
+                    target="_blank"
+                  >
+                    <div>View Online</div>
+                  </a>
+                </div>
+
+                <!-- Retailer cards: first (primary, emerald-300 border)
+                     + 3 alternates (hover:border-emerald-500) -->
+                <div>
+                  <div>
+                    <a
+                      class="border rounded-md py-1.5 px-2 border-emerald-300 hover:border-emerald-500 bg-emerald-50"
+                      href="https://go.skimresources.com/?id=126111X1597379&xs=1&url=https%3A%2F%2Fwww.asos.com%2Fus%2Fnike%2Fnike-club-washed-shorts-in-brown%2Fprd%2F209187461&sref=https%3A%2F%2Fgiftful.com%2Fwishlists%2FiU4fssUTAYgfsXJZunIs"
+                      target="_blank"
+                    >
+                      <div class="rounded overflow-hidden">
+                        <img
+                          alt="Brand Icon"
+                          src="https://cdn.example.test/brands/asos.png"
+                        />
+                      </div>
+                      <div class="flex-1">asos.com</div>
+                      <div>$65</div>
+                    </a>
+
+                    <a
+                      class="border rounded-md py-1.5 px-2 hover:bg-emerald-50 hover:border-emerald-500"
+                      href="https://redirect.viglink.com?key=test&prodOvrd=PCR&u=AAA&prdId=11203683919"
+                      target="_blank"
+                    >
+                      <div class="rounded overflow-hidden">
+                        <img
+                          alt="Brand Icon"
+                          src="https://cdn.example.test/brands/dtlr.png"
+                        />
+                      </div>
+                      <div class="flex-1">dtlr.com</div>
+                      <div>$9.98</div>
+                    </a>
+
+                    <a
+                      class="border rounded-md py-1.5 px-2 hover:bg-emerald-50 hover:border-emerald-500"
+                      href="https://redirect.viglink.com?key=test&prodOvrd=PCR&u=BBB&prdId=11622782467"
+                      target="_blank"
+                    >
+                      <div class="rounded overflow-hidden">
+                        <img
+                          alt="Brand Icon"
+                          src="https://cdn.example.test/brands/dicks.png"
+                        />
+                      </div>
+                      <div class="flex-1">dickssportinggoods.com</div>
+                      <div>$55</div>
+                    </a>
+
+                    <a
+                      class="border rounded-md py-1.5 px-2 hover:bg-emerald-50 hover:border-emerald-500"
+                      href="https://redirect.viglink.com?key=test&prodOvrd=PCR&u=CCC&prdId=1"
+                      target="_blank"
+                    >
+                      <div class="rounded overflow-hidden">
+                        <img
+                          alt="Brand Icon"
+                          src="https://cdn.example.test/brands/urban.png"
+                        />
+                      </div>
+                      <div class="flex-1">urbanoutfitters.com</div>
+                      <div>$55</div>
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

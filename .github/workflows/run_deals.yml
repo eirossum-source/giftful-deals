@@ -43,6 +43,7 @@ jobs:
           if [ -n "$(git status --porcelain docs/index.html)" ]; then
             git add docs/index.html
             git commit -m "chore: update deals page"
+            git pull --rebase origin main
             git push
           else
             echo "No changes to docs/index.html"

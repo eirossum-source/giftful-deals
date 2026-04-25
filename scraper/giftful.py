@@ -166,13 +166,13 @@ def parse_items(html: str, category_name: str = "") -> List[Item]:
 
 def parse_modal(
     html: str,
-) -> Tuple[Optional[str], Optional[float], List[StoreLink]]:
+) -> Tuple[Optional[str], Optional[float], Optional[str]]:
     if not html:
-        return (None, None, [])
+        return (None, None, None)
     soup = BeautifulSoup(html, "lxml")
     dlg = soup.select_one('[role="dialog"]')
     if dlg is None:
-        return (None, None, [])
+        return (None, None, None)
 
     h3 = dlg.find("h3")
     name = h3.get_text(strip=True) if h3 else None
@@ -187,33 +187,14 @@ def parse_modal(
                 if listed_price is not None:
                     break
 
-    stores: List[StoreLink] = []
-    seen_urls: set[str] = set()
-    for a in dlg.find_all("a", href=True):
-        flex1 = a.find(class_="flex-1")
-        if flex1 is None:
-            continue
-        href = a["href"]
-        if href in seen_urls:
-            continue
-        display_name = flex1.get_text(strip=True)
-        if not display_name:
-            continue
-        price: Optional[float] = None
-        for div in a.find_all("div"):
-            txt = div.get_text(strip=True)
-            if txt.startswith("$"):
-                price = _parse_price(txt)
-                if price is not None:
-                    break
-        if price is None:
-            continue
-        seen_urls.add(href)
-        stores.append(
-            StoreLink(url=href, display_name=display_name, listed_price=price)
-        )
+    view_online_url: Optional[str] = None
+    btn = dlg.select_one("a.btn-submit")
+    if btn is not None:
+        href = btn.get("href")
+        if href:
+            view_online_url = href
 
-    return (name, listed_price, stores)
+    return (name, listed_price, view_online_url)
 
 
 def resolve_redirect(url: str, session) -> str:
@@ -260,7 +241,7 @@ def fetch_list(profile_url: str = GIFTFUL_URL, session=None) -> List[Item]:
             n = min(cards.count(), len(items))
 
             for idx in range(n):
-                stores: List[StoreLink] = []
+                view_online_url: Optional[str] = None
                 try:
                     card = cards.nth(idx)
                     card.scroll_into_view_if_needed(timeout=3_000)
@@ -269,20 +250,21 @@ def fetch_list(profile_url: str = GIFTFUL_URL, session=None) -> List[Item]:
                         '[role="dialog"]', state="visible", timeout=10_000
                     )
                     page.wait_for_timeout(500)
-                    _n, _p, stores = parse_modal(page.content())
+                    _n, _p, view_online_url = parse_modal(page.content())
                 except Exception:
-                    stores = []
+                    view_online_url = None
 
-                resolved: List[StoreLink] = []
-                for s in stores:
-                    resolved.append(
+                if view_online_url:
+                    resolved_url = resolve_redirect(view_online_url, session)
+                    domain = urlparse(resolved_url).netloc
+                    display = re.sub(r"^www\.", "", domain)
+                    items[idx].store_urls = [
                         StoreLink(
-                            url=resolve_redirect(s.url, session),
-                            display_name=s.display_name,
-                            listed_price=s.listed_price,
+                            url=resolved_url,
+                            display_name=display,
+                            listed_price=items[idx].listed_price,
                         )
-                    )
-                items[idx].store_urls = resolved
+                    ]
 
                 try:
                     page.keyboard.press("Escape")

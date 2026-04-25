@@ -195,38 +195,44 @@ def test_parse_items_on_empty_html_returns_empty_list():
 
 def test_parse_modal_extracts_item_name_and_listed_price(read_fixture):
     html = read_fixture("giftful_item_modal.html")
-    name, listed_price, _stores = parse_modal(html)
+    name, listed_price, _url = parse_modal(html)
 
     assert name == "Nike Club washed shorts in brown"
     assert listed_price == 65.0
 
 
-def test_parse_modal_extracts_four_unique_retailers_in_dom_order(read_fixture):
+def test_parse_modal_extracts_view_online_url(read_fixture):
     html = read_fixture("giftful_item_modal.html")
-    _name, _price, stores = parse_modal(html)
+    _name, _price, view_online_url = parse_modal(html)
 
-    assert [s.display_name for s in stores] == [
-        "asos.com",
-        "dtlr.com",
-        "dickssportinggoods.com",
-        "urbanoutfitters.com",
-    ]
-    assert [s.listed_price for s in stores] == [65.0, 9.98, 55.0, 55.0]
+    assert view_online_url is not None
+    assert "skimresources.com" in view_online_url
 
 
-def test_parse_modal_first_retailer_is_primary_asos_card(read_fixture):
+def test_parse_modal_ignores_retailer_cards(read_fixture):
     html = read_fixture("giftful_item_modal.html")
-    _name, _price, stores = parse_modal(html)
+    _name, _price, view_online_url = parse_modal(html)
 
-    assert stores[0].display_name == "asos.com"
-    assert "skimresources.com" in stores[0].url
+    assert isinstance(view_online_url, str)
 
 
-def test_parse_modal_on_empty_html_returns_none_none_empty():
-    name, listed_price, stores = parse_modal("")
+def test_parse_modal_returns_none_url_when_no_btn_submit():
+    html = """
+    <div role="dialog">
+      <h3>Some Item</h3>
+      <div class="text-xl"><div>$20</div></div>
+      <a href="https://example.com"><div class="flex-1">example.com</div><div>$20</div></a>
+    </div>
+    """
+    _name, _price, view_online_url = parse_modal(html)
+    assert view_online_url is None
+
+
+def test_parse_modal_on_empty_html_returns_none_none_none():
+    name, listed_price, view_online_url = parse_modal("")
     assert name is None
     assert listed_price is None
-    assert stores == []
+    assert view_online_url is None
 
 
 # ---------- resolve_redirect (preserved) ----------

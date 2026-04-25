@@ -247,7 +247,7 @@ def fetch_list(profile_url: str = GIFTFUL_URL, session=None) -> List[Item]:
                     card.scroll_into_view_if_needed(timeout=3_000)
                     card.click(timeout=5_000)
                     page.wait_for_selector(
-                        '[role="dialog"]', state="visible", timeout=10_000
+                        '[role="dialog"] h3', state="visible", timeout=10_000
                     )
                     page.wait_for_timeout(500)
                     _n, _p, view_online_url = parse_modal(page.content())
@@ -269,7 +269,7 @@ def fetch_list(profile_url: str = GIFTFUL_URL, session=None) -> List[Item]:
                 try:
                     page.keyboard.press("Escape")
                     page.wait_for_selector(
-                        '[role="dialog"]', state="hidden", timeout=5_000
+                        '[role="dialog"] h3', state="hidden", timeout=5_000
                     )
                 except Exception:
                     pass

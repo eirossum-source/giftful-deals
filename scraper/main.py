@@ -13,6 +13,9 @@ from coupon_checker import lookup as real_lookup
 from emailer import send as real_send
 
 
+_UNSET = object()
+
+
 def _default_fetch(session=None):
     return fetch_list(session=session)
 
@@ -21,7 +24,7 @@ def run(
     fetch_items: Callable = None,
     check_price: Callable = None,
     lookup_coupons: Callable = None,
-    send_email: Callable = None,
+    send_email: Callable = _UNSET,
     output_path: Optional[Path] = None,
     log_path: Optional[Path] = None,
     now: Optional[datetime] = None,
@@ -38,7 +41,8 @@ def run(
     fetch_items = fetch_items or _default_fetch
     check_price = check_price or real_check_price
     lookup_coupons = lookup_coupons or real_lookup
-    send_email = send_email or real_send
+    if send_email is _UNSET:
+        send_email = real_send
 
     log = ErrorLog(log_path)
 

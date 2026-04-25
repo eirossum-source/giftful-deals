@@ -125,6 +125,8 @@ def parse_items(html: str, category_name: str = "") -> List[Item]:
     for btn in soup.find_all("button"):
         if btn.find("img", alt="Feature Image") is None:
             continue
+        if btn.find("img", alt="Claimed") is not None:
+            continue
 
         name_el = btn.select_one(".leading-5")
         name = name_el.get_text(strip=True) if name_el else ""
@@ -254,7 +256,7 @@ def fetch_list(profile_url: str = GIFTFUL_URL, session=None) -> List[Item]:
         for cat in categories:
             page.goto(cat.url, wait_until="networkidle", timeout=60_000)
             items = parse_items(page.content(), category_name=cat.name)
-            cards = page.locator('button:has(img[alt="Feature Image"])')
+            cards = page.locator('button:has(img[alt="Feature Image"]):not(:has(img[alt="Claimed"]))')
             n = min(cards.count(), len(items))
 
             for idx in range(n):

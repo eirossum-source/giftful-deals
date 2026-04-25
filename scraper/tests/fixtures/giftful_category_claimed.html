@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Athleisure | Giftful</title>
+  </head>
+  <body>
+    <!--
+      Category page with 3 items: 2 unclaimed, 1 claimed.
+      Claimed items on live site have an <img alt="Claimed" src="/images/claimed.jpg">
+      inside an absolutely-positioned div overlaying the item image.
+      parse_items() should skip claimed items entirely.
+    -->
+    <div>
+      <!-- Item 1: unclaimed -->
+      <button type="button">
+        <div>
+          <img
+            alt="Feature Image"
+            src="https://cdn.example.test/items/shorts-light.jpg"
+          />
+        </div>
+        <div class="ml-1 mt-2">
+          <div class="leading-5 text-sm">Nike Club washed shorts in brown</div>
+          <div class="text-sm flex items-center">
+            <div>$65</div>
+          </div>
+        </div>
+      </button>
+
+      <!-- Item 2: CLAIMED (purchased) -->
+      <button type="button">
+        <div style="position: relative;">
+          <img
+            alt="Feature Image"
+            src="https://cdn.example.test/items/hoodie-light.jpg"
+          />
+          <div style="position: absolute; top: 0; left: 0;">
+            <img alt="Claimed" src="/images/claimed.jpg" />
+          </div>
+        </div>
+        <div class="ml-1 mt-2">
+          <div class="leading-5 text-sm">Nike Tech Fleece Hoodie</div>
+          <div class="text-sm flex items-center">
+            <div>$130</div>
+          </div>
+        </div>
+      </button>
+
+      <!-- Item 3: unclaimed -->
+      <button type="button">
+        <div>
+          <img
+            alt="Feature Image"
+            src="https://cdn.example.test/items/cap-light.jpg"
+          />
+        </div>
+        <div class="ml-1 mt-2">
+          <div class="leading-5 text-sm">Good Quality Human Cap</div>
+          <div class="text-sm flex items-center">
+            <div>$45</div>
+          </div>
+        </div>
+      </button>
+    </div>
+  </body>
+</html>

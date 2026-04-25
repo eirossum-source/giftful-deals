@@ -156,6 +156,35 @@ def test_parse_items_sets_category_name_when_provided(read_fixture):
     assert all(i.category == "Accessories" for i in items)
 
 
+def test_parse_items_skips_claimed_items(read_fixture):
+    html = read_fixture("giftful_category_claimed.html")
+    items = parse_items(html)
+
+    assert len(items) == 2
+    names = [i.name for i in items]
+    assert "Nike Club washed shorts in brown" in names
+    assert "Good Quality Human Cap" in names
+    assert "Nike Tech Fleece Hoodie" not in names
+
+
+def test_parse_items_all_claimed_returns_empty():
+    html = """
+    <div>
+      <button type="button">
+        <div>
+          <img alt="Feature Image" src="x.jpg" />
+          <div style="position: absolute;"><img alt="Claimed" src="/images/claimed.jpg" /></div>
+        </div>
+        <div class="ml-1 mt-2">
+          <div class="leading-5 text-sm">Already Bought Item</div>
+          <div class="text-sm flex items-center"><div>$50</div></div>
+        </div>
+      </button>
+    </div>
+    """
+    assert parse_items(html) == []
+
+
 def test_parse_items_on_empty_html_returns_empty_list():
     assert parse_items("") == []
     assert parse_items("<html><body></body></html>") == []

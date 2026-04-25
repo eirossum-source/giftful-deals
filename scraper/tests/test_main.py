@@ -129,6 +129,56 @@ def test_zero_deals_still_sends_email(tmp_path):
     assert "No deals this week" in html
 
 
+def test_zero_deals_prints_diagnostic_price_samples(tmp_path, capsys):
+    items = _items()
+    fetch = MagicMock(return_value=items)
+    check = MagicMock(
+        return_value=PriceResult(current_price=9999.0, sale_detected=False)
+    )
+    lookup = MagicMock(return_value=[])
+    sender = MagicMock()
+
+    run(
+        fetch_items=fetch,
+        check_price=check,
+        lookup_coupons=lookup,
+        send_email=sender,
+        output_path=tmp_path / "index.html",
+        log_path=tmp_path / "errors.log",
+        now=datetime(2026, 4, 18),
+    )
+
+    captured = capsys.readouterr()
+    assert "0 deals" in captured.out
+    assert "price samples" in captured.out.lower()
+    assert "Headphones" in captured.out
+    assert "listed $199" in captured.out
+    assert "current $9999" in captured.out
+
+
+def test_nonzero_deals_omits_diagnostic_samples(tmp_path, capsys):
+    items = _items()
+    fetch = MagicMock(return_value=items)
+    check = MagicMock(
+        return_value=PriceResult(current_price=10.0, sale_detected=False)
+    )
+    lookup = MagicMock(return_value=[])
+    sender = MagicMock()
+
+    run(
+        fetch_items=fetch,
+        check_price=check,
+        lookup_coupons=lookup,
+        send_email=sender,
+        output_path=tmp_path / "index.html",
+        log_path=tmp_path / "errors.log",
+        now=datetime(2026, 4, 18),
+    )
+
+    captured = capsys.readouterr()
+    assert "price samples" not in captured.out.lower()
+
+
 def test_empty_wishlist_raises_and_does_not_send(tmp_path):
     from giftful import GiftfulEmptyListError
 

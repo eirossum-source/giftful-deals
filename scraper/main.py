@@ -49,6 +49,7 @@ def run(
     items = fetch_items(session=session) if _accepts_session(fetch_items) else fetch_items()
 
     deals: list[Deal] = []
+    price_samples: list[tuple[str, float, float | None]] = []
     for item in items:
         if item.store_urls:
             evaluations: list[StoreEvaluation] = []
@@ -64,6 +65,9 @@ def run(
                             promos=promos,
                             deal_types=types,
                         )
+                    )
+                    price_samples.append(
+                        (item.name, store.listed_price, price_result.current_price)
                     )
                 except Exception as exc:
                     log.error(f"{item.name} ({store.url}): {exc}")
@@ -83,6 +87,9 @@ def run(
                             deal_types=types,
                         )
                     )
+                price_samples.append(
+                    (item.name, item.listed_price, price_result.current_price)
+                )
             except Exception as exc:
                 log.error(f"{item.name} ({item.url}): {exc}")
 
@@ -99,6 +106,13 @@ def run(
         f"{summary['deals']} deals found | "
         f"{summary['errors']} errors — see errors.log"
     )
+
+    if not deals and price_samples:
+        print(f"0 deals from {len(items)} items — price samples:")
+        for name, listed, current in price_samples[:5]:
+            cur = f"${current:.2f}" if current is not None else "unavailable"
+            print(f"  {name}: listed ${listed:.2f}, current {cur}")
+
     return summary
 
 

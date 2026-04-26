@@ -59,66 +59,101 @@ def test_lookup_uses_couponfollow_first(mocker, read_fixture):
     assert session.get.call_count == 1
 
 
-def test_lookup_falls_back_to_dealspotr_when_cf_empty(mocker, read_fixture):
+def test_lookup_returns_empty_when_cf_empty_and_does_not_call_dealspotr(
+    mocker, read_fixture
+):
     session = MagicMock()
     empty_resp = MagicMock()
     empty_resp.status_code = 200
     empty_resp.text = read_fixture("couponfollow_empty.html")
-    ds_resp = MagicMock()
-    ds_resp.status_code = 200
-    ds_resp.text = read_fixture("dealspotr_active.html")
-    session.get.side_effect = [empty_resp, ds_resp]
+    session.get.side_effect = [empty_resp]
     mocker.patch("coupon_checker.time.sleep")
 
     codes = lookup(
         "store.example.net",
-        session=session,
-        error_log=MagicMock(),
-        today=FROZEN_TODAY,
-    )
-
-    assert len(codes) == 1
-    assert codes[0].code == "SPOTR15"
-    assert session.get.call_count == 2
-
-
-def test_lookup_falls_back_when_cf_blocked(mocker, read_fixture):
-    session = MagicMock()
-    blocked_resp = MagicMock()
-    blocked_resp.status_code = 403
-    blocked_resp.text = "forbidden"
-    ds_resp = MagicMock()
-    ds_resp.status_code = 200
-    ds_resp.text = read_fixture("dealspotr_active.html")
-    session.get.side_effect = [blocked_resp, ds_resp]
-    mocker.patch("coupon_checker.time.sleep")
-    log = MagicMock()
-
-    codes = lookup(
-        "store.example.net",
-        session=session,
-        error_log=log,
-        today=FROZEN_TODAY,
-    )
-
-    assert len(codes) == 1
-    assert codes[0].code == "SPOTR15"
-    log.error.assert_called()
-
-
-def test_lookup_returns_empty_when_both_fail(mocker):
-    session = MagicMock()
-    blocked = MagicMock()
-    blocked.status_code = 403
-    blocked.text = ""
-    session.get.side_effect = [blocked, blocked]
-    mocker.patch("coupon_checker.time.sleep")
-
-    codes = lookup(
-        "flaky.example.com",
         session=session,
         error_log=MagicMock(),
         today=FROZEN_TODAY,
     )
 
     assert codes == []
+    # Only CouponFollow should be hit; DealsPotr fallback removed
+    assert session.get.call_count == 1
+    called_url = session.get.call_args_list[0].args[0]
+    assert "couponfollow.com" in called_url
+
+
+def test_lookup_returns_empty_on_couponfollow_404(mocker):
+    session = MagicMock()
+    not_found = MagicMock()
+    not_found.status_code = 404
+    not_found.text = "not found"
+    session.get.side_effect = [not_found]
+    mocker.patch("coupon_checker.time.sleep")
+
+    codes = lookup(
+        "store.example.net",
+        session=session,
+        error_log=MagicMock(),
+        today=FROZEN_TODAY,
+    )
+
+    assert codes == []
+    assert session.get.call_count == 1
+
+
+def test_lookup_returns_empty_on_couponfollow_406(mocker):
+    session = MagicMock()
+    not_acceptable = MagicMock()
+    not_acceptable.status_code = 406
+    not_acceptable.text = ""
+    session.get.side_effect = [not_acceptable]
+    mocker.patch("coupon_checker.time.sleep")
+
+    codes = lookup(
+        "store.example.net",
+        session=session,
+        error_log=MagicMock(),
+        today=FROZEN_TODAY,
+    )
+
+    assert codes == []
+    assert session.get.call_count == 1
+
+
+def test_lookup_returns_empty_when_cf_blocked_no_dealspotr(mocker):
+    session = MagicMock()
+    blocked = MagicMock()
+    blocked.status_code = 403
+    blocked.text = "forbidden"
+    session.get.side_effect = [blocked]
+    mocker.patch("coupon_checker.time.sleep")
+
+    codes = lookup(
+        "store.example.net",
+        session=session,
+        error_log=MagicMock(),
+        today=FROZEN_TODAY,
+    )
+
+    assert codes == []
+    assert session.get.call_count == 1
+
+
+def test_lookup_never_calls_dealspotr(mocker):
+    session = MagicMock()
+    ok = MagicMock()
+    ok.status_code = 200
+    ok.text = "<html></html>"
+    session.get.side_effect = [ok]
+    mocker.patch("coupon_checker.time.sleep")
+
+    lookup(
+        "store.example.net",
+        session=session,
+        error_log=MagicMock(),
+        today=FROZEN_TODAY,
+    )
+    for call in session.get.call_args_list:
+        url = call.args[0]
+        assert "dealspotr" not in url

@@ -40,7 +40,7 @@ def test_happy_path_writes_file_and_summary(tmp_path, capsys):
         side_effect=[
             PriceResult(current_price=149.0, sale_detected=False),  # drop -> deal
             PriceResult(current_price=300.0, sale_detected=False),  # no drop, no sale -> not a deal
-            PriceResult(current_price=129.0, sale_detected=True),   # sale -> deal
+            PriceResult(current_price=119.0, sale_detected=True),   # sale -> deal
         ]
     )
     lookup = MagicMock(return_value=[])
@@ -77,7 +77,7 @@ def test_item_error_does_not_crash(tmp_path):
     items = _items()
     fetch = MagicMock(return_value=items)
 
-    def check_side_effect(url, session, error_log):
+    def check_side_effect(url, session, error_log, page=None):
         if "store.example.net" in url:
             raise RuntimeError("simulated failure")
         return PriceResult(current_price=10.0, sale_detected=False)
@@ -324,6 +324,89 @@ def test_fallback_single_url_when_no_store_urls(tmp_path):
     check.assert_called_once()
     assert check.call_args.args[0] == "https://solo.example.com/x"
     assert summary["deals"] == 1
+
+
+def test_run_threads_page_kwarg_to_check_price(tmp_path):
+    items = [
+        Item(
+            name="Solo",
+            url="https://solo.example.com/x",
+            listed_price=100.0,
+            image_url="",
+        ),
+    ]
+    fetch = MagicMock(return_value=items)
+    check = MagicMock(return_value=PriceResult(current_price=80.0, sale_detected=False))
+    lookup = MagicMock(return_value=[])
+    sender = MagicMock()
+    fake_page = MagicMock()
+
+    run(
+        fetch_items=fetch,
+        check_price=check,
+        lookup_coupons=lookup,
+        send_email=sender,
+        output_path=tmp_path / "index.html",
+        log_path=tmp_path / "errors.log",
+        now=datetime(2026, 4, 18),
+        page=fake_page,
+    )
+
+    check.assert_called_once()
+    assert check.call_args.kwargs.get("page") is fake_page
+
+
+def test_run_threads_page_kwarg_for_multi_store(tmp_path):
+    items = _multi_store_items()
+    fetch = MagicMock(return_value=items)
+    check = MagicMock(return_value=PriceResult(current_price=150.0, sale_detected=False))
+    lookup = MagicMock(return_value=[])
+    sender = MagicMock()
+    fake_page = MagicMock()
+
+    run(
+        fetch_items=fetch,
+        check_price=check,
+        lookup_coupons=lookup,
+        send_email=sender,
+        output_path=tmp_path / "index.html",
+        log_path=tmp_path / "errors.log",
+        now=datetime(2026, 4, 18),
+        page=fake_page,
+    )
+
+    for call in check.call_args_list:
+        assert call.kwargs.get("page") is fake_page
+
+
+def test_run_omits_page_kwarg_when_no_page_provided(tmp_path):
+    items = [
+        Item(
+            name="Solo",
+            url="https://solo.example.com/x",
+            listed_price=100.0,
+            image_url="",
+        ),
+    ]
+    fetch = MagicMock(return_value=items)
+    check = MagicMock(return_value=PriceResult(current_price=80.0, sale_detected=False))
+    lookup = MagicMock(return_value=[])
+    sender = MagicMock()
+
+    run(
+        fetch_items=fetch,
+        check_price=check,
+        lookup_coupons=lookup,
+        send_email=sender,
+        output_path=tmp_path / "index.html",
+        log_path=tmp_path / "errors.log",
+        now=datetime(2026, 4, 18),
+    )
+
+    # When page is not supplied, it should still be passed (as None) so
+    # check_price can decide whether to fall back. This keeps the contract
+    # explicit instead of "sometimes a kwarg, sometimes not".
+    assert check.call_args.kwargs.get("page") is None
 
 
 def test_multi_store_partial_error_still_evaluates_others(tmp_path):

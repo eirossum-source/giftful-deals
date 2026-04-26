@@ -29,6 +29,7 @@ def run(
     log_path: Optional[Path] = None,
     now: Optional[datetime] = None,
     session=None,
+    page=None,
 ) -> dict:
     import requests
 
@@ -59,7 +60,9 @@ def run(
             evaluations: list[StoreEvaluation] = []
             for store in item.store_urls:
                 try:
-                    price_result = check_price(store.url, session=session, error_log=log)
+                    price_result = check_price(
+                        store.url, session=session, error_log=log, page=page
+                    )
                     promos = lookup_coupons(store.domain, session=session, error_log=log)
                     ok, types = evaluate_store(store, price_result, promos)
                     evaluations.append(
@@ -79,7 +82,9 @@ def run(
                 deals.append(Deal(item=item, store_evaluations=evaluations))
         else:
             try:
-                price_result = check_price(item.url, session=session, error_log=log)
+                price_result = check_price(
+                    item.url, session=session, error_log=log, page=page
+                )
                 promos = lookup_coupons(item.domain, session=session, error_log=log)
                 ok, types = is_deal(item, price_result, promos)
                 if ok:
@@ -129,8 +134,15 @@ def _accepts_session(fn) -> bool:
         return False
 
 
+_PRICE_CHECK_USER_AGENT = (
+    "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) "
+    "AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Safari/605.1.15"
+)
+
+
 if __name__ == "__main__":
     import argparse
+    import requests as _requests
 
     parser = argparse.ArgumentParser(description="Scrape wishlist deals and publish.")
     parser.add_argument(
@@ -139,4 +151,28 @@ if __name__ == "__main__":
         help="Skip sending the Resend email (useful for local dry-runs).",
     )
     args = parser.parse_args()
-    run(send_email=None if args.no_email else real_send)
+
+    # giftful.fetch_list opens its own Playwright context and closes it.
+    # sync_playwright contexts cannot nest, so we fetch first, then open a
+    # fresh Playwright for the price-check fallback.
+    cli_session = _requests.Session()
+    items = fetch_list(session=cli_session)
+
+    from playwright.sync_api import sync_playwright
+
+    with sync_playwright() as pw:
+        browser = pw.chromium.launch(headless=True)
+        ctx = browser.new_context(
+            user_agent=_PRICE_CHECK_USER_AGENT,
+            viewport={"width": 1280, "height": 900},
+        )
+        page = ctx.new_page()
+        try:
+            run(
+                fetch_items=lambda **_: items,
+                send_email=None if args.no_email else real_send,
+                session=cli_session,
+                page=page,
+            )
+        finally:
+            browser.close()

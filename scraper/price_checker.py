@@ -117,6 +117,21 @@ def _extract_meta(soup: BeautifulSoup) -> Optional[float]:
     return None
 
 
+def _extract_amazon(soup: BeautifulSoup) -> Optional[float]:
+    selectors = [
+        "#corePrice_feature_div .a-offscreen",
+        "span.a-price .a-offscreen",
+    ]
+    for sel in selectors:
+        el = soup.select_one(sel)
+        if el is None:
+            continue
+        price = _to_float(el.get_text())
+        if price is not None:
+            return price
+    return None
+
+
 def _extract_css(soup: BeautifulSoup) -> Optional[float]:
     selectors = [
         ".product-price",
@@ -138,7 +153,7 @@ def _extract_css(soup: BeautifulSoup) -> Optional[float]:
 
 def extract_price(html: str) -> Optional[float]:
     soup = BeautifulSoup(html, "lxml")
-    for extractor in (_extract_jsonld, _extract_meta, _extract_css):
+    for extractor in (_extract_jsonld, _extract_meta, _extract_amazon, _extract_css):
         price = extractor(soup)
         if price is not None:
             return price
@@ -153,25 +168,56 @@ def detect_sale(html: str) -> bool:
     return any(pat.search(text) for pat in SALE_PATTERNS)
 
 
-def check_price(url: str, session, error_log) -> PriceResult:
+def _fetch_via_playwright(url: str, page) -> Optional[str]:
+    page.goto(url, wait_until="domcontentloaded", timeout=30_000)
+    return page.content()
+
+
+def check_price(url: str, session, error_log, page=None) -> PriceResult:
     headers = {"User-Agent": random.choice(USER_AGENTS)}
     time.sleep(random.uniform(1.0, 3.0))
+    blocked = False
     try:
         resp = session.get(url, headers=headers, timeout=20)
     except Exception as exc:
         error_log.error(f"price fetch failed for {url}: {exc}")
-        return PriceResult(unavailable=True, reason="network")
+        if page is None:
+            return PriceResult(unavailable=True, reason="network")
+        resp = None
+        blocked = True
 
-    if resp.status_code in (403, 429) or "captcha" in (resp.text or "").lower():
-        error_log.error(
-            f"price unavailable for {url} (status {resp.status_code})"
-        )
-        return PriceResult(unavailable=True, reason="blocked")
-    if resp.status_code >= 400:
-        error_log.error(f"price fetch {resp.status_code} for {url}")
-        return PriceResult(unavailable=True, reason=f"http_{resp.status_code}")
+    if resp is not None:
+        if resp.status_code in (403, 429) or "captcha" in (resp.text or "").lower():
+            error_log.error(
+                f"price unavailable for {url} (status {resp.status_code})"
+            )
+            if page is None:
+                return PriceResult(unavailable=True, reason="blocked")
+            blocked = True
+        elif resp.status_code >= 400:
+            error_log.error(f"price fetch {resp.status_code} for {url}")
+            if page is None:
+                return PriceResult(
+                    unavailable=True, reason=f"http_{resp.status_code}"
+                )
+            blocked = True
 
-    html = resp.text or ""
+    if not blocked and resp is not None:
+        html = resp.text or ""
+        current = extract_price(html)
+        if current is not None or page is None:
+            return PriceResult(
+                current_price=current,
+                sale_detected=detect_sale(html),
+                unavailable=False,
+            )
+
+    try:
+        html = _fetch_via_playwright(url, page) or ""
+    except Exception as exc:
+        error_log.error(f"playwright fetch failed for {url}: {exc}")
+        return PriceResult(unavailable=True, reason="playwright_error")
+
     return PriceResult(
         current_price=extract_price(html),
         sale_detected=detect_sale(html),

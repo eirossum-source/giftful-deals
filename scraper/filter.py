@@ -87,7 +87,13 @@ def evaluate_store(store, price_result, promos) -> Tuple[bool, List[DealType]]:
         types.append(DealType.PRICE_DROP)
 
     if not price_result.unavailable and price_result.sale_detected:
-        types.append(DealType.SALE)
+        if (
+            price_result.current_price is not None
+            and price_result.current_price >= store.listed_price
+        ):
+            pass
+        else:
+            types.append(DealType.SALE)
 
     if promos:
         types.append(DealType.PROMO)
@@ -106,7 +112,13 @@ def is_deal(item, price_result, promos) -> Tuple[bool, List[DealType]]:
         types.append(DealType.PRICE_DROP)
 
     if not price_result.unavailable and price_result.sale_detected:
-        types.append(DealType.SALE)
+        if (
+            price_result.current_price is not None
+            and price_result.current_price >= item.listed_price
+        ):
+            pass
+        else:
+            types.append(DealType.SALE)
 
     if promos:
         types.append(DealType.PROMO)

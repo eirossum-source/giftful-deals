@@ -22,7 +22,27 @@ def test_price_drop_included():
 
 
 def test_sale_detected_included():
+    price = PriceResult(current_price=80.0, sale_detected=True)
+    ok, types = is_deal(ITEM, price, [])
+    assert ok is True
+    assert DealType.SALE in types
+
+
+def test_is_deal_rejects_sale_when_price_equals_listed():
     price = PriceResult(current_price=100.0, sale_detected=True)
+    ok, types = is_deal(ITEM, price, [])
+    assert DealType.SALE not in types
+    assert ok is False
+
+
+def test_is_deal_rejects_sale_when_price_above_listed():
+    price = PriceResult(current_price=150.0, sale_detected=True)
+    ok, types = is_deal(ITEM, price, [])
+    assert DealType.SALE not in types
+
+
+def test_is_deal_accepts_sale_when_price_unavailable():
+    price = PriceResult(unavailable=False, current_price=None, sale_detected=True)
     ok, types = is_deal(ITEM, price, [])
     assert ok is True
     assert DealType.SALE in types
@@ -90,7 +110,27 @@ def test_evaluate_store_price_drop():
 
 
 def test_evaluate_store_sale():
+    price = PriceResult(current_price=80.0, sale_detected=True)
+    ok, types = evaluate_store(STORE_A, price, [])
+    assert ok is True
+    assert DealType.SALE in types
+
+
+def test_evaluate_store_rejects_sale_when_price_equals_listed():
     price = PriceResult(current_price=100.0, sale_detected=True)
+    ok, types = evaluate_store(STORE_A, price, [])
+    assert DealType.SALE not in types
+    assert ok is False
+
+
+def test_evaluate_store_accepts_sale_when_price_below_listed():
+    price = PriceResult(current_price=80.0, sale_detected=True)
+    ok, types = evaluate_store(STORE_A, price, [])
+    assert DealType.SALE in types
+
+
+def test_evaluate_store_accepts_sale_when_price_unavailable_data():
+    price = PriceResult(current_price=None, sale_detected=True)
     ok, types = evaluate_store(STORE_A, price, [])
     assert ok is True
     assert DealType.SALE in types

@@ -3,7 +3,7 @@ from __future__ import annotations
 import re
 from dataclasses import dataclass
 from typing import List, Optional, Tuple
-from urllib.parse import urljoin, urlparse
+from urllib.parse import parse_qs, urljoin, urlparse
 
 from bs4 import BeautifulSoup
 
@@ -197,7 +197,34 @@ def parse_modal(
     return (name, listed_price, view_online_url)
 
 
+_REDIRECT_HOSTS = {
+    "skimresources.com": "url",
+    "viglink.com": "u",
+}
+
+
+def extract_destination_url(url: str) -> str:
+    if not url:
+        return url
+    try:
+        parsed = urlparse(url)
+    except ValueError:
+        return url
+    host = (parsed.netloc or "").lower()
+    for suffix, param in _REDIRECT_HOSTS.items():
+        if host == suffix or host.endswith("." + suffix):
+            params = parse_qs(parsed.query)
+            values = params.get(param)
+            if values and values[0]:
+                return values[0]
+            return url
+    return url
+
+
 def resolve_redirect(url: str, session) -> str:
+    extracted = extract_destination_url(url)
+    if extracted != url:
+        return extracted
     try:
         resp = session.head(url, allow_redirects=True, timeout=15)
         return resp.url or url

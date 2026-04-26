@@ -63,10 +63,43 @@ def test_renders_multiple_cards_with_unique_domains():
 
 
 def test_renders_deal_type_filter_buttons():
-    html = render([_deal()], generated_at=NOW)
+    promo = [PromoCode(code="X", description="", expiry=date(2099, 1, 1))]
+    deal = _deal(promos=promo, types=[DealType.PRICE_DROP, DealType.PROMO])
+    html = render([deal], generated_at=NOW)
     soup = BeautifulSoup(html, "lxml")
     types = {b["data-filter-type"] for b in soup.select("[data-filter-type]")}
     assert {"all", "price_drop", "sale", "promo"} <= types
+
+
+def test_filter_bar_hides_promo_when_no_promos():
+    # No deal in this set has DealType.PROMO; the Promo Code filter button
+    # should be omitted to avoid an empty-result filter.
+    html = render([_deal()], generated_at=NOW)
+    soup = BeautifulSoup(html, "lxml")
+    types = {b["data-filter-type"] for b in soup.select("[data-filter-type]")}
+    assert "promo" not in types
+    assert {"all", "price_drop", "sale"} <= types
+
+
+def test_filter_bar_shows_promo_when_a_deal_has_promo():
+    promo = [PromoCode(code="SAVE10", description="", expiry=date(2099, 1, 1))]
+    deal = _deal(promos=promo, types=[DealType.PROMO])
+    html = render([deal], generated_at=NOW)
+    soup = BeautifulSoup(html, "lxml")
+    types = {b["data-filter-type"] for b in soup.select("[data-filter-type]")}
+    assert "promo" in types
+
+
+def test_filter_bar_shows_promo_for_multi_store_deal_with_promo():
+    promo = [PromoCode(code="AMZN10", description="", expiry=date(2099, 1, 1))]
+    item = Item(name="Widget", listed_price=200.0, image_url="")
+    ev1 = _store_eval("https://amazon.com/p", "Amazon", 200.0, 149.0, promos=promo)
+    ev2 = _store_eval("https://bestbuy.com/p", "Best Buy", 200.0, 169.0)
+    deal = Deal(item=item, store_evaluations=[ev1, ev2])
+    html_out = render([deal], generated_at=NOW)
+    soup = BeautifulSoup(html_out, "lxml")
+    types = {b["data-filter-type"] for b in soup.select("[data-filter-type]")}
+    assert "promo" in types
 
 
 def test_renders_price_drop_badge():
@@ -127,6 +160,23 @@ def test_vanilla_js_filter_and_clipboard_hooks():
     assert "data-filter-store" in html
     assert "navigator.clipboard" in html
     assert "Copied" in html
+
+
+def test_price_unavailable_shows_listed_price_without_strikethrough():
+    item = Item(name="Widget", url="https://shop.example.com/w", listed_price=199.0, image_url="")
+    price = PriceResult(current_price=None, sale_detected=True)
+    deal = Deal(item=item, price_result=price, promos=[], deal_types=[DealType.SALE])
+    html_out = render([deal], generated_at=NOW)
+    soup = BeautifulSoup(html_out, "lxml")
+    card = soup.select_one(".deal-card")
+    block = card.select_one(".price-block")
+    # No strikethrough listed-price, no "unavailable" message
+    assert block.select_one(".price-listed") is None
+    assert block.select_one(".price-unavailable") is None
+    # Listed price shown as the current price
+    current = block.select_one(".price-current")
+    assert current is not None
+    assert "$199" in current.get_text()
 
 
 def test_placeholder_image_used_when_missing():

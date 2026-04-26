@@ -116,13 +116,6 @@ def lookup(
     today = today or date.today()
     cf_url = f"https://couponfollow.com/site/{domain}"
     html = _fetch(cf_url, session, error_log)
-    if html:
-        codes = parse_couponfollow(html, today=today)
-        if codes:
-            return codes
-
-    ds_url = f"https://dealspotr.com/#_domain={domain}"
-    html = _fetch(ds_url, session, error_log)
-    if html:
-        return parse_dealspotr(html, today=today)
-    return []
+    if not html:
+        return []
+    return parse_couponfollow(html, today=today)

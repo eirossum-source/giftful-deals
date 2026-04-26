@@ -60,10 +60,7 @@ def _price_block_html(current_price, reference_price) -> str:
         )
     if current_price is not None:
         return f'<span class="price-current">{_fmt_price(current_price)}</span>'
-    return (
-        f'<span class="price-listed">{_fmt_price(reference_price)}</span>'
-        '<span class="price-unavailable">Current price unavailable</span>'
-    )
+    return f'<span class="price-current">{_fmt_price(reference_price)}</span>'
 
 
 def _multi_card_html(deal: Deal) -> str:
@@ -175,20 +172,29 @@ def _card_html(deal: Deal) -> str:
 
 def _filter_bar(deals: List[Deal]) -> str:
     domains: set = set()
+    has_promo = False
     for d in deals:
         if d.store_evaluations:
             for ev in d.store_evaluations:
                 if ev.store.domain:
                     domains.add(ev.store.domain)
-        elif d.item.domain:
-            domains.add(d.item.domain)
+                if DealType.PROMO in ev.deal_types:
+                    has_promo = True
+        else:
+            if d.item.domain:
+                domains.add(d.item.domain)
+            if DealType.PROMO in d.deal_types:
+                has_promo = True
     stores = sorted(domains)
     type_buttons = [
         ('<button type="button" class="chip chip-active" data-filter-type="all">All</button>'),
         '<button type="button" class="chip" data-filter-type="price_drop">Price Drop</button>',
         '<button type="button" class="chip" data-filter-type="sale">Sale</button>',
-        '<button type="button" class="chip" data-filter-type="promo">Promo Code</button>',
     ]
+    if has_promo:
+        type_buttons.append(
+            '<button type="button" class="chip" data-filter-type="promo">Promo Code</button>'
+        )
     store_buttons = [
         '<button type="button" class="chip chip-active" data-filter-store="all">All stores</button>'
     ]

@@ -7,6 +7,7 @@ from giftful import (
     GiftfulEmptyListError,
     Item,
     StoreLink,
+    extract_destination_url,
     parse_categories,
     parse_items,
     parse_modal,
@@ -260,6 +261,64 @@ def test_resolve_redirect_returns_original_on_failure():
     assert (
         resolve_redirect("https://bit.ly/xyz", session) == "https://bit.ly/xyz"
     )
+
+
+# ---------- extract_destination_url ----------
+
+
+def test_extract_destination_url_skimresources():
+    wrapped = (
+        "https://go.skimresources.com/?id=123X456&xs=1"
+        "&url=https%3A%2F%2Fwww.asos.com%2Fus%2Fnike%2Fnike-club-shorts%2Fprd%2F12345"
+    )
+    assert (
+        extract_destination_url(wrapped)
+        == "https://www.asos.com/us/nike/nike-club-shorts/prd/12345"
+    )
+
+
+def test_extract_destination_url_viglink():
+    wrapped = (
+        "https://redirect.viglink.com/?key=abc"
+        "&u=https%3A%2F%2Fwww.example.com%2Fproduct%2F99"
+    )
+    assert (
+        extract_destination_url(wrapped)
+        == "https://www.example.com/product/99"
+    )
+
+
+def test_extract_destination_url_passthrough():
+    plain = "https://www.asos.com/us/nike/nike-club-shorts/prd/12345"
+    assert extract_destination_url(plain) == plain
+
+
+def test_extract_destination_url_skimresources_without_url_param_passthrough():
+    wrapped = "https://go.skimresources.com/?id=123X456&xs=1"
+    assert extract_destination_url(wrapped) == wrapped
+
+
+# ---------- resolve_redirect: skimresources shortcut ----------
+
+
+def test_resolve_redirect_skips_http_for_skimresources():
+    session = MagicMock()
+    wrapped = (
+        "https://go.skimresources.com/?id=1&url="
+        "https%3A%2F%2Fwww.asos.com%2Fproduct%2F1"
+    )
+    assert (
+        resolve_redirect(wrapped, session)
+        == "https://www.asos.com/product/1"
+    )
+    session.head.assert_not_called()
+
+
+def test_resolve_redirect_skips_http_for_viglink():
+    session = MagicMock()
+    wrapped = "https://redirect.viglink.com/?u=https%3A%2F%2Fexample.com%2Fp"
+    assert resolve_redirect(wrapped, session) == "https://example.com/p"
+    session.head.assert_not_called()
 
 
 # ---------- GiftfulEmptyListError ----------

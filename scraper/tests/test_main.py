@@ -38,9 +38,9 @@ def test_happy_path_writes_file_and_summary(tmp_path, capsys):
     fetch = MagicMock(return_value=items)
     check = MagicMock(
         side_effect=[
-            PriceResult(current_price=149.0, sale_detected=False),  # drop -> deal
-            PriceResult(current_price=300.0, sale_detected=False),  # no drop, no sale -> not a deal
-            PriceResult(current_price=119.0, sale_detected=True),   # sale -> deal
+            PriceResult(current_price=149.0),  # drop -> deal
+            PriceResult(current_price=300.0),  # no drop, no sale -> not a deal
+            PriceResult(current_price=119.0),   # sale -> deal
         ]
     )
     lookup = MagicMock(return_value=[])
@@ -55,6 +55,7 @@ def test_happy_path_writes_file_and_summary(tmp_path, capsys):
         send_email=sender,
         output_path=output,
         log_path=log_path,
+        state_path=tmp_path / "state.json",
         now=datetime(2026, 4, 18, 7, 0, 0),
     )
 
@@ -80,7 +81,7 @@ def test_item_error_does_not_crash(tmp_path):
     def check_side_effect(url, session, error_log, page=None):
         if "store.example.net" in url:
             raise RuntimeError("simulated failure")
-        return PriceResult(current_price=10.0, sale_detected=False)
+        return PriceResult(current_price=10.0)
 
     check = MagicMock(side_effect=check_side_effect)
     lookup = MagicMock(return_value=[])
@@ -93,6 +94,7 @@ def test_item_error_does_not_crash(tmp_path):
         send_email=sender,
         output_path=tmp_path / "index.html",
         log_path=tmp_path / "errors.log",
+        state_path=tmp_path / "state.json",
         now=datetime(2026, 4, 18),
     )
 
@@ -108,7 +110,7 @@ def test_zero_deals_still_sends_email(tmp_path):
     items = _items()
     fetch = MagicMock(return_value=items)
     check = MagicMock(
-        return_value=PriceResult(current_price=9999.0, sale_detected=False)
+        return_value=PriceResult(current_price=9999.0)
     )
     lookup = MagicMock(return_value=[])
     sender = MagicMock()
@@ -120,6 +122,7 @@ def test_zero_deals_still_sends_email(tmp_path):
         send_email=sender,
         output_path=tmp_path / "index.html",
         log_path=tmp_path / "errors.log",
+        state_path=tmp_path / "state.json",
         now=datetime(2026, 4, 18),
     )
 
@@ -133,7 +136,7 @@ def test_zero_deals_prints_diagnostic_price_samples(tmp_path, capsys):
     items = _items()
     fetch = MagicMock(return_value=items)
     check = MagicMock(
-        return_value=PriceResult(current_price=9999.0, sale_detected=False)
+        return_value=PriceResult(current_price=9999.0)
     )
     lookup = MagicMock(return_value=[])
     sender = MagicMock()
@@ -145,6 +148,7 @@ def test_zero_deals_prints_diagnostic_price_samples(tmp_path, capsys):
         send_email=sender,
         output_path=tmp_path / "index.html",
         log_path=tmp_path / "errors.log",
+        state_path=tmp_path / "state.json",
         now=datetime(2026, 4, 18),
     )
 
@@ -160,7 +164,7 @@ def test_nonzero_deals_omits_diagnostic_samples(tmp_path, capsys):
     items = _items()
     fetch = MagicMock(return_value=items)
     check = MagicMock(
-        return_value=PriceResult(current_price=10.0, sale_detected=False)
+        return_value=PriceResult(current_price=10.0)
     )
     lookup = MagicMock(return_value=[])
     sender = MagicMock()
@@ -172,6 +176,7 @@ def test_nonzero_deals_omits_diagnostic_samples(tmp_path, capsys):
         send_email=sender,
         output_path=tmp_path / "index.html",
         log_path=tmp_path / "errors.log",
+        state_path=tmp_path / "state.json",
         now=datetime(2026, 4, 18),
     )
 
@@ -224,8 +229,8 @@ def test_multi_store_checks_each_store_url(tmp_path):
     fetch = MagicMock(return_value=items)
 
     prices = {
-        "https://shop-a.com/hp": PriceResult(current_price=180.0, sale_detected=False),
-        "https://shop-b.com/hp": PriceResult(current_price=160.0, sale_detected=False),
+        "https://shop-a.com/hp": PriceResult(current_price=180.0),
+        "https://shop-b.com/hp": PriceResult(current_price=160.0),
     }
     check = MagicMock(side_effect=lambda url, **kw: prices[url])
     lookup = MagicMock(return_value=[])
@@ -238,6 +243,7 @@ def test_multi_store_checks_each_store_url(tmp_path):
         send_email=sender,
         output_path=tmp_path / "index.html",
         log_path=tmp_path / "errors.log",
+        state_path=tmp_path / "state.json",
         now=datetime(2026, 4, 18),
     )
 
@@ -250,7 +256,7 @@ def test_multi_store_checks_each_store_url(tmp_path):
 def test_multi_store_deal_has_store_evaluations(tmp_path):
     items = _multi_store_items()
     fetch = MagicMock(return_value=items)
-    check = MagicMock(return_value=PriceResult(current_price=150.0, sale_detected=False))
+    check = MagicMock(return_value=PriceResult(current_price=150.0))
     lookup = MagicMock(return_value=[])
     sender = MagicMock()
 
@@ -261,6 +267,7 @@ def test_multi_store_deal_has_store_evaluations(tmp_path):
         send_email=sender,
         output_path=tmp_path / "index.html",
         log_path=tmp_path / "errors.log",
+        state_path=tmp_path / "state.json",
         now=datetime(2026, 4, 18),
     )
 
@@ -275,8 +282,8 @@ def test_multi_store_winner_is_lowest_price(tmp_path):
     items = _multi_store_items()
     fetch = MagicMock(return_value=items)
     prices = {
-        "https://shop-a.com/hp": PriceResult(current_price=180.0, sale_detected=False),
-        "https://shop-b.com/hp": PriceResult(current_price=160.0, sale_detected=False),
+        "https://shop-a.com/hp": PriceResult(current_price=180.0),
+        "https://shop-b.com/hp": PriceResult(current_price=160.0),
     }
     check = MagicMock(side_effect=lambda url, **kw: prices[url])
     lookup = MagicMock(return_value=[])
@@ -289,6 +296,7 @@ def test_multi_store_winner_is_lowest_price(tmp_path):
         send_email=sender,
         output_path=tmp_path / "index.html",
         log_path=tmp_path / "errors.log",
+        state_path=tmp_path / "state.json",
         now=datetime(2026, 4, 18),
     )
 
@@ -307,7 +315,7 @@ def test_fallback_single_url_when_no_store_urls(tmp_path):
         ),
     ]
     fetch = MagicMock(return_value=items)
-    check = MagicMock(return_value=PriceResult(current_price=80.0, sale_detected=False))
+    check = MagicMock(return_value=PriceResult(current_price=80.0))
     lookup = MagicMock(return_value=[])
     sender = MagicMock()
 
@@ -318,6 +326,7 @@ def test_fallback_single_url_when_no_store_urls(tmp_path):
         send_email=sender,
         output_path=tmp_path / "index.html",
         log_path=tmp_path / "errors.log",
+        state_path=tmp_path / "state.json",
         now=datetime(2026, 4, 18),
     )
 
@@ -336,7 +345,7 @@ def test_run_threads_page_kwarg_to_check_price(tmp_path):
         ),
     ]
     fetch = MagicMock(return_value=items)
-    check = MagicMock(return_value=PriceResult(current_price=80.0, sale_detected=False))
+    check = MagicMock(return_value=PriceResult(current_price=80.0))
     lookup = MagicMock(return_value=[])
     sender = MagicMock()
     fake_page = MagicMock()
@@ -348,6 +357,7 @@ def test_run_threads_page_kwarg_to_check_price(tmp_path):
         send_email=sender,
         output_path=tmp_path / "index.html",
         log_path=tmp_path / "errors.log",
+        state_path=tmp_path / "state.json",
         now=datetime(2026, 4, 18),
         page=fake_page,
     )
@@ -359,7 +369,7 @@ def test_run_threads_page_kwarg_to_check_price(tmp_path):
 def test_run_threads_page_kwarg_for_multi_store(tmp_path):
     items = _multi_store_items()
     fetch = MagicMock(return_value=items)
-    check = MagicMock(return_value=PriceResult(current_price=150.0, sale_detected=False))
+    check = MagicMock(return_value=PriceResult(current_price=150.0))
     lookup = MagicMock(return_value=[])
     sender = MagicMock()
     fake_page = MagicMock()
@@ -371,6 +381,7 @@ def test_run_threads_page_kwarg_for_multi_store(tmp_path):
         send_email=sender,
         output_path=tmp_path / "index.html",
         log_path=tmp_path / "errors.log",
+        state_path=tmp_path / "state.json",
         now=datetime(2026, 4, 18),
         page=fake_page,
     )
@@ -389,7 +400,7 @@ def test_run_omits_page_kwarg_when_no_page_provided(tmp_path):
         ),
     ]
     fetch = MagicMock(return_value=items)
-    check = MagicMock(return_value=PriceResult(current_price=80.0, sale_detected=False))
+    check = MagicMock(return_value=PriceResult(current_price=80.0))
     lookup = MagicMock(return_value=[])
     sender = MagicMock()
 
@@ -400,6 +411,7 @@ def test_run_omits_page_kwarg_when_no_page_provided(tmp_path):
         send_email=sender,
         output_path=tmp_path / "index.html",
         log_path=tmp_path / "errors.log",
+        state_path=tmp_path / "state.json",
         now=datetime(2026, 4, 18),
     )
 
@@ -409,6 +421,169 @@ def test_run_omits_page_kwarg_when_no_page_provided(tmp_path):
     assert check.call_args.kwargs.get("page") is None
 
 
+def test_validator_flags_dead_link_to_review_section(tmp_path):
+    items = [
+        Item(
+            name="Widget",
+            url="https://shop.example.com/x",
+            listed_price=100.0,
+            image_url="",
+        ),
+    ]
+    fetch = MagicMock(return_value=items)
+    dead_html = "<html><body><h1>Page Not Found</h1></body></html>"
+    check = MagicMock(return_value=PriceResult(current_price=10.0, html=dead_html))
+    lookup = MagicMock(return_value=[])
+    sender = MagicMock()
+
+    summary = run(
+        fetch_items=fetch,
+        check_price=check,
+        lookup_coupons=lookup,
+        send_email=sender,
+        output_path=tmp_path / "index.html",
+        log_path=tmp_path / "errors.log",
+        state_path=tmp_path / "state.json",
+        now=datetime(2026, 4, 26),
+    )
+
+    assert summary["deals"] == 0
+    assert summary.get("review", 0) == 1
+
+
+def test_drops_sold_out_items_from_deals(tmp_path):
+    items = [
+        Item(
+            name="Widget",
+            url="https://shop.example.com/x",
+            listed_price=100.0,
+            image_url="",
+        ),
+    ]
+    fetch = MagicMock(return_value=items)
+    sold_out_html = """
+    <html><head>
+    <script type="application/ld+json">
+    {"@type":"Product","name":"Widget","offers":{"availability":"OutOfStock","price":"50"}}
+    </script>
+    <title>Widget</title></head>
+    <body><h1>Widget</h1></body></html>
+    """
+    check = MagicMock(return_value=PriceResult(current_price=50.0, html=sold_out_html))
+    lookup = MagicMock(return_value=[])
+    sender = MagicMock()
+
+    summary = run(
+        fetch_items=fetch,
+        check_price=check,
+        lookup_coupons=lookup,
+        send_email=sender,
+        output_path=tmp_path / "index.html",
+        log_path=tmp_path / "errors.log",
+        state_path=tmp_path / "state.json",
+        now=datetime(2026, 4, 26),
+    )
+
+    assert summary["deals"] == 0
+
+
+def test_marks_back_in_stock_when_state_says_was_oos(tmp_path):
+    import json as _json
+
+    state_path = tmp_path / "state.json"
+    state_path.write_text(
+        _json.dumps(
+            {
+                "items": {
+                    "https://shop.example.com/x": {
+                        "name": "Widget",
+                        "last_seen": "2026-04-19",
+                        "in_stock": False,
+                        "current_price": None,
+                        "listed_price": 100.0,
+                        "sold_out_since": "2026-04-19",
+                    }
+                }
+            }
+        ),
+        encoding="utf-8",
+    )
+
+    items = [
+        Item(
+            name="Widget",
+            url="https://shop.example.com/x",
+            listed_price=100.0,
+            image_url="",
+        ),
+    ]
+    fetch = MagicMock(return_value=items)
+    in_stock_html = """
+    <html><head><title>Widget - Shop</title></head>
+    <body><h1>Widget</h1><div class="price">$100</div>
+    <button>Add to Cart</button></body></html>
+    """
+    check = MagicMock(return_value=PriceResult(current_price=100.0, html=in_stock_html))
+    lookup = MagicMock(return_value=[])
+    sender = MagicMock()
+
+    summary = run(
+        fetch_items=fetch,
+        check_price=check,
+        lookup_coupons=lookup,
+        send_email=sender,
+        output_path=tmp_path / "index.html",
+        log_path=tmp_path / "errors.log",
+        state_path=state_path,
+        now=datetime(2026, 4, 26),
+    )
+
+    assert summary["deals"] == 1
+    deal = sender.call_args.kwargs["deals"][0]
+    from filter import DealType as _DT
+    assert _DT.BACK_IN_STOCK in deal.deal_types
+
+
+def test_writes_inventory_state(tmp_path):
+    import json as _json
+
+    items = [
+        Item(
+            name="Widget",
+            url="https://shop.example.com/x",
+            listed_price=100.0,
+            image_url="",
+        ),
+    ]
+    fetch = MagicMock(return_value=items)
+    good_html = """
+    <html><head><title>Widget</title></head>
+    <body><h1>Widget</h1><div class="price">$80</div>
+    <button>Add to Cart</button></body></html>
+    """
+    check = MagicMock(return_value=PriceResult(current_price=80.0, html=good_html))
+    lookup = MagicMock(return_value=[])
+    sender = MagicMock()
+    state_path = tmp_path / "state.json"
+
+    run(
+        fetch_items=fetch,
+        check_price=check,
+        lookup_coupons=lookup,
+        send_email=sender,
+        output_path=tmp_path / "index.html",
+        log_path=tmp_path / "errors.log",
+        state_path=state_path,
+        now=datetime(2026, 4, 26),
+    )
+
+    saved = _json.loads(state_path.read_text())
+    assert "https://shop.example.com/x" in saved["items"]
+    item = saved["items"]["https://shop.example.com/x"]
+    assert item["in_stock"] is True
+    assert item["current_price"] == 80.0
+
+
 def test_multi_store_partial_error_still_evaluates_others(tmp_path):
     items = _multi_store_items()
     fetch = MagicMock(return_value=items)
@@ -416,7 +591,7 @@ def test_multi_store_partial_error_still_evaluates_others(tmp_path):
     def check_side(url, **kw):
         if "shop-a" in url:
             raise RuntimeError("boom")
-        return PriceResult(current_price=160.0, sale_detected=False)
+        return PriceResult(current_price=160.0)
 
     check = MagicMock(side_effect=check_side)
     lookup = MagicMock(return_value=[])
@@ -429,6 +604,7 @@ def test_multi_store_partial_error_still_evaluates_others(tmp_path):
         send_email=sender,
         output_path=tmp_path / "index.html",
         log_path=tmp_path / "errors.log",
+        state_path=tmp_path / "state.json",
         now=datetime(2026, 4, 18),
     )
 

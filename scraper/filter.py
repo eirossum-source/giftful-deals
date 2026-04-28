@@ -7,8 +7,8 @@ from typing import List, Optional, Tuple
 
 class DealType(str, Enum):
     PRICE_DROP = "price_drop"
-    SALE = "sale"
     PROMO = "promo"
+    BACK_IN_STOCK = "back_in_stock"
 
 
 @dataclass
@@ -76,7 +76,7 @@ class Deal:
         return w.deal_types if w else []
 
 
-def evaluate_store(store, price_result, promos) -> Tuple[bool, List[DealType]]:
+def evaluate_store(store, price_result, promos, back_in_stock: bool = False) -> Tuple[bool, List[DealType]]:
     types: List[DealType] = []
 
     if (
@@ -86,22 +86,16 @@ def evaluate_store(store, price_result, promos) -> Tuple[bool, List[DealType]]:
     ):
         types.append(DealType.PRICE_DROP)
 
-    if not price_result.unavailable and price_result.sale_detected:
-        if (
-            price_result.current_price is not None
-            and price_result.current_price >= store.listed_price
-        ):
-            pass
-        else:
-            types.append(DealType.SALE)
-
     if promos:
         types.append(DealType.PROMO)
+
+    if back_in_stock:
+        types.append(DealType.BACK_IN_STOCK)
 
     return (bool(types), types)
 
 
-def is_deal(item, price_result, promos) -> Tuple[bool, List[DealType]]:
+def is_deal(item, price_result, promos, back_in_stock: bool = False) -> Tuple[bool, List[DealType]]:
     types: List[DealType] = []
 
     if (
@@ -111,16 +105,10 @@ def is_deal(item, price_result, promos) -> Tuple[bool, List[DealType]]:
     ):
         types.append(DealType.PRICE_DROP)
 
-    if not price_result.unavailable and price_result.sale_detected:
-        if (
-            price_result.current_price is not None
-            and price_result.current_price >= item.listed_price
-        ):
-            pass
-        else:
-            types.append(DealType.SALE)
-
     if promos:
         types.append(DealType.PROMO)
+
+    if back_in_stock:
+        types.append(DealType.BACK_IN_STOCK)
 
     return (bool(types), types)

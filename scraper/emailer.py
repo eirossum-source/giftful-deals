@@ -42,15 +42,15 @@ def _price_parts_html(current_price, reference_price: float) -> str:
 
 def _badges_html(deal_types) -> str:
     badges = []
-    if DealType.SALE in deal_types:
-        badges.append(
-            '<span style="background:#c73c3c;color:#fff;font-size:11px;'
-            'padding:2px 8px;border-radius:999px;margin-left:6px">SALE</span>'
-        )
     if DealType.PROMO in deal_types:
         badges.append(
             f'<span style="background:{ACCENT};color:#fff;font-size:11px;'
             'padding:2px 8px;border-radius:999px;margin-left:6px">PROMO</span>'
+        )
+    if DealType.BACK_IN_STOCK in deal_types:
+        badges.append(
+            '<span style="background:#2d4a66;color:#fff;font-size:11px;'
+            'padding:2px 8px;border-radius:999px;margin-left:6px">BACK IN STOCK</span>'
         )
     return "".join(badges)
 

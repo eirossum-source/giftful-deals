@@ -23,22 +23,15 @@ USER_AGENTS = [
 ]
 
 
-SALE_PATTERNS = [
-    re.compile(r"\bsale\b", re.I),
-    re.compile(r"\d+\s*%\s*off", re.I),
-    re.compile(r"\bnow\s*:", re.I),
-    re.compile(r"limited\s+time", re.I),
-]
-
 _PRICE_NUM_RE = re.compile(r"(\d{1,3}(?:,\d{3})*(?:\.\d{1,2})?|\d+\.\d+|\d+)")
 
 
 @dataclass
 class PriceResult:
     current_price: Optional[float] = None
-    sale_detected: bool = False
     unavailable: bool = False
     reason: Optional[str] = None
+    html: Optional[str] = None
 
 
 def _to_float(text: str) -> Optional[float]:
@@ -160,14 +153,6 @@ def extract_price(html: str) -> Optional[float]:
     return None
 
 
-def detect_sale(html: str) -> bool:
-    soup = BeautifulSoup(html, "lxml")
-    if soup.find(["s", "strike", "del"]):
-        return True
-    text = soup.get_text(" ", strip=True)
-    return any(pat.search(text) for pat in SALE_PATTERNS)
-
-
 def _fetch_via_playwright(url: str, page) -> Optional[str]:
     page.goto(url, wait_until="domcontentloaded", timeout=30_000)
     return page.content()
@@ -208,8 +193,8 @@ def check_price(url: str, session, error_log, page=None) -> PriceResult:
         if current is not None or page is None:
             return PriceResult(
                 current_price=current,
-                sale_detected=detect_sale(html),
                 unavailable=False,
+                html=html,
             )
 
     try:
@@ -220,6 +205,6 @@ def check_price(url: str, session, error_log, page=None) -> PriceResult:
 
     return PriceResult(
         current_price=extract_price(html),
-        sale_detected=detect_sale(html),
         unavailable=False,
+        html=html,
     )

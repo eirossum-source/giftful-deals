@@ -11,6 +11,14 @@ from html_builder import render
 from price_checker import check_price as real_check_price
 from coupon_checker import lookup as real_lookup
 from emailer import send as real_send
+from inventory import (
+    is_back_in_stock,
+    load_state,
+    normalize_url,
+    save_state,
+    update_item,
+)
+from validator import check_identity, check_link_integrity, check_sold_out
 
 
 _UNSET = object()
@@ -20,6 +28,28 @@ def _default_fetch(session=None):
     return fetch_list(session=session)
 
 
+def _validate(item_name: str, html: Optional[str]):
+    """Run patch-only validators on retailer HTML.
+
+    Returns (status, reason) where status is one of:
+      "ok"         — page is valid, item identity matches, in stock
+      "review"     — page is dead or shows a different product
+      "sold_out"   — page is valid but item is out of stock
+      "skip"       — no html available; treat as before (fall through to deal logic)
+    """
+    if not html:
+        return "skip", None
+    is_dead, dead_reason = check_link_integrity(html)
+    if is_dead:
+        return "review", f"dead link ({dead_reason})"
+    matches, score = check_identity(item_name, html)
+    if not matches:
+        return "review", f"product name mismatch (score {score:.2f})"
+    if check_sold_out(html):
+        return "sold_out", "out of stock"
+    return "ok", None
+
+
 def run(
     fetch_items: Callable = None,
     check_price: Callable = None,
@@ -27,6 +57,7 @@ def run(
     send_email: Callable = _UNSET,
     output_path: Optional[Path] = None,
     log_path: Optional[Path] = None,
+    state_path: Optional[Path] = None,
     now: Optional[datetime] = None,
     session=None,
     page=None,
@@ -36,6 +67,7 @@ def run(
     repo_root = Path(__file__).resolve().parents[1]
     output_path = Path(output_path or repo_root / "docs" / "index.html")
     log_path = Path(log_path or repo_root / "errors.log")
+    state_path = Path(state_path or repo_root / "state" / "inventory.json")
     now = now or datetime.now(timezone.utc).replace(tzinfo=None)
     session = session or requests.Session()
 
@@ -51,20 +83,51 @@ def run(
     if log_path.exists():
         log_path.unlink()
 
+    prev_state = load_state(state_path)
+    new_state = {"items": {}}
+    today = now.date()
+
     items = fetch_items(session=session) if _accepts_session(fetch_items) else fetch_items()
 
     deals: list[Deal] = []
+    review_items: list[dict] = []
     price_samples: list[tuple[str, float, float | None]] = []
+
     for item in items:
         if item.store_urls:
             evaluations: list[StoreEvaluation] = []
+            review_for_item: list[str] = []
+            in_stock_any = False
             for store in item.store_urls:
                 try:
                     price_result = check_price(
                         store.url, session=session, error_log=log, page=page
                     )
+                    status, reason = _validate(item.name, price_result.html)
+
+                    if status == "review":
+                        review_for_item.append(f"{store.display_name}: {reason}")
+                        # Don't touch state for review items — they're "couldn't
+                        # verify," not "sold out." Let prior state stand so we
+                        # don't trigger spurious back-in-stock next run.
+                        continue
+                    if status == "sold_out":
+                        update_item(
+                            new_state,
+                            url=normalize_url(store.url),
+                            name=item.name,
+                            in_stock=False,
+                            current_price=price_result.current_price,
+                            listed_price=store.listed_price,
+                            today=today,
+                        )
+                        continue
+
+                    in_stock_any = True
                     promos = lookup_coupons(store.domain, session=session, error_log=log)
-                    ok, types = evaluate_store(store, price_result, promos)
+                    norm = normalize_url(store.url)
+                    back_in_stock = is_back_in_stock(prev_state, norm, True)
+                    ok, types = evaluate_store(store, price_result, promos, back_in_stock=back_in_stock)
                     evaluations.append(
                         StoreEvaluation(
                             store=store,
@@ -73,11 +136,23 @@ def run(
                             deal_types=types,
                         )
                     )
+                    update_item(
+                        new_state,
+                        url=norm,
+                        name=item.name,
+                        in_stock=True,
+                        current_price=price_result.current_price,
+                        listed_price=store.listed_price,
+                        today=today,
+                    )
                     price_samples.append(
                         (item.name, store.listed_price, price_result.current_price)
                     )
                 except Exception as exc:
                     log.error(f"{item.name} ({store.url}): {exc}")
+
+            if review_for_item and not in_stock_any:
+                review_items.append({"item": item, "reasons": review_for_item})
             if any(ev.deal_types for ev in evaluations):
                 deals.append(Deal(item=item, store_evaluations=evaluations))
         else:
@@ -85,8 +160,28 @@ def run(
                 price_result = check_price(
                     item.url, session=session, error_log=log, page=page
                 )
+                status, reason = _validate(item.name, price_result.html)
+                norm = normalize_url(item.url)
+
+                if status == "review":
+                    review_items.append({"item": item, "reasons": [reason]})
+                    # Don't touch state for review items — see comment above.
+                    continue
+                if status == "sold_out":
+                    update_item(
+                        new_state,
+                        url=norm,
+                        name=item.name,
+                        in_stock=False,
+                        current_price=price_result.current_price,
+                        listed_price=item.listed_price,
+                        today=today,
+                    )
+                    continue
+
                 promos = lookup_coupons(item.domain, session=session, error_log=log)
-                ok, types = is_deal(item, price_result, promos)
+                back_in_stock = is_back_in_stock(prev_state, norm, True)
+                ok, types = is_deal(item, price_result, promos, back_in_stock=back_in_stock)
                 if ok:
                     deals.append(
                         Deal(
@@ -96,23 +191,40 @@ def run(
                             deal_types=types,
                         )
                     )
+                update_item(
+                    new_state,
+                    url=norm,
+                    name=item.name,
+                    in_stock=True,
+                    current_price=price_result.current_price,
+                    listed_price=item.listed_price,
+                    today=today,
+                )
                 price_samples.append(
                     (item.name, item.listed_price, price_result.current_price)
                 )
             except Exception as exc:
                 log.error(f"{item.name} ({item.url}): {exc}")
 
-    html = render(deals, generated_at=now)
+    html = render(deals, generated_at=now, review_items=review_items)
     output_path.parent.mkdir(parents=True, exist_ok=True)
     output_path.write_text(html, encoding="utf-8")
+
+    save_state(state_path, new_state)
 
     if send_email is not None:
         send_email(deals=deals, today=now.date())
 
-    summary = {"checked": len(items), "deals": len(deals), "errors": log.count}
+    summary = {
+        "checked": len(items),
+        "deals": len(deals),
+        "errors": log.count,
+        "review": len(review_items),
+    }
     print(
         f"{summary['checked']} items checked | "
         f"{summary['deals']} deals found | "
+        f"{summary['review']} flagged for review | "
         f"{summary['errors']} errors — see errors.log"
     )
 

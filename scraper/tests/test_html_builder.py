@@ -17,12 +17,11 @@ def _deal(
     url="https://shop.example.com/products/headphones",
     listed=199.0,
     current=149.0,
-    sale=False,
     promos=None,
     types=None,
 ):
     item = Item(name=name, url=url, listed_price=listed, image_url="")
-    price = PriceResult(current_price=current, sale_detected=sale)
+    price = PriceResult(current_price=current)
     return Deal(
         item=item,
         price_result=price,
@@ -44,6 +43,18 @@ def test_renders_one_deal_card():
     assert cards[0].select_one("a")["target"] == "_blank"
 
 
+def _store_options(html: str) -> set:
+    soup = BeautifulSoup(html, "lxml")
+    sel = soup.select_one("[data-filter-store]")
+    return {opt.get("value") for opt in sel.select("option")} if sel else set()
+
+
+def _type_options(html: str) -> set:
+    soup = BeautifulSoup(html, "lxml")
+    sel = soup.select_one("[data-filter-type]")
+    return {opt.get("value") for opt in sel.select("option")} if sel else set()
+
+
 def test_renders_multiple_cards_with_unique_domains():
     deals = [
         _deal(name="A", url="https://shop.example.com/a"),
@@ -54,40 +65,35 @@ def test_renders_multiple_cards_with_unique_domains():
     soup = BeautifulSoup(html, "lxml")
 
     assert len(soup.select(".deal-card")) == 3
-    store_buttons = soup.select("[data-filter-store]")
-    store_values = {b["data-filter-store"] for b in store_buttons}
-    # "all" plus two unique domains
+    store_values = _store_options(html)
     assert "all" in store_values
     assert "shop.example.com" in store_values
     assert "store.example.net" in store_values
 
 
-def test_renders_deal_type_filter_buttons():
+def test_renders_deal_type_filter_options():
     promo = [PromoCode(code="X", description="", expiry=date(2099, 1, 1))]
     deal = _deal(promos=promo, types=[DealType.PRICE_DROP, DealType.PROMO])
     html = render([deal], generated_at=NOW)
-    soup = BeautifulSoup(html, "lxml")
-    types = {b["data-filter-type"] for b in soup.select("[data-filter-type]")}
-    assert {"all", "price_drop", "sale", "promo"} <= types
+    types = _type_options(html)
+    assert "all" in types
+    assert "price_drop" in types
+    assert "promo" in types
 
 
 def test_filter_bar_hides_promo_when_no_promos():
-    # No deal in this set has DealType.PROMO; the Promo Code filter button
-    # should be omitted to avoid an empty-result filter.
     html = render([_deal()], generated_at=NOW)
-    soup = BeautifulSoup(html, "lxml")
-    types = {b["data-filter-type"] for b in soup.select("[data-filter-type]")}
+    types = _type_options(html)
     assert "promo" not in types
-    assert {"all", "price_drop", "sale"} <= types
+    assert "all" in types
+    assert "price_drop" in types
 
 
 def test_filter_bar_shows_promo_when_a_deal_has_promo():
     promo = [PromoCode(code="SAVE10", description="", expiry=date(2099, 1, 1))]
     deal = _deal(promos=promo, types=[DealType.PROMO])
     html = render([deal], generated_at=NOW)
-    soup = BeautifulSoup(html, "lxml")
-    types = {b["data-filter-type"] for b in soup.select("[data-filter-type]")}
-    assert "promo" in types
+    assert "promo" in _type_options(html)
 
 
 def test_filter_bar_shows_promo_for_multi_store_deal_with_promo():
@@ -97,9 +103,13 @@ def test_filter_bar_shows_promo_for_multi_store_deal_with_promo():
     ev2 = _store_eval("https://bestbuy.com/p", "Best Buy", 200.0, 169.0)
     deal = Deal(item=item, store_evaluations=[ev1, ev2])
     html_out = render([deal], generated_at=NOW)
-    soup = BeautifulSoup(html_out, "lxml")
-    types = {b["data-filter-type"] for b in soup.select("[data-filter-type]")}
-    assert "promo" in types
+    assert "promo" in _type_options(html_out)
+
+
+def test_filter_bar_shows_back_in_stock_when_a_deal_has_it():
+    deal = _deal(types=[DealType.BACK_IN_STOCK])
+    html_out = render([deal], generated_at=NOW)
+    assert "back_in_stock" in _type_options(html_out)
 
 
 def test_renders_price_drop_badge():
@@ -110,11 +120,11 @@ def test_renders_price_drop_badge():
     assert "25%" in badge.get_text()
 
 
-def test_renders_sale_badge():
-    deal = _deal(sale=True, types=[DealType.SALE])
+def test_renders_back_in_stock_badge():
+    deal = _deal(types=[DealType.BACK_IN_STOCK])
     html = render([deal], generated_at=NOW)
     soup = BeautifulSoup(html, "lxml")
-    assert soup.select_one(".deal-card .badge-sale") is not None
+    assert soup.select_one(".deal-card .badge-stock") is not None
 
 
 def test_renders_promo_code_chips_with_copy_handler():
@@ -136,19 +146,32 @@ def test_empty_state_rendered_when_zero_deals():
     empty = soup.select_one(".empty-state")
     assert empty is not None
     assert "No deals this week" in empty.get_text()
-    assert "2026-04-18" in html
+    # Timestamp shown in Eastern Time
+    assert "ET" in empty.get_text()
 
 
-def test_title_and_timestamp_present():
+def test_title_and_eastern_time_timestamp():
     html = render([_deal()], generated_at=NOW)
-    assert "Isaac's Deals" in html
-    assert "2026-04-18" in html
+    # Generic title (no personal info)
+    assert ">Deals<" in html
+    # ET timestamp present
+    assert "ET" in html
 
 
-def test_accent_color_and_system_font():
+def test_dark_theme_in_css():
     html = render([_deal()], generated_at=NOW)
-    assert "#0f7a4a" in html
-    assert "-apple-system" in html or "system-ui" in html
+    assert "color-scheme" in html
+    assert "background:#0e0f10" in html or "--bg:#0e0f10" in html
+
+
+def test_giftful_link_in_header():
+    html = render([_deal()], generated_at=NOW)
+    soup = BeautifulSoup(html, "lxml")
+    header = soup.select_one("header.site")
+    assert header is not None
+    link = header.select_one("a[href*='giftful.com']")
+    assert link is not None
+    assert "Giftful" in link.get_text()
 
 
 def test_vanilla_js_filter_and_clipboard_hooks():
@@ -162,10 +185,23 @@ def test_vanilla_js_filter_and_clipboard_hooks():
     assert "Copied" in html
 
 
+def test_category_grouping_renders_section_per_category():
+    item_a = Item(name="A", url="https://shop.example.com/a", listed_price=100.0, image_url="", category="Tech")
+    item_b = Item(name="B", url="https://shop.example.com/b", listed_price=50.0, image_url="", category="Athleisure")
+    deal_a = Deal(item=item_a, price_result=PriceResult(current_price=80.0), promos=[], deal_types=[DealType.PRICE_DROP])
+    deal_b = Deal(item=item_b, price_result=PriceResult(current_price=40.0), promos=[], deal_types=[DealType.PRICE_DROP])
+    html_out = render([deal_a, deal_b], generated_at=NOW)
+    soup = BeautifulSoup(html_out, "lxml")
+    sections = soup.select(".category-group")
+    assert len(sections) == 2
+    headings = {s.select_one(".category-heading").get_text(strip=True) for s in sections}
+    assert headings == {"Tech", "Athleisure"}
+
+
 def test_price_unavailable_shows_listed_price_without_strikethrough():
     item = Item(name="Widget", url="https://shop.example.com/w", listed_price=199.0, image_url="")
-    price = PriceResult(current_price=None, sale_detected=True)
-    deal = Deal(item=item, price_result=price, promos=[], deal_types=[DealType.SALE])
+    price = PriceResult(current_price=None)
+    deal = Deal(item=item, price_result=price, promos=[], deal_types=[DealType.BACK_IN_STOCK])
     html_out = render([deal], generated_at=NOW)
     soup = BeautifulSoup(html_out, "lxml")
     card = soup.select_one(".deal-card")
@@ -193,7 +229,7 @@ def test_placeholder_image_used_when_missing():
 
 def _store_eval(url, display_name, listed, current, promos=None):
     store = StoreLink(url=url, display_name=display_name, listed_price=listed)
-    price = PriceResult(current_price=current, sale_detected=False)
+    price = PriceResult(current_price=current)
     types = []
     if current < listed:
         types.append(DealType.PRICE_DROP)
@@ -251,9 +287,7 @@ def test_multi_store_card_data_store_includes_all_domains():
 def test_filter_bar_includes_all_store_domains_from_multi_store():
     deal = _multi_deal()
     html_out = render([deal], generated_at=NOW)
-    soup = BeautifulSoup(html_out, "lxml")
-    store_buttons = soup.select("[data-filter-store]")
-    store_values = {b["data-filter-store"] for b in store_buttons}
+    store_values = _store_options(html_out)
     assert "amazon.com" in store_values
     assert "bestbuy.com" in store_values
 

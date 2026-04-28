@@ -6,7 +6,6 @@ from price_checker import (
     PriceResult,
     USER_AGENTS,
     check_price,
-    detect_sale,
     extract_price,
 )
 
@@ -48,6 +47,14 @@ def test_extraction_priority_amazon_after_meta(read_fixture):
     assert extract_price(html) == 50.00
 
 
+def test_amazon_picks_live_price_not_strikethrough_reference(read_fixture):
+    # Page has $49.99 strikethrough "List Price" near the top AND a live
+    # $24.99 in #corePrice_feature_div. The Amazon extractor must pick the
+    # live price, not the strikethrough reference.
+    html = read_fixture("retailer_amazon_with_strikethrough.html")
+    assert extract_price(html) == 24.99
+
+
 def test_extraction_amazon_runs_before_generic_css():
     # No JSON-LD, no meta. Amazon-specific should beat generic CSS.
     html = """
@@ -57,22 +64,6 @@ def test_extraction_amazon_runs_before_generic_css():
     </body></html>
     """
     assert extract_price(html) == 19.95
-
-
-def test_detects_sale_indicators(read_fixture):
-    html = read_fixture("retailer_sale.html")
-    assert detect_sale(html) is True
-
-
-def test_no_sale_returns_false(read_fixture):
-    html = read_fixture("retailer_no_sale.html")
-    assert detect_sale(html) is False
-
-
-def test_sale_detection_is_case_insensitive():
-    assert detect_sale("<html><body><p>LIMITED TIME offer</p></body></html>") is True
-    assert detect_sale("<html><body><p>sale</p></body></html>") is True
-    assert detect_sale("<html><body><p>50% OFF</p></body></html>") is True
 
 
 def test_check_price_handles_403(mocker, tmp_path):
@@ -93,10 +84,10 @@ def test_check_price_handles_403(mocker, tmp_path):
     log.error.assert_called_once()
 
 
-def test_check_price_returns_price_and_sale_on_success(mocker, read_fixture):
+def test_check_price_returns_html_on_success(mocker, read_fixture):
     response = MagicMock()
     response.status_code = 200
-    response.text = read_fixture("retailer_sale.html")
+    response.text = read_fixture("retailer_jsonld.html")
     session = MagicMock()
     session.get.return_value = response
     mocker.patch("price_checker.time.sleep")
@@ -106,7 +97,8 @@ def test_check_price_returns_price_and_sale_on_success(mocker, read_fixture):
     )
 
     assert result.unavailable is False
-    assert result.sale_detected is True
+    assert result.html is not None
+    assert "ld+json" in result.html
 
 
 def test_check_price_rotates_user_agents_and_sleeps(mocker):
@@ -259,7 +251,7 @@ def test_check_price_playwright_failure_returns_unavailable(mocker):
     log.error.assert_called()
 
 
-def test_check_price_playwright_preserves_sale_detection(mocker):
+def test_check_price_playwright_returns_html_for_validator(mocker):
     response = MagicMock()
     response.status_code = 403
     response.text = ""
@@ -271,7 +263,6 @@ def test_check_price_playwright_preserves_sale_detection(mocker):
     page.content.return_value = (
         '<html><body>'
         '<span class="a-price"><span class="a-offscreen">$42.50</span></span>'
-        '<p>Limited time sale!</p>'
         '</body></html>'
     )
 
@@ -283,4 +274,5 @@ def test_check_price_playwright_preserves_sale_detection(mocker):
     )
 
     assert result.current_price == 42.50
-    assert result.sale_detected is True
+    assert result.html is not None
+    assert "a-offscreen" in result.html

@@ -30,9 +30,9 @@ def build_demo_deals() -> list[Deal]:
                 listed_price=299.00,
                 image_url="",
             ),
-            price_result=PriceResult(current_price=199.00, sale_detected=True),
+            price_result=PriceResult(current_price=199.00),
             promos=[],
-            deal_types=[DealType.PRICE_DROP, DealType.SALE],
+            deal_types=[DealType.PRICE_DROP],
         ),
         Deal(
             item=Item(
@@ -41,7 +41,7 @@ def build_demo_deals() -> list[Deal]:
                 listed_price=249.99,
                 image_url="",
             ),
-            price_result=PriceResult(current_price=249.99, sale_detected=False),
+            price_result=PriceResult(current_price=249.99),
             promos=[
                 PromoCode(
                     code="SAVE20",
@@ -63,7 +63,7 @@ def build_demo_deals() -> list[Deal]:
                 listed_price=129.50,
                 image_url="",
             ),
-            price_result=PriceResult(current_price=89.00, sale_detected=False),
+            price_result=PriceResult(current_price=89.00),
             promos=[
                 PromoCode(code="ADVENTURE10", description="10% off", expiry=None),
             ],
@@ -76,9 +76,9 @@ def build_demo_deals() -> list[Deal]:
                 listed_price=169.00,
                 image_url="",
             ),
-            price_result=PriceResult(current_price=169.00, sale_detected=True),
+            price_result=PriceResult(current_price=169.00),
             promos=[],
-            deal_types=[DealType.SALE],
+            deal_types=[DealType.BACK_IN_STOCK],
         ),
     ]
 

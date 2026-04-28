@@ -20,7 +20,7 @@ def _deal(name="Headphones", domain="shop.example.com", promos=None):
         listed_price=199.0,
         image_url="",
     )
-    price = PriceResult(current_price=149.0, sale_detected=False)
+    price = PriceResult(current_price=149.0)
     return Deal(
         item=item,
         price_result=price,
@@ -42,13 +42,13 @@ def _multi_deal(name="Headphones", winner_promos=None):
     )
     ev1 = StoreEvaluation(
         store=store1,
-        price_result=PriceResult(current_price=149.0, sale_detected=False),
+        price_result=PriceResult(current_price=149.0),
         promos=winner_promos or [],
         deal_types=[DealType.PRICE_DROP],
     )
     ev2 = StoreEvaluation(
         store=store2,
-        price_result=PriceResult(current_price=189.0, sale_detected=False),
+        price_result=PriceResult(current_price=189.0),
         promos=[],
         deal_types=[DealType.PRICE_DROP],
     )

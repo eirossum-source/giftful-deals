@@ -15,42 +15,22 @@ ITEM = Item(
 
 
 def test_price_drop_included():
-    price = PriceResult(current_price=80.0, sale_detected=False)
+    price = PriceResult(current_price=80.0)
     ok, types = is_deal(ITEM, price, [])
     assert ok is True
     assert DealType.PRICE_DROP in types
 
 
-def test_sale_detected_included():
-    price = PriceResult(current_price=80.0, sale_detected=True)
-    ok, types = is_deal(ITEM, price, [])
+def test_back_in_stock_included():
+    price = PriceResult(current_price=100.0)
+    ok, types = is_deal(ITEM, price, [], back_in_stock=True)
     assert ok is True
-    assert DealType.SALE in types
-
-
-def test_is_deal_rejects_sale_when_price_equals_listed():
-    price = PriceResult(current_price=100.0, sale_detected=True)
-    ok, types = is_deal(ITEM, price, [])
-    assert DealType.SALE not in types
-    assert ok is False
-
-
-def test_is_deal_rejects_sale_when_price_above_listed():
-    price = PriceResult(current_price=150.0, sale_detected=True)
-    ok, types = is_deal(ITEM, price, [])
-    assert DealType.SALE not in types
-
-
-def test_is_deal_accepts_sale_when_price_unavailable():
-    price = PriceResult(unavailable=False, current_price=None, sale_detected=True)
-    ok, types = is_deal(ITEM, price, [])
-    assert ok is True
-    assert DealType.SALE in types
+    assert DealType.BACK_IN_STOCK in types
 
 
 def test_promo_included():
     promo = [PromoCode(code="X", description="10% off", expiry=date(2099, 1, 1))]
-    price = PriceResult(current_price=100.0, sale_detected=False)
+    price = PriceResult(current_price=100.0)
     ok, types = is_deal(ITEM, price, promo)
     assert ok is True
     assert DealType.PROMO in types
@@ -58,14 +38,14 @@ def test_promo_included():
 
 def test_multiple_reasons_combine():
     promo = [PromoCode(code="X", description="", expiry=None)]
-    price = PriceResult(current_price=50.0, sale_detected=True)
-    ok, types = is_deal(ITEM, price, promo)
+    price = PriceResult(current_price=50.0)
+    ok, types = is_deal(ITEM, price, promo, back_in_stock=True)
     assert ok is True
-    assert set(types) == {DealType.PRICE_DROP, DealType.SALE, DealType.PROMO}
+    assert set(types) == {DealType.PRICE_DROP, DealType.PROMO, DealType.BACK_IN_STOCK}
 
 
 def test_none_excluded():
-    price = PriceResult(current_price=100.0, sale_detected=False)
+    price = PriceResult(current_price=100.0)
     ok, types = is_deal(ITEM, price, [])
     assert ok is False
     assert types == []
@@ -87,7 +67,7 @@ def test_unavailable_price_no_promo_excluded():
 
 
 def test_equal_price_not_a_drop():
-    price = PriceResult(current_price=100.0, sale_detected=False)
+    price = PriceResult(current_price=100.0)
     ok, types = is_deal(ITEM, price, [])
     assert ok is False
 
@@ -103,49 +83,29 @@ STORE_B = StoreLink(url="https://shop-b.com/item", display_name="Shop B", listed
 
 
 def test_evaluate_store_price_drop():
-    price = PriceResult(current_price=80.0, sale_detected=False)
+    price = PriceResult(current_price=80.0)
     ok, types = evaluate_store(STORE_A, price, [])
     assert ok is True
     assert DealType.PRICE_DROP in types
 
 
-def test_evaluate_store_sale():
-    price = PriceResult(current_price=80.0, sale_detected=True)
-    ok, types = evaluate_store(STORE_A, price, [])
+def test_evaluate_store_back_in_stock():
+    price = PriceResult(current_price=100.0)
+    ok, types = evaluate_store(STORE_A, price, [], back_in_stock=True)
     assert ok is True
-    assert DealType.SALE in types
-
-
-def test_evaluate_store_rejects_sale_when_price_equals_listed():
-    price = PriceResult(current_price=100.0, sale_detected=True)
-    ok, types = evaluate_store(STORE_A, price, [])
-    assert DealType.SALE not in types
-    assert ok is False
-
-
-def test_evaluate_store_accepts_sale_when_price_below_listed():
-    price = PriceResult(current_price=80.0, sale_detected=True)
-    ok, types = evaluate_store(STORE_A, price, [])
-    assert DealType.SALE in types
-
-
-def test_evaluate_store_accepts_sale_when_price_unavailable_data():
-    price = PriceResult(current_price=None, sale_detected=True)
-    ok, types = evaluate_store(STORE_A, price, [])
-    assert ok is True
-    assert DealType.SALE in types
+    assert DealType.BACK_IN_STOCK in types
 
 
 def test_evaluate_store_promo():
     promo = [PromoCode(code="X", description="10% off", expiry=date(2099, 1, 1))]
-    price = PriceResult(current_price=100.0, sale_detected=False)
+    price = PriceResult(current_price=100.0)
     ok, types = evaluate_store(STORE_A, price, promo)
     assert ok is True
     assert DealType.PROMO in types
 
 
 def test_evaluate_store_no_deal():
-    price = PriceResult(current_price=100.0, sale_detected=False)
+    price = PriceResult(current_price=100.0)
     ok, types = evaluate_store(STORE_A, price, [])
     assert ok is False
     assert types == []
@@ -160,13 +120,13 @@ def test_evaluate_store_unavailable_with_promo():
 
 
 def test_evaluate_store_equal_price_not_a_drop():
-    price = PriceResult(current_price=100.0, sale_detected=False)
+    price = PriceResult(current_price=100.0)
     ok, types = evaluate_store(STORE_A, price, [])
     assert ok is False
 
 
 def test_store_evaluation_holds_per_store_results():
-    price = PriceResult(current_price=80.0, sale_detected=False)
+    price = PriceResult(current_price=80.0)
     ev = StoreEvaluation(
         store=STORE_A,
         price_result=price,

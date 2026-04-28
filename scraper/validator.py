@@ -1,0 +1,196 @@
+from __future__ import annotations
+
+import json
+import os
+import re
+from typing import Optional, Tuple
+
+from bs4 import BeautifulSoup
+
+
+_DEAD_PAGE_PATTERNS = [
+    (re.compile(r"page\s+not\s+found", re.I), "page not found"),
+    (re.compile(r"no\s+longer\s+available", re.I), "no longer available"),
+    (re.compile(r"item\s+(?:has\s+been\s+)?removed", re.I), "item removed"),
+    (re.compile(r"\bproduct\s+not\s+found\b", re.I), "product not found"),
+    (re.compile(r"\b404[\s-]+(?:not\s+found|error|page)\b", re.I), "404"),
+    (re.compile(r"this\s+(?:product|item)\s+is\s+unavailable", re.I), "unavailable"),
+]
+
+
+def check_link_integrity(html: str) -> Tuple[bool, Optional[str]]:
+    if not html or not html.strip():
+        return True, "empty response"
+
+    soup = BeautifulSoup(html, "lxml")
+
+    for tag in soup(["script", "style", "noscript"]):
+        tag.decompose()
+
+    h1 = (soup.find("h1").get_text(" ", strip=True) if soup.find("h1") else "")
+    title = (soup.title.get_text(strip=True) if soup.title else "")
+    headline_text = f"{h1} {title}".lower()
+
+    body_text = soup.get_text(" ", strip=True)
+    has_cta = bool(re.search(r"add\s+to\s+(cart|bag|basket)|buy\s+now", body_text, re.I))
+
+    for pattern, label in _DEAD_PAGE_PATTERNS:
+        if pattern.search(headline_text):
+            return True, label
+        if pattern.search(body_text) and not has_cta:
+            return True, label
+
+    return False, None
+
+
+_TOKEN_RE = re.compile(r"[a-z0-9]+")
+
+_STOPWORDS = {
+    "the", "a", "an", "and", "or", "of", "in", "on", "for", "with", "to",
+    "by", "at", "as", "is", "it", "this", "that", "from", "into", "onto",
+}
+
+
+def _content_tokens(s: str) -> set:
+    raw = _TOKEN_RE.findall((s or "").lower())
+    return {t for t in raw if len(t) > 2 and t not in _STOPWORDS}
+
+
+def check_identity(giftful_name: str, html: str) -> Tuple[bool, float]:
+    if not giftful_name or not html or not html.strip():
+        return False, 0.0
+
+    soup = BeautifulSoup(html, "lxml")
+
+    candidates = []
+    if soup.title and soup.title.get_text(strip=True):
+        candidates.append(soup.title.get_text(strip=True))
+    og = soup.find("meta", attrs={"property": "og:title"})
+    if og and og.get("content"):
+        candidates.append(og["content"])
+    h1 = soup.find("h1")
+    if h1 and h1.get_text(strip=True):
+        candidates.append(h1.get_text(strip=True))
+
+    if not candidates:
+        return False, 0.0
+
+    name_toks = _content_tokens(giftful_name)
+    if not name_toks:
+        return False, 0.0
+
+    best = 0.0
+    for cand in candidates:
+        cand_toks = _content_tokens(cand)
+        if not cand_toks:
+            continue
+        overlap = len(name_toks & cand_toks)
+        # Use the smaller side to allow short retailer titles to still match
+        # long Giftful names when the meaningful tokens overlap.
+        denom = min(len(name_toks), len(cand_toks))
+        score = overlap / denom if denom else 0.0
+        if score > best:
+            best = score
+
+    return best >= 0.5, best
+
+
+_SOLD_OUT_TEXT_RE = re.compile(r"\bsold\s+out\b", re.I)
+_CTA_RE = re.compile(
+    r"add\s+to\s+(cart|bag|basket)|buy\s+now|add\s+to\s+wishlist", re.I
+)
+
+
+def check_sold_out(html: str) -> bool:
+    """Return True only when we have a strong signal the product is sold out.
+
+    Strong signals:
+      - Schema.org Offer.availability says OutOfStock / SoldOut / Discontinued
+      - The page has no buy-CTA AND explicitly says "sold out"
+
+    We deliberately ignore "sold out" text in size-variant selectors and
+    related-products carousels, because matching it loosely (as a previous
+    iteration did) flagged 80% of in-stock products as sold-out.
+    """
+    if not html or not html.strip():
+        return False
+
+    soup = BeautifulSoup(html, "lxml")
+
+    schema_verdict = None  # None=unknown, True=oos, False=in_stock
+    for script in soup.find_all("script", type="application/ld+json"):
+        raw = script.string or script.get_text() or ""
+        if not raw.strip():
+            continue
+        try:
+            data = json.loads(raw)
+        except json.JSONDecodeError:
+            continue
+        if _schema_says_sold_out(data):
+            schema_verdict = True
+            break
+        if _schema_says_in_stock(data):
+            schema_verdict = False
+            # keep scanning in case a later schema overrides — but in_stock
+            # is a strong signal so we can stop once we see it
+            break
+
+    if schema_verdict is True:
+        return True
+    if schema_verdict is False:
+        return False
+
+    # No schema signal — fall back to: "sold out" mentioned AND no buy CTA.
+    body_text = soup.get_text(" ", strip=True)
+    if _CTA_RE.search(body_text):
+        return False
+    return bool(_SOLD_OUT_TEXT_RE.search(body_text))
+
+
+def _schema_says_sold_out(node) -> bool:
+    if isinstance(node, list):
+        return any(_schema_says_sold_out(n) for n in node)
+    if not isinstance(node, dict):
+        return False
+    avail = node.get("availability")
+    if isinstance(avail, str) and _avail_means_sold_out(avail):
+        return True
+    offers = node.get("offers")
+    if offers is not None and _schema_says_sold_out(offers):
+        return True
+    for v in node.values():
+        if isinstance(v, (dict, list)) and _schema_says_sold_out(v):
+            return True
+    return False
+
+
+def _schema_says_in_stock(node) -> bool:
+    if isinstance(node, list):
+        return any(_schema_says_in_stock(n) for n in node)
+    if not isinstance(node, dict):
+        return False
+    avail = node.get("availability")
+    if isinstance(avail, str) and "instock" in avail.lower().replace("_", "").replace(" ", ""):
+        return True
+    offers = node.get("offers")
+    if offers is not None and _schema_says_in_stock(offers):
+        return True
+    for v in node.values():
+        if isinstance(v, (dict, list)) and _schema_says_in_stock(v):
+            return True
+    return False
+
+
+def _avail_means_sold_out(avail: str) -> bool:
+    a = avail.lower().replace("_", "").replace(" ", "")
+    return any(flag in a for flag in ("outofstock", "soldout", "discontinued"))
+
+
+def llm_validate_enabled() -> bool:
+    return bool(os.environ.get("ANTHROPIC_API_KEY"))
+
+
+def llm_validate(giftful_name, listed_price, html):
+    if not llm_validate_enabled():
+        return None
+    return None

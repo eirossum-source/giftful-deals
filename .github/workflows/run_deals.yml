@@ -36,17 +36,26 @@ jobs:
           TO_EMAIL: ${{ secrets.TO_EMAIL }}
         run: python scraper/main.py
 
-      - name: Commit updated deals page
+      - name: Commit updated deals page and inventory
         run: |
           git config user.name  "giftful-deals-bot"
           git config user.email "giftful-deals-bot@users.noreply.github.com"
+          changed=""
           if [ -n "$(git status --porcelain docs/index.html)" ]; then
             git add docs/index.html
-            git commit -m "chore: update deals page"
+            changed="docs/index.html"
+          fi
+          if [ -n "$(git status --porcelain state/inventory.json)" ]; then
+            mkdir -p state
+            git add state/inventory.json
+            changed="${changed} state/inventory.json"
+          fi
+          if [ -n "$changed" ]; then
+            git commit -m "chore: update deals page and inventory"
             git pull --rebase origin main
             git push
           else
-            echo "No changes to docs/index.html"
+            echo "No tracked output changes."
           fi
 
       - name: Upload errors.log

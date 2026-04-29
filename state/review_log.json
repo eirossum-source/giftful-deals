@@ -1,0 +1,656 @@
+{
+  "run_at": "2026-04-29T00:47:44.092942",
+  "items": [
+    {
+      "name": "Supernote Nomad",
+      "url": "https://supernote.com/pages/supernote-nomad",
+      "store": "supernote.com",
+      "status": "ok",
+      "reason": null
+    },
+    {
+      "name": "Beats Powerbeats Pro 2 - Wireless Noise Cancelling Workout E...",
+      "url": "https://www.amazon.com/dp/B0DT2344N3?tag=giftful04-20&linkCode=ogi&th=1&psc=1",
+      "store": "amazon.com",
+      "status": "review",
+      "reason": "product name mismatch (score 0.00)"
+    },
+    {
+      "name": "Ring Battery Doorbell (newest model), Home or business secur...",
+      "url": "https://www.amazon.com/dp/B0BZWRSRWV?tag=giftful04-20&linkCode=ogi&th=1&psc=1",
+      "store": "amazon.com",
+      "status": "review",
+      "reason": "product name mismatch (score 0.00)"
+    },
+    {
+      "name": "AirPods Pro 3",
+      "url": "https://www.apple.com/shop/buy-airpods/airpods-pro-3",
+      "store": "apple.com",
+      "status": "ok",
+      "reason": null
+    },
+    {
+      "name": "Trezor Safe 5 - Crypto Hardware Wallet",
+      "url": "https://www.amazon.com/dp/B0D8FH3W7C?tag=giftful04-20&linkCode=ogi&th=1&psc=1",
+      "store": "amazon.com",
+      "status": "review",
+      "reason": "product name mismatch (score 0.00)"
+    },
+    {
+      "name": "Norelco Philips All-in-One 7000 Series 23-Piece Trimmer - El...",
+      "url": "https://www.amazon.com/dp/B0D68XZY2S?tag=giftful04-20&linkCode=ogi&th=1&psc=1",
+      "store": "amazon.com",
+      "status": "review",
+      "reason": "product name mismatch (score 0.00)"
+    },
+    {
+      "name": "Nike Club washed shorts in brown",
+      "url": "https://www.asos.com/us/nike/nike-club-washed-shorts-in-brown/prd/209187461?acquisitionsource=pasteboard",
+      "store": "asos.com",
+      "status": "ok",
+      "reason": null
+    },
+    {
+      "name": "Pace Breaker Linerless Short 9\"",
+      "url": "https://shop.lululemon.com/p/men-shorts/Pace-Breaker-Short-Linerless-Updated/_/prod11430005?color=33928&sz=L&skuId=153837590&cid=pdp_share_header_link_icon&cid=aff_con&sv1=affiliate&sv_campaign_id=1454410&awc=30347_1777423571_1ddb85daca483c7bc9f3b576ba777cfc",
+      "store": "shop.lululemon.com",
+      "status": "ok",
+      "reason": null
+    },
+    {
+      "name": "WASHED BALLOON FIT JOGGING PANTS",
+      "url": "https://www.zara.com/us/en/washed-balloon-fit-jogging-pants-p03443425.html?sv1=affiliate&sv_campaign_id=1454410&awc=21094_1777423573_2f005c60a3d55e6d6c2a5dff7bed205e&utm_source=awin&utm_medium=affiliation&utm_campaign=1454410&utm_content=Giftful&utm_term=21094_1777423573_2f005c60a3d55e6d6c2a5dff7bed205e",
+      "store": "zara.com",
+      "status": "ok",
+      "reason": null
+    },
+    {
+      "name": "Nike Tech Men's Dri-FIT Shori Knit Shorts",
+      "url": "https://www.nike.com/t/tech-mens-dri-fit-shori-knit-shorts-6PkNu38K/IF1125-010?referrer=singular_click_id%3Dbc35705e-a887-4e9c-bd6d-cc84d674fa54",
+      "store": "nike.com",
+      "status": "ok",
+      "reason": null
+    },
+    {
+      "name": "Pace Breaker Linerless Short 9\"",
+      "url": "https://shop.lululemon.com/p/men-shorts/Pace-Breaker-Short-Linerless-Updated/_/prod11430005?color=19222&sz=L&skuId=158577303&cid=pdp_share_header_link_icon&cid=aff_con&sv1=affiliate&sv_campaign_id=1454410&awc=30347_1777423575_351b9c848cf0a108892fce2b497501dd",
+      "store": "shop.lululemon.com",
+      "status": "ok",
+      "reason": null
+    },
+    {
+      "name": "Nike Club Men's Fleece Shorts",
+      "url": "https://www.nike.com/t/club-mens-fleece-shorts-fKfOAroW/IQ5903-289?referrer=singular_click_id%3Deb3f1c3d-2920-4a2f-876c-9d3c93edfbac",
+      "store": "nike.com",
+      "status": "ok",
+      "reason": null
+    },
+    {
+      "name": "RELAXED FIT INTERLOCK JOGGER SHORTS",
+      "url": "https://www.zara.com/us/en/relaxed-fit-interlock-jogger-shorts-p00761491.html?sv1=affiliate&sv_campaign_id=1454410&awc=21094_1777423577_e58df3bf457841c34eaff166a2c763b1&utm_source=awin&utm_medium=affiliation&utm_campaign=1454410&utm_content=Giftful&utm_term=21094_1777423577_e58df3bf457841c34eaff166a2c763b1",
+      "store": "zara.com",
+      "status": "ok",
+      "reason": null
+    },
+    {
+      "name": "Wide Sweat Shorts",
+      "url": "https://www.uniqlo.com/us/en/products/E482758-000/00?colorDisplayCode=31&sizeDisplayCode=005&pldDisplayCode=000&utm_medium=social&utm_source=appshare",
+      "store": "uniqlo.com",
+      "status": "sold_out",
+      "reason": "out of stock"
+    },
+    {
+      "name": "Heavyweight Soft Jersey Short 8.5\"",
+      "url": "https://shop.lululemon.com/p/men-shorts/Heavy-Soft-Jersey-Short-8-5-MD/_/prod20007502?color=72761&sz=L&skuId=158101952&cid=pdp_share_header_link_icon&cid=aff_con&sv1=affiliate&sv_campaign_id=1454410&awc=30347_1777423580_9b0afb14b7a148d48aa205e8d43dd89d",
+      "store": "shop.lululemon.com",
+      "status": "ok",
+      "reason": null
+    },
+    {
+      "name": "4505 Icon heavyweight cotton oversized t-shirt with quick dr...",
+      "url": "https://www.asos.com/us/4505/4505-icon-heavyweight-cotton-oversized-t-shirt-with-quick-dry-finish-in-off-white/prd/209567035",
+      "store": "asos.com",
+      "status": "ok",
+      "reason": null
+    },
+    {
+      "name": "4505 Icon cotton oversized pump training tank with quick dry...",
+      "url": "https://www.asos.com/us/4505/4505-icon-cotton-oversized-pump-training-tank-with-quick-dry-finish-in-off-white/prd/209562162",
+      "store": "asos.com",
+      "status": "ok",
+      "reason": null
+    },
+    {
+      "name": "Weekday Simon hoodie in black in scuba-style fabric",
+      "url": "https://www.asos.com/us/weekday/weekday-simon-hoodie-in-black-in-scuba-style-fabric/prd/209038557?acquisitionsource=pasteboard",
+      "store": "asos.com",
+      "status": "ok",
+      "reason": null
+    },
+    {
+      "name": "Topman relaxed fit t-shirt in white",
+      "url": "https://www.asos.com/us/topman/topman-relaxed-fit-t-shirt-in-white/prd/208302434?acquisitionsource=pasteboard",
+      "store": "asos.com",
+      "status": "ok",
+      "reason": null
+    },
+    {
+      "name": "4505 long sleeve oversized cotton training T-shirt with quic...",
+      "url": "https://www.asos.com/us/4505/4505-long-sleeve-oversized-cotton-training-t-shirt-with-quick-dry-finish-in-off-white/prd/209298511?acquisitionsource=pasteboard",
+      "store": "asos.com",
+      "status": "ok",
+      "reason": null
+    },
+    {
+      "name": "4505 Icon heavyweight cotton oversized t-shirt with quick dr...",
+      "url": "https://www.asos.com/us/4505/4505-icon-heavyweight-cotton-oversized-t-shirt-with-quick-dry-finish-in-off-white/prd/207632239?acquisitionsource=pasteboard",
+      "store": "asos.com",
+      "status": "ok",
+      "reason": null
+    },
+    {
+      "name": "4505 Icon heavyweight cotton oversized long sleeve T-shirt w...",
+      "url": "https://www.asos.com/us/4505/4505-icon-heavyweight-cotton-oversized-long-sleeve-t-shirt-with-quick-dry-finish-in-off-white/prd/209570706?acquisitionsource=pasteboard",
+      "store": "asos.com",
+      "status": "ok",
+      "reason": null
+    },
+    {
+      "name": "4505 Icon quick dry mesh training T-shirt in black",
+      "url": "https://www.asos.com/us/4505/4505-icon-quick-dry-mesh-training-t-shirt-in-black/prd/205579830",
+      "store": "asos.com",
+      "status": "ok",
+      "reason": null
+    },
+    {
+      "name": "Faith Sweatshirt, Faith Gift, Christian Sweatshirt, Faith Cr...",
+      "url": "https://www.etsy.com/listing/1840466647/faith-sweatshirt-faith-gift-christian?ref=share_v4_lx",
+      "store": "etsy.com",
+      "status": "ok",
+      "reason": null
+    },
+    {
+      "name": "Hand-Braided Black Leather 1\" Belt",
+      "url": "https://sartolane.com/products/handbraided-black-belt-1",
+      "store": "sartolane.com",
+      "status": "ok",
+      "reason": null
+    },
+    {
+      "name": "Movado Men's Signature Yellow Gold Black Dial Leather Band S...",
+      "url": "https://www.walmart.com/ip/Movado-Men-s-Signature-Yellow-Gold-Black-Dial-Leather-Band-Swiss-Watch/15934473050?wmlspartner=wlpa&selectedSellerId=101422885&selectedOfferId=0819F4F494B23B58BA0CA8C1CC9CBFF5&conditionGroupCode=1&sourceid=dsn_gdn_2005b0c9-e4c7-4f46-8aaa-443883a5e447&veh=dsn&wmlspartner=dsn_gdn_2005b0c9-e4c7-4f46-8aaa-443883a5e447&cn=00c3_fy27_mp_mp_lo_int_dis_pmax-main&wl9=pla&wl11=online&gad_source=1&gad_campaignid=23143211640&gbraid=0AAAAADmfBIohpf2ikgaQNnYHhG6HMuJP1&gclid=CjwKCAjw7vzOBhBxEiwAc7WNr_e_5eCbeaQFHjf9FYP6np1lhL1D3rrbzKpQ3zPagmG5R_R9NJbqShoCDR8QAvD_BwE",
+      "store": "walmart.com",
+      "status": "ok",
+      "reason": null
+    },
+    {
+      "name": "Pure Heart / Classic Hat",
+      "url": "https://www.higherculturela.com/products/pure-heart-hat",
+      "store": "higherculturela.com",
+      "status": "sold_out",
+      "reason": "out of stock"
+    },
+    {
+      "name": "Nike Peak Futura Beanie",
+      "url": "https://www.nike.com/t/peak-futura-beanie-VKJMb3/HF0326-010?referrer=singular_click_id%3D93f93676-eaae-428c-8b2b-d4ada959822c",
+      "store": "nike.com",
+      "status": "review",
+      "reason": "dead link (no longer available)"
+    },
+    {
+      "name": "Black Belt",
+      "url": "https://suitsupply.com/en-us/men/accessories/belts/black-belt/A25204.html",
+      "store": "suitsupply.com",
+      "status": "ok",
+      "reason": null
+    },
+    {
+      "name": "\u2018SERVANT\u2019 Premium SnapBack - Cream/Black",
+      "url": "https://malta-apparel.com/products/servant-premium-snapback-cream-black",
+      "store": "malta-apparel.com",
+      "status": "sold_out",
+      "reason": "out of stock"
+    },
+    {
+      "name": "New Era 9Forty A-Frame Los Angeles Angels 50th Anniversary P...",
+      "url": "https://www.hatclub.com/products/af940-red-uv-angels-50th-71-blk-blk-blk",
+      "store": "hatclub.com",
+      "status": "review",
+      "reason": "dead link (page not found)"
+    },
+    {
+      "name": "Tom Ford FT5737-B",
+      "url": "https://www.smartbuyglasses.com/designer-eyeglasses/Tom-Ford/Tom-Ford-FT5737-B-045-Blue-Light-Block-566083.html",
+      "store": "smartbuyglasses.com",
+      "status": "review",
+      "reason": "product name mismatch (score 0.00)"
+    },
+    {
+      "name": "Dark Brown Belt",
+      "url": "https://suitsupply.com/en-us/men/accessories/belts/dark-brown-belt/A24109.html",
+      "store": "suitsupply.com",
+      "status": "ok",
+      "reason": null
+    },
+    {
+      "name": "MADE FOR KINDNESS",
+      "url": "https://www.goodqualityhuman.com/collections/hats/products/made-for-kindness",
+      "store": "goodqualityhuman.com",
+      "status": "sold_out",
+      "reason": "out of stock"
+    },
+    {
+      "name": "Second Skin Boxer Brief 8\" (3-Pack)",
+      "url": "https://www.tommyjohn.com/products/second-skin-boxer-brief-8-3-pack-31?variant=33953202536493",
+      "store": "tommyjohn.com",
+      "status": "ok",
+      "reason": null
+    },
+    {
+      "name": "Museum Classic",
+      "url": "https://www.movado.com/us/en/shop-watches/museum-classic-0607200.html",
+      "store": "movado.com",
+      "status": "ok",
+      "reason": null
+    },
+    {
+      "name": "New Era 9Forty A-Frame Los Angeles Angels Snapback Hat - Rea...",
+      "url": "https://www.hatclub.com/products/af940-angels-2t-rltree-blk",
+      "store": "hatclub.com",
+      "status": "review",
+      "reason": "dead link (page not found)"
+    },
+    {
+      "name": "Bailey 7.5 in. Rope Chain Bracelet (3.3mm)",
+      "url": "https://www.brilliantearth.com/Bailey-7.5-in.-Rope-Chain-Bracelet-(3.3mm)-14K-Gold-BE5SRC75/",
+      "store": "brilliantearth.com",
+      "status": "ok",
+      "reason": null
+    },
+    {
+      "name": "100% LINEN RELAXED FIT SHIRT",
+      "url": "https://www.zara.com/us/en/relaxed-fit-linen-shirt-p05070904.html?v1=495684333&v2=2432164&sv1=affiliate&sv_campaign_id=1454410&awc=21094_1777423605_198fd1f4f3016cb4a855de596f0897db&utm_source=awin&utm_medium=affiliation&utm_campaign=1454410&utm_content=Giftful&utm_term=21094_1777423605_198fd1f4f3016cb4a855de596f0897db",
+      "store": "zara.com",
+      "status": "ok",
+      "reason": null
+    },
+    {
+      "name": "\"HOLY VIBES\" TEE (BLACK)",
+      "url": "https://www.higherculturela.com/products/black-tee-holy-vibes",
+      "store": "higherculturela.com",
+      "status": "ok",
+      "reason": null
+    },
+    {
+      "name": "Loose-Fit T-Shirt",
+      "url": "https://www2.hm.com/en_us/productpage.1285130003.html",
+      "store": "www2.hm.com",
+      "status": "ok",
+      "reason": null
+    },
+    {
+      "name": "Regular-Fit Rib-Knit Shirt",
+      "url": "https://www2.hm.com/en_us/productpage.1311089001.html",
+      "store": "www2.hm.com",
+      "status": "ok",
+      "reason": null
+    },
+    {
+      "name": "Relaxed-Fit Cotton-Blend Shirt",
+      "url": "https://www2.hm.com/en_us/productpage.1311268002.html",
+      "store": "www2.hm.com",
+      "status": "ok",
+      "reason": null
+    },
+    {
+      "name": "ASOS DESIGN oversized boxy fit fisherman rib knit sweater in...",
+      "url": "https://www.asos.com/us/asos-design/asos-design-oversized-boxy-fit-fisherman-rib-knit-sweater-in-heathered-stone/prd/208014846",
+      "store": "asos.com",
+      "status": "ok",
+      "reason": null
+    },
+    {
+      "name": "Waffle T-Shirt | Long Sleeve",
+      "url": "https://www.uniqlo.com/us/en/products/E481177-000/00?colorDisplayCode=01&sizeDisplayCode=003&pldDisplayCode=000&utm_medium=social&utm_source=appshare",
+      "store": "uniqlo.com",
+      "status": "ok",
+      "reason": null
+    },
+    {
+      "name": "ASOS DESIGN heavyweight boxy oversized T-shirt in black text...",
+      "url": "https://www.asos.com/us/asos-design/asos-design-heavyweight-boxy-oversized-t-shirt-in-black-textured-fabric/prd/210527097",
+      "store": "asos.com",
+      "status": "ok",
+      "reason": null
+    },
+    {
+      "name": "\"HOLY VIBES\" TEE (CAMO)",
+      "url": "https://www.higherculturela.com/products/holy-vibes-tee-camo",
+      "store": "higherculturela.com",
+      "status": "ok",
+      "reason": null
+    },
+    {
+      "name": "Relaxed-Fit T-Shirt",
+      "url": "https://www2.hm.com/en_us/productpage.1309319007.html",
+      "store": "www2.hm.com",
+      "status": "ok",
+      "reason": null
+    },
+    {
+      "name": "WASHED TANK TOP",
+      "url": "https://www.zara.com/us/en/washed-tank-top-p00722460.html?v1=499201763&v2=2432042&sv1=affiliate&sv_campaign_id=1454410&awc=21094_1777423615_b0c4f97de0eb4955b698f5a0eafdb414&utm_source=awin&utm_medium=affiliation&utm_campaign=1454410&utm_content=Giftful&utm_term=21094_1777423615_b0c4f97de0eb4955b698f5a0eafdb414",
+      "store": "zara.com",
+      "status": "ok",
+      "reason": null
+    },
+    {
+      "name": "ASOS DESIGN heavyweight relaxed long sleeve T-shirt in dark ...",
+      "url": "https://www.asos.com/us/asos-design/asos-design-heavyweight-relaxed-long-sleeve-t-shirt-in-dark-brown-waffle/prd/209020360?acquisitionsource=pasteboard",
+      "store": "asos.com",
+      "status": "sold_out",
+      "reason": "out of stock"
+    },
+    {
+      "name": "WAFFLE TEXTURED T-SHIRT",
+      "url": "https://www.zara.com/us/en/waffle-textured-t-shirt-p00526345.html?v1=480810139&sv1=affiliate&sv_campaign_id=1454410&awc=21094_1777423617_f255173a2835c124b532bf6f40680af5&utm_source=awin&utm_medium=affiliation&utm_campaign=1454410&utm_content=Giftful&utm_term=21094_1777423617_f255173a2835c124b532bf6f40680af5",
+      "store": "zara.com",
+      "status": "ok",
+      "reason": null
+    },
+    {
+      "name": "LOVE YOUR NEIGHBOR CREW",
+      "url": "https://nhimapparel.com/products/love-your-neighbor-crew",
+      "store": "nhimapparel.com",
+      "status": "review",
+      "reason": "dead link (404)"
+    },
+    {
+      "name": "ASOS DESIGN super heavyweight boxy oversized T-shirt in blac...",
+      "url": "https://www.asos.com/us/asos-design/asos-design-super-heavyweight-boxy-oversized-t-shirt-in-black/prd/210214903",
+      "store": "asos.com",
+      "status": "ok",
+      "reason": null
+    },
+    {
+      "name": "Regular-Fit Textured-Knit Shirt",
+      "url": "https://www2.hm.com/en_us/productpage.1331191003.html",
+      "store": "www2.hm.com",
+      "status": "ok",
+      "reason": null
+    },
+    {
+      "name": "Oversized-Fit T-Shirt",
+      "url": "https://www2.hm.com/en_us/productpage.1328819002.html",
+      "store": "www2.hm.com",
+      "status": "ok",
+      "reason": null
+    },
+    {
+      "name": "RELAXED FIT INTERLOCK SWEATSHIRT",
+      "url": "https://www.zara.com/us/en/relaxed-fit-interlock-sweatshirt-p00761490.html?sv1=affiliate&sv_campaign_id=1454410&awc=21094_1777423622_7144475fd2100655ef76c7e17ce41f9c&utm_source=awin&utm_medium=affiliation&utm_campaign=1454410&utm_content=Giftful&utm_term=21094_1777423622_7144475fd2100655ef76c7e17ce41f9c",
+      "store": "zara.com",
+      "status": "ok",
+      "reason": null
+    },
+    {
+      "name": "Regular Fit Jersey Shirt",
+      "url": "https://www2.hm.com/en_us/productpage.1029317042.html",
+      "store": "www2.hm.com",
+      "status": "ok",
+      "reason": null
+    },
+    {
+      "name": "Men's Long-Sleeve Premium Heavyweight 2.0 Tee | Men's | Aber...",
+      "url": "https://www.abercrombie.com/shop/us/p/long-sleeve-premium-heavyweight-20-tee-61005329?categoryId=12202&faceout=model&seq=11&pagefm=navigation-grid&prodvm=navigation-grid",
+      "store": "abercrombie.com",
+      "status": "ok",
+      "reason": null
+    },
+    {
+      "name": "Weekday Simon hoodie in burgundy in scuba-style fabric",
+      "url": "https://www.asos.com/us/weekday/weekday-simon-hoodie-in-burgundy-in-scuba-style-fabric/prd/209213658?acquisitionsource=pasteboard",
+      "store": "asos.com",
+      "status": "ok",
+      "reason": null
+    },
+    {
+      "name": "COLLUSION Boxy T-shirt in red",
+      "url": "https://www.asos.com/us/collusion/collusion-boxy-t-shirt-in-red/prd/210037605?acquisitionsource=pasteboard",
+      "store": "asos.com",
+      "status": "ok",
+      "reason": null
+    },
+    {
+      "name": "Regular-Fit Resort Shirt",
+      "url": "https://www2.hm.com/en_us/productpage.1290470003.html",
+      "store": "www2.hm.com",
+      "status": "ok",
+      "reason": null
+    },
+    {
+      "name": "ASOS DESIGN boxy oversized T-shirt in cream boucle",
+      "url": "https://www.asos.com/us/asos-design/asos-design-boxy-oversized-t-shirt-in-cream-boucle/prd/210662742?acquisitionsource=pasteboard",
+      "store": "asos.com",
+      "status": "ok",
+      "reason": null
+    },
+    {
+      "name": "Men's Premium Heavyweight 2.0 Tee | Men's | Abercrombie.com",
+      "url": "https://www.abercrombie.com/shop/us/p/premium-heavyweight-20-tee-58965824?categoryId=12202&faceout=life&seq=15&pagefm=navigation-grid&prodvm=navigation-grid",
+      "store": "abercrombie.com",
+      "status": "ok",
+      "reason": null
+    },
+    {
+      "name": "REGULAR FIT WAFFLE JUMPER",
+      "url": "https://www.zara.com/us/en/regular-fit-waffle-jumper-p03332301.html?v1=489339320&sv1=affiliate&sv_campaign_id=1454410&awc=21094_1777423630_8d9a74c9a3bef3ae2d47762fac280982&utm_source=awin&utm_medium=affiliation&utm_campaign=1454410&utm_content=Giftful&utm_term=21094_1777423630_8d9a74c9a3bef3ae2d47762fac280982",
+      "store": "zara.com",
+      "status": "ok",
+      "reason": null
+    },
+    {
+      "name": "Men's Long-Sleeve Classic Waffle Tee | Men's | Abercrombie.c...",
+      "url": "https://www.abercrombie.com/shop/us/p/long-sleeve-classic-waffle-tee-61005322?categoryId=12202&faceout=model&seq=06&pagefm=navigation-grid&prodvm=navigation-grid",
+      "store": "abercrombie.com",
+      "status": "ok",
+      "reason": null
+    },
+    {
+      "name": "\"MY FRIEND JESUS\" HOODIE (CAMO)",
+      "url": "https://www.higherculturela.com/products/my-friend-jesus-hoodie-camo",
+      "store": "higherculturela.com",
+      "status": "sold_out",
+      "reason": "out of stock"
+    },
+    {
+      "name": "Relaxed-Fit Pants",
+      "url": "https://www2.hm.com/en_us/productpage.1299855001.html",
+      "store": "www2.hm.com",
+      "status": "ok",
+      "reason": null
+    },
+    {
+      "name": "ASOS DESIGN smart pleated linen blend barrel pants in ecru",
+      "url": "https://www.asos.com/us/asos-design/asos-design-smart-pleated-linen-blend-barrel-pants-in-ecru/prd/209917520?acquisitionsource=pasteboard",
+      "store": "asos.com",
+      "status": "ok",
+      "reason": null
+    },
+    {
+      "name": "100% LINEN RELAXED FIT SHORTS",
+      "url": "https://www.zara.com/us/en/100-linen-relaxed-fit-shorts-p05070903.html?v1=495680223&v2=2432164&sv1=affiliate&sv_campaign_id=1454410&awc=21094_1777423635_369c4c3bbaacca1c505891991d997952&utm_source=awin&utm_medium=affiliation&utm_campaign=1454410&utm_content=Giftful&utm_term=21094_1777423635_369c4c3bbaacca1c505891991d997952",
+      "store": "zara.com",
+      "status": "ok",
+      "reason": null
+    },
+    {
+      "name": "ASOS DESIGN baggy jeans in light wash blue",
+      "url": "https://www.asos.com/us/asos-design/asos-design-baggy-jeans-in-light-wash-blue/prd/204625766?acquisitionsource=pasteboard",
+      "store": "asos.com",
+      "status": "ok",
+      "reason": null
+    },
+    {
+      "name": "PINSTRIPE PLEATED PANTS",
+      "url": "https://www.zara.com/us/en/pinstripe-pleated-pants-p00706950.html?v1=483550070&v2=2432096&sv1=affiliate&sv_campaign_id=1454410&awc=21094_1777423637_be086c972c148edf6b856e8c2e1f9d79&utm_source=awin&utm_medium=affiliation&utm_campaign=1454410&utm_content=Giftful&utm_term=21094_1777423637_be086c972c148edf6b856e8c2e1f9d79",
+      "store": "zara.com",
+      "status": "ok",
+      "reason": null
+    },
+    {
+      "name": "ASOS DESIGN pleated wide leg dress pants with belt detail in...",
+      "url": "https://www.asos.com/us/asos-design/asos-design-pleated-wide-leg-dress-pants-with-belt-detail-in-mink/prd/208783602?acquisitionsource=pasteboard",
+      "store": "asos.com",
+      "status": "ok",
+      "reason": null
+    },
+    {
+      "name": "Men's Baggy Workwear Jean | Men's Clearance | Abercrombie.co...",
+      "url": "https://www.abercrombie.com/shop/us/p/baggy-jean-58874902?faceout=model&seq=95&pagefm=navigation-grid&prodvm=navigation-grid",
+      "store": "abercrombie.com",
+      "status": "ok",
+      "reason": null
+    },
+    {
+      "name": "Jack & Jones alex baggy jeans in light blue wash",
+      "url": "https://www.asos.com/us/jack-jones/jack-jones-alex-baggy-jeans-in-light-blue-wash/prd/206247100?acquisitionsource=pasteboard",
+      "store": "asos.com",
+      "status": "sold_out",
+      "reason": "out of stock"
+    },
+    {
+      "name": "Loose-Fit Tailored Pants",
+      "url": "https://www2.hm.com/en_us/productpage.1316752002.html",
+      "store": "www2.hm.com",
+      "status": "ok",
+      "reason": null
+    },
+    {
+      "name": "Men's Daydrift Relaxed-Fit Pleated Trouser Tall",
+      "url": "https://shop.lululemon.com/p/mens-trousers/Mens-Daydrift-Relaxed-Fit-Pleated-Trouser-Tall/_/prod20009307?color=0001&cid=pdp_share_header_link_icon&cid=aff_con&sv1=affiliate&sv_campaign_id=1454410&awc=30347_1777423642_f019eaf9fc9f5bd86dd0311f07718ceb",
+      "store": "shop.lululemon.com",
+      "status": "ok",
+      "reason": null
+    },
+    {
+      "name": "Men's Baggy 5-Pocket Pant | Men's Bottoms | Abercrombie.com",
+      "url": "https://www.abercrombie.com/shop/us/p/baggy-workwear-pant-59860093?faceout=model&seq=16&pagefm=navigation-grid&prodvm=navigation-grid",
+      "store": "abercrombie.com",
+      "status": "ok",
+      "reason": null
+    },
+    {
+      "name": "Baggy Jean",
+      "url": "https://cottonon.com/US/baggy-jean/3611774-123.html?dwvar_3611774-123_color=3611774-123&cgid=co&originalPid=3611774-123#q=Baggy&start=14&sz=60&newWindow=true",
+      "store": "cottonon.com",
+      "status": "ok",
+      "reason": null
+    },
+    {
+      "name": "ASOS DESIGN pleated wide leg dress pants in charcoal wool bl...",
+      "url": "https://www.asos.com/us/asos-design/asos-design-pleated-wide-leg-dress-pants-in-charcoal-wool-blend/prd/208811441?acquisitionsource=pasteboard",
+      "store": "asos.com",
+      "status": "sold_out",
+      "reason": "out of stock"
+    },
+    {
+      "name": "CARPENTER POCKET SHORTS",
+      "url": "https://www.zara.com/us/en/carpenter-pocket-shorts-p00108475.html?sv1=affiliate&sv_campaign_id=1454410&awc=21094_1777423647_353e7e7fb7c3edd9fe0145508cd7c3c6&utm_source=awin&utm_medium=affiliation&utm_campaign=1454410&utm_content=Giftful&utm_term=21094_1777423647_353e7e7fb7c3edd9fe0145508cd7c3c6",
+      "store": "zara.com",
+      "status": "ok",
+      "reason": null
+    },
+    {
+      "name": "Men's Baggy Jean | Men's Bottoms | Abercrombie.com",
+      "url": "https://www.abercrombie.com/shop/us/p/baggy-jean-62043322",
+      "store": "abercrombie.com",
+      "status": "ok",
+      "reason": null
+    },
+    {
+      "name": "578\u2122 Baggy Men's Jeans",
+      "url": "https://www.levi.com/US/en_US/clothing/men/jeans/loose/578TM-baggy-mens-jeans/p/A47500022",
+      "store": "levi.com",
+      "status": "ok",
+      "reason": null
+    },
+    {
+      "name": "The Men's Clog",
+      "url": "https://www.nordstrom.com/s/the-mens-clog/8139745?color=001&size=12&width=d",
+      "store": "nordstrom.com",
+      "status": "ok",
+      "reason": null
+    },
+    {
+      "name": "Men's Birkenstock Essentials Arizona",
+      "url": "https://www.finishline.com/pdp/mens-birkenstock-essentials-arizona-eva-sandals/prod22090008/129421/001",
+      "store": "finishline.com",
+      "status": "review",
+      "reason": "product name mismatch (score 0.00)"
+    },
+    {
+      "name": "Men's Zip-up Suede Jacket",
+      "url": "https://www.colehaan.com/mens-american-classics-plain-toe-waterproof-boots/196414252309.html?gad_campaignid=21585767494&gad_source=1&gclid=Cj0KCQiAubrJBhCbARIsAHIdxD-13xteNvsh4YyRCIQXxjxjCZaekGXc-y4jtu_w5zqfK-ChWodTwZQaAqwIEALw_wcB&gclsrc=aw.ds&glCountry=US&glCurrency=USD&src=googleshopping&utm_campaign=%7Bdscampaign%7D&utm_id=%7Bdscampaignid%7D&utm_medium=cpc&utm_source=google",
+      "store": "colehaan.com",
+      "status": "review",
+      "reason": "dead link (page not found)"
+    },
+    {
+      "name": "Men's American Classics Penny Loafers",
+      "url": "https://www.colehaan.com/products/mens-american-classics-penny-loafers-c36028",
+      "store": "colehaan.com",
+      "status": "sold_out",
+      "reason": "out of stock"
+    },
+    {
+      "name": "Crocs Salehe Bembury x Realtree x Pollex Clog 'Edge Camo'",
+      "url": "https://www.goat.com/sneakers/salehe-bembury-x-realtree-x-pollex-clog-edge-camo-207393-camo",
+      "store": "goat.com",
+      "status": "ok",
+      "reason": null
+    },
+    {
+      "name": "WateLves Barefoot Water Shoes Women Men Minimalist Comfortab...",
+      "url": "https://www.amazon.com/dp/B0CD7F5NPN?tag=giftful04-20&linkCode=ogi&th=1&psc=1",
+      "store": "amazon.com",
+      "status": "review",
+      "reason": "product name mismatch (score 0.00)"
+    },
+    {
+      "name": "Nike Dunk Low SB 'White Gum'",
+      "url": "https://www.goat.com/sneakers/dunk-low-sb-white-gum-cd2563-101",
+      "store": "goat.com",
+      "status": "ok",
+      "reason": null
+    },
+    {
+      "name": "Buy Boston Soft Footbed Suede Leather Mocha for USD 169.95 |...",
+      "url": "https://www.birkenstock.com/us/boston-soft-footbed-suede-leather/boston-suede-suedeleather-softfootbed-eva-u_90.html?dwvar_boston-suede-suedeleather-softfootbed-eva-u__46_width=S&dwvar_boston-suede-suedeleather-softfootbed-eva-u__46_size=260&gad_source=1&gad_campaignid=9432284340&gclid=CjwKCAiA3L_JBhAlEiwAlcWO5-tmzcA7Js-lm7VPx80mNVapBcX6bbCfO9Q_qeZXtixA4frafo_JWhoC0n4QAvD_BwE&utm_source=partnerize&utm_medium=affiliate&utm_campaign=21181&utm_content=8-12845&clickId=5435180800",
+      "store": "birkenstock.com",
+      "status": "ok",
+      "reason": null
+    },
+    {
+      "name": "UGG\u00ae Men's Classic Ultra Mini Weather Hybrid Suede Classic B...",
+      "url": "https://www.ugg.com/men-boots/classic-ultra-mini-weather-hybrid/1174196.html",
+      "store": "ugg.com",
+      "status": "ok",
+      "reason": null
+    },
+    {
+      "name": "REGULAR FIT WOOL BLEND COAT",
+      "url": "https://www.zara.com/us/en/regular-fit-wool-blend-coat-p05070100.html?sv1=affiliate&sv_campaign_id=1454410&awc=21094_1777423662_b589fce8f1f9d100e71c21795766d692&utm_source=awin&utm_medium=affiliation&utm_campaign=1454410&utm_content=Giftful&utm_term=21094_1777423662_b589fce8f1f9d100e71c21795766d692",
+      "store": "zara.com",
+      "status": "ok",
+      "reason": null
+    },
+    {
+      "name": "The North Face Full Zip Cabin Fleece in black",
+      "url": "https://www.asos.com/us/the-north-face/the-north-face-full-zip-cabin-fleece-in-black/prd/208018284?acquisitionsource=pasteboard",
+      "store": "asos.com",
+      "status": "ok",
+      "reason": null
+    }
+  ]
+}

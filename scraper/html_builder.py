@@ -3,7 +3,7 @@ from __future__ import annotations
 import html
 from datetime import datetime
 from typing import Iterable, List
-from urllib.parse import quote
+from urllib.parse import quote, urlparse
 from zoneinfo import ZoneInfo
 
 from filter import Deal, DealType
@@ -291,19 +291,30 @@ def _review_section_html(review_items) -> str:
         item = entry["item"]
         reasons = entry.get("reasons") or []
         reasons_html = "; ".join(html.escape(r) for r in reasons)
-        url_attr = html.escape(item.url) if item.url else "#"
+        link_target = (
+            getattr(item, "category_url", "") or item.url or GIFTFUL_URL
+        )
+        origin = urlparse(item.url).netloc if item.url else ""
+        origin_html = (
+            f'<span class="review-origin">{html.escape(origin)}</span>'
+            if origin
+            else ""
+        )
         rows.append(
             f'<li class="review-row">'
-            f'<a href="{url_attr}" target="_blank" rel="noopener noreferrer">'
+            f'<a href="{html.escape(link_target)}" target="_blank" rel="noopener noreferrer">'
             f'{html.escape(item.name)}</a>'
+            f'<span class="review-meta">'
+            f'{origin_html}'
             f'<span class="review-reason">{reasons_html}</span>'
+            f'</span>'
             f"</li>"
         )
     return (
         '<section class="review-section" aria-label="Review manually">'
         '<h2 class="review-heading">Review manually</h2>'
-        '<p class="review-note">These items had bad links or wrong product matches '
-        'and were not counted as deals. Remove or update them in Giftful.</p>'
+        '<p class="review-note">Click an item name to open it in your Giftful list — '
+        'easiest place to edit or remove it.</p>'
         f'<ul class="review-list">{"".join(rows)}</ul>'
         "</section>"
     )
@@ -330,15 +341,27 @@ body{
   margin:0;color:var(--ink);line-height:1.55;-webkit-font-smoothing:antialiased;
 }
 header.site{
-  max-width:1200px;margin:0 auto;padding:32px 24px 16px;
-  display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;
+  max-width:1200px;margin:0 auto;padding:40px 24px 20px;
+  display:flex;flex-direction:column;align-items:center;gap:12px;text-align:center;
 }
-header.site h1{
+.brand{
+  display:inline-flex;flex-direction:column;align-items:center;gap:8px;
+  text-decoration:none;color:var(--brand);
+}
+.brand-mark{
+  display:block;
+  width:clamp(180px,28vw,280px);height:auto;
+}
+.brand-tagline{
   font-family:Quicksand,-apple-system,BlinkMacSystemFont,system-ui,sans-serif;
-  font-size:clamp(24px,3vw,34px);letter-spacing:-.01em;margin:0;
-  font-weight:700;color:var(--brand);
+  font-size:11px;font-weight:700;
+  color:var(--muted);
+  text-transform:uppercase;letter-spacing:.28em;
 }
-header.site .meta{color:var(--muted);font-size:13px;display:flex;gap:14px;flex-wrap:wrap;align-items:center}
+header.site .meta{
+  color:var(--muted);font-size:12px;
+  display:flex;justify-content:center;gap:16px;flex-wrap:wrap;align-items:center;
+}
 header.site .meta a{color:var(--accent);text-decoration:none}
 header.site .meta a:hover{text-decoration:underline}
 main{max-width:1200px;margin:0 auto;padding:0 24px 64px}
@@ -424,15 +447,19 @@ main{max-width:1200px;margin:0 auto;padding:0 24px 64px}
 .review-row{display:flex;flex-direction:column;gap:2px;padding:10px 0;border-top:1px solid var(--line)}
 .review-row:first-child{border-top:none;padding-top:0}
 .review-row a{color:var(--ink);text-decoration:none;font-size:14px}
-.review-row a:hover{text-decoration:underline}
+.review-row a:hover{text-decoration:underline;color:var(--accent)}
+.review-meta{display:flex;gap:10px;flex-wrap:wrap;align-items:baseline;font-size:12px;color:var(--muted)}
+.review-origin{color:var(--muted);font-size:11px;font-family:ui-monospace,SFMono-Regular,Menlo,monospace}
+.review-origin::after{content:"·";margin-left:10px;color:var(--line)}
 .review-reason{color:var(--muted);font-size:12px}
 footer.site{
   max-width:1200px;margin:0 auto;padding:24px;
   color:var(--muted);font-size:12px;border-top:1px solid var(--line);
 }
 @media (max-width:540px){
-  header.site{padding:24px 18px 12px;gap:8px}
-  header.site h1{font-size:22px}
+  header.site{padding:28px 18px 14px;gap:10px}
+  .brand-mark{width:170px}
+  .brand-tagline{font-size:10px;letter-spacing:.24em}
   main{padding:0 18px 48px}
   .grid{grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px}
 }
@@ -497,7 +524,8 @@ def render(deals: List[Deal], generated_at: datetime, review_items=None) -> str:
         '<meta charset="utf-8"/>'
         '<meta name="viewport" content="width=device-width,initial-scale=1"/>'
         '<meta name="color-scheme" content="dark"/>'
-        f"<title>Today's giftful Deals — {html.escape(timestamp_et)}</title>"
+        f"<title>giftful deals — {html.escape(timestamp_et)}</title>"
+        '<link rel="icon" type="image/png" href="giftful_logo.png"/>'
         '<link rel="preconnect" href="https://fonts.googleapis.com"/>'
         '<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>'
         '<link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@600;700&display=swap" rel="stylesheet"/>'
@@ -505,10 +533,12 @@ def render(deals: List[Deal], generated_at: datetime, review_items=None) -> str:
         "</head>"
         "<body>"
         '<header class="site">'
-        "<h1>Today's giftful Deals</h1>"
+        f'<a href="{html.escape(GIFTFUL_URL)}" class="brand" target="_blank" rel="noopener noreferrer" aria-label="Open Giftful list">'
+        '<img class="brand-mark" src="giftful_logo.png" alt="giftful" width="280" height="95"/>'
+        '<span class="brand-tagline">Today\'s deals</span>'
+        '</a>'
         '<div class="meta">'
         f'<span>Last updated {html.escape(timestamp_et)}</span>'
-        f'<a href="{html.escape(GIFTFUL_URL)}" target="_blank" rel="noopener noreferrer">Visit Giftful list →</a>'
         "</div>"
         "</header>"
         f"<main>{body}</main>"

@@ -150,12 +150,31 @@ def test_empty_state_rendered_when_zero_deals():
     assert "ET" in empty.get_text()
 
 
-def test_title_and_eastern_time_timestamp():
-    html = render([_deal()], generated_at=NOW)
-    # Branded title with intentional lowercase 'giftful'
-    assert "Today's giftful Deals" in html
-    # ET timestamp present
-    assert "ET" in html
+def test_header_renders_giftful_wordmark_image_and_tagline():
+    html_out = render([_deal()], generated_at=NOW)
+    soup = BeautifulSoup(html_out, "lxml")
+    header = soup.select_one("header.site")
+    assert header is not None
+    # Real giftful wordmark as PNG (embedded alongside index.html)
+    logo = header.select_one("img.brand-mark")
+    assert logo is not None
+    assert logo.get("src") == "giftful_logo.png"
+    assert "giftful" in (logo.get("alt") or "").lower()
+    # Tagline beneath the wordmark
+    tagline = header.select_one(".brand-tagline")
+    assert tagline is not None
+    assert "today" in tagline.get_text().lower()
+    # ET timestamp still shown in meta
+    assert "ET" in html_out
+
+
+def test_header_is_centered():
+    html_out = render([_deal()], generated_at=NOW)
+    # Centered column layout on header.site
+    assert "header.site" in html_out
+    # Centering signals: flex column + text-align center
+    assert "flex-direction:column" in html_out
+    assert "text-align:center" in html_out
 
 
 def test_dark_theme_in_css():
@@ -164,21 +183,15 @@ def test_dark_theme_in_css():
     assert "background:#0e0f10" in html or "--bg:#0e0f10" in html
 
 
-def test_quicksand_font_loaded_for_title():
-    html = render([_deal()], generated_at=NOW)
-    # Google Fonts link present
-    assert "fonts.googleapis.com" in html
-    assert "Quicksand" in html
-
-
 def test_giftful_link_in_header():
-    html = render([_deal()], generated_at=NOW)
-    soup = BeautifulSoup(html, "lxml")
+    html_out = render([_deal()], generated_at=NOW)
+    soup = BeautifulSoup(html_out, "lxml")
     header = soup.select_one("header.site")
     assert header is not None
+    # The wordmark image is now the link to the giftful list
     link = header.select_one("a[href*='giftful.com']")
     assert link is not None
-    assert "Giftful" in link.get_text()
+    assert link.select_one("img.brand-mark") is not None
 
 
 def test_rerun_workflow_link_in_footer():
@@ -299,6 +312,59 @@ def test_multi_store_card_data_store_includes_all_domains():
     domains = card["data-store"].split()
     assert "amazon.com" in domains
     assert "bestbuy.com" in domains
+
+
+def test_review_section_links_to_category_url_when_present():
+    item = Item(
+        name="Beats Powerbeats Pro 2",
+        url="https://www.amazon.com/dp/B0DT2344N3?tag=giftful04-20",
+        listed_price=199.0,
+        image_url="",
+        category="Tech",
+        category_url="https://giftful.com/wishlists/tech",
+    )
+    review_items = [{"item": item, "reasons": ["product name mismatch (score 0.00)"]}]
+    html_out = render([_deal()], generated_at=NOW, review_items=review_items)
+    soup = BeautifulSoup(html_out, "lxml")
+
+    row = soup.select_one(".review-section .review-row")
+    assert row is not None
+    link = row.select_one("a")
+    assert link["href"] == "https://giftful.com/wishlists/tech"
+    assert link["target"] == "_blank"
+    assert "Beats Powerbeats Pro 2" in link.get_text()
+
+
+def test_review_section_falls_back_to_item_url_when_no_category_url():
+    item = Item(
+        name="Some Item",
+        url="https://retailer.example.com/x",
+        listed_price=50.0,
+        image_url="",
+    )
+    review_items = [{"item": item, "reasons": ["dead link (404)"]}]
+    html_out = render([_deal()], generated_at=NOW, review_items=review_items)
+    soup = BeautifulSoup(html_out, "lxml")
+
+    link = soup.select_one(".review-section .review-row a")
+    assert link["href"] == "https://retailer.example.com/x"
+
+
+def test_review_section_shows_origin_retailer_domain():
+    item = Item(
+        name="Tom Ford FT5737-B",
+        url="https://www.smartbuyglasses.com/designer-eyeglasses/Tom-Ford/FT5737.html",
+        listed_price=300.0,
+        image_url="",
+        category_url="https://giftful.com/wishlists/eyewear",
+    )
+    review_items = [{"item": item, "reasons": ["product name mismatch (score 0.00)"]}]
+    html_out = render([_deal()], generated_at=NOW, review_items=review_items)
+    soup = BeautifulSoup(html_out, "lxml")
+
+    origin = soup.select_one(".review-section .review-origin")
+    assert origin is not None
+    assert "smartbuyglasses.com" in origin.get_text()
 
 
 def test_filter_bar_includes_all_store_domains_from_multi_store():

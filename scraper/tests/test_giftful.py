@@ -157,6 +157,24 @@ def test_parse_items_sets_category_name_when_provided(read_fixture):
     assert all(i.category == "Accessories" for i in items)
 
 
+def test_parse_items_propagates_category_url(read_fixture):
+    html = read_fixture("giftful_category.html")
+    items = parse_items(
+        html,
+        category_name="Accessories",
+        category_url="https://giftful.com/wishlists/abc",
+    )
+
+    # Each item carries the giftful category URL so the manage-on-giftful
+    # link in the review section can deep-link to the right page.
+    assert all(i.category_url == "https://giftful.com/wishlists/abc" for i in items)
+
+
+def test_item_category_url_defaults_to_empty():
+    item = Item(name="X", listed_price=10.0)
+    assert item.category_url == ""
+
+
 def test_parse_items_skips_claimed_items(read_fixture):
     html = read_fixture("giftful_category_claimed.html")
     items = parse_items(html)

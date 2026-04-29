@@ -89,6 +89,7 @@ def update_item(
         "name": name,
         "last_seen": today.isoformat(),
         "in_stock": bool(in_stock),
+        "prev_in_stock": prev.get("in_stock") if prev else None,
         "current_price": current_price,
         "listed_price": listed_price,
         "sold_out_since": sold_out_since,
@@ -101,4 +102,8 @@ def is_back_in_stock(prev_state: dict, url: str, currently_in_stock: bool) -> bo
     prev = (prev_state or {}).get("items", {}).get(url)
     if not prev:
         return False
-    return prev.get("in_stock") is False
+    if prev.get("in_stock") is False:
+        return True
+    if prev.get("prev_in_stock") is False:
+        return True
+    return False

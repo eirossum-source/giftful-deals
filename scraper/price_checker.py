@@ -23,7 +23,7 @@ USER_AGENTS = [
 ]
 
 
-_PRICE_NUM_RE = re.compile(r"(\d{1,3}(?:,\d{3})*(?:\.\d{1,2})?|\d+\.\d+|\d+)")
+_PRICE_NUM_RE = re.compile(r"(\d+(?:\.\d{1,2})?)")
 
 
 @dataclass
@@ -154,7 +154,11 @@ def extract_price(html: str) -> Optional[float]:
 
 
 def _fetch_via_playwright(url: str, page) -> Optional[str]:
-    page.goto(url, wait_until="domcontentloaded", timeout=30_000)
+    page.goto(url, wait_until="load", timeout=30_000)
+    try:
+        page.wait_for_load_state("networkidle", timeout=8_000)
+    except Exception:
+        pass
     return page.content()
 
 

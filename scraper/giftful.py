@@ -45,6 +45,7 @@ class Item:
         listed_price: float,
         image_url: str = "",
         category: str = "",
+        category_url: str = "",
         store_urls: Optional[List[StoreLink]] = None,
         url: str = "",
     ):
@@ -52,6 +53,7 @@ class Item:
         self.listed_price = listed_price
         self.image_url = image_url
         self.category = category
+        self.category_url = category_url
         self.store_urls = list(store_urls) if store_urls else []
         self._url = url
 
@@ -117,7 +119,7 @@ def parse_categories(html: str, base_url: str) -> List[Category]:
     return out
 
 
-def parse_items(html: str, category_name: str = "") -> List[Item]:
+def parse_items(html: str, category_name: str = "", category_url: str = "") -> List[Item]:
     if not html:
         return []
     soup = BeautifulSoup(html, "lxml")
@@ -159,6 +161,7 @@ def parse_items(html: str, category_name: str = "") -> List[Item]:
                 listed_price=price,
                 image_url=thumb,
                 category=category_name,
+                category_url=category_url,
             )
         )
     return out
@@ -263,7 +266,9 @@ def fetch_list(profile_url: str = GIFTFUL_URL, session=None) -> List[Item]:
 
         for cat in categories:
             page.goto(cat.url, wait_until="networkidle", timeout=60_000)
-            items = parse_items(page.content(), category_name=cat.name)
+            items = parse_items(
+                page.content(), category_name=cat.name, category_url=cat.url
+            )
             cards = page.locator('button:has(img[alt="Feature Image"]):not(:has(img[alt="Claimed"]))')
             n = min(cards.count(), len(items))
 

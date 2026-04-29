@@ -67,6 +67,19 @@ _CHALLENGE_PHRASES = (
     "cloudflare",
     "your request was blocked",
     "robot or human",
+    # Amazon Robot Check / automated-traffic interstitial
+    "robot check",
+    "type the characters",
+    "enter the characters",
+    "sorry, we just need to make sure",
+    "discuss automated access",
+    "automated access to amazon",
+    # Google / generic anti-bot interstitial
+    "unusual traffic",
+    "automated traffic",
+    # PerimeterX / DataDome (Finish Line, Nike, etc.)
+    "press and hold",
+    "verify you are a human",
 )
 
 _MIN_IDENTIFIER_LEN = 10

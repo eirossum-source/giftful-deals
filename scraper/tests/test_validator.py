@@ -169,6 +169,53 @@ def test_identity_passes_on_captcha_page():
     assert score == 0.0
 
 
+def test_identity_passes_on_amazon_robot_check_page():
+    # Amazon's automated-traffic challenge — common cause of 0.00 score
+    # false positives in review_log.json.
+    html = """
+    <html><head><title>Amazon.com</title></head>
+    <body><h1>Robot Check</h1>
+    <p>Enter the characters you see below</p>
+    <p>Sorry, we just need to make sure you're not a robot.</p>
+    <p>To discuss automated access to Amazon data please contact api-services-support@amazon.com.</p>
+    </body></html>
+    """
+    matches, score = check_identity("Beats Powerbeats Pro 2 Wireless Earbuds", html)
+    assert matches is True
+    assert score == 0.0
+
+
+def test_identity_passes_on_amazon_type_characters_challenge():
+    html = """
+    <html><head><title>Amazon.com</title></head>
+    <body><p>Type the characters you see in this image.</p></body></html>
+    """
+    matches, score = check_identity("Real Product Name", html)
+    assert matches is True
+    assert score == 0.0
+
+
+def test_identity_passes_on_unusual_traffic_page():
+    html = """
+    <html><head><title>Sorry...</title></head>
+    <body><p>Our systems have detected unusual traffic from your computer network.</p></body></html>
+    """
+    matches, score = check_identity("Real Product Name", html)
+    assert matches is True
+    assert score == 0.0
+
+
+def test_identity_passes_on_press_and_hold_challenge():
+    # PerimeterX / DataDome flavor used by some retailers (Finish Line uses similar)
+    html = """
+    <html><head><title>Please verify you are a human</title></head>
+    <body><p>Press and hold the button to verify you are human.</p></body></html>
+    """
+    matches, score = check_identity("Men's Birkenstock Essentials Arizona", html)
+    assert matches is True
+    assert score == 0.0
+
+
 def test_identity_passes_on_access_denied_page():
     html = """
     <html><head><title>Access Denied</title></head>

@@ -160,6 +160,100 @@ def test_is_back_in_stock_false_when_url_unknown():
     assert is_back_in_stock(prev, "https://shop.example.com/x", True) is False
 
 
+def test_update_item_records_prev_in_stock_from_existing_entry():
+    # Run N-1 saw the item out of stock. Run N stamps in_stock=False and
+    # prev_in_stock=True (the value before this run).
+    state = {
+        "items": {
+            "https://shop.example.com/x": {
+                "name": "Widget",
+                "last_seen": "2026-04-19",
+                "in_stock": True,
+                "current_price": 24.99,
+                "listed_price": 29.99,
+                "sold_out_since": None,
+            }
+        }
+    }
+    update_item(
+        state,
+        url="https://shop.example.com/x",
+        name="Widget",
+        in_stock=False,
+        current_price=None,
+        listed_price=29.99,
+        today=date(2026, 4, 26),
+    )
+    item = state["items"]["https://shop.example.com/x"]
+    assert item["in_stock"] is False
+    assert item["prev_in_stock"] is True
+
+
+def test_update_item_prev_in_stock_none_for_brand_new_url():
+    state = {"items": {}}
+    update_item(
+        state,
+        url="https://shop.example.com/new",
+        name="New Widget",
+        in_stock=True,
+        current_price=49.0,
+        listed_price=49.0,
+        today=date(2026, 4, 26),
+    )
+    item = state["items"]["https://shop.example.com/new"]
+    assert item["prev_in_stock"] is None
+
+
+def test_back_in_stock_persists_for_two_consecutive_runs():
+    # Trace: oos -> in -> in -> in
+    # Run 1 (oos):  in_stock=False
+    # Run 2 (back): in_stock=True, prev_in_stock=False  -> BACK_IN_STOCK
+    # Run 3 (in):   in_stock=True, prev_in_stock=False  -> still BACK_IN_STOCK (2nd run)
+    # Run 4 (in):   in_stock=True, prev_in_stock=True   -> NOT back-in-stock anymore
+    url = "https://shop.example.com/x"
+
+    # State after Run 2 (back in stock for the first time)
+    state_after_run2 = {
+        "items": {
+            url: {
+                "in_stock": True,
+                "prev_in_stock": False,  # was oos last run
+                "sold_out_since": None,
+            }
+        }
+    }
+    # When Run 3 runs and reads state_after_run2 as prev_state:
+    assert is_back_in_stock(state_after_run2, url, True) is True
+
+    # State after Run 3 (still in stock, two runs after coming back)
+    state_after_run3 = {
+        "items": {
+            url: {
+                "in_stock": True,
+                "prev_in_stock": True,  # was in stock last run too
+                "sold_out_since": None,
+            }
+        }
+    }
+    # When Run 4 runs and reads state_after_run3 as prev_state:
+    assert is_back_in_stock(state_after_run3, url, True) is False
+
+
+def test_is_back_in_stock_handles_legacy_entries_without_prev_in_stock():
+    # Existing inventory.json entries don't have prev_in_stock — must not
+    # treat the missing field as False (no spurious BACK_IN_STOCK).
+    prev = {
+        "items": {
+            "https://shop.example.com/x": {
+                "in_stock": True,
+                "sold_out_since": None,
+                # no prev_in_stock key
+            }
+        }
+    }
+    assert is_back_in_stock(prev, "https://shop.example.com/x", True) is False
+
+
 def test_normalize_url_strips_tracking_params():
     out = normalize_url(
         "https://shop.example.com/p/widget?utm_source=email&utm_campaign=spring&color=blue"

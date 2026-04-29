@@ -5,9 +5,30 @@ import pytest
 from price_checker import (
     PriceResult,
     USER_AGENTS,
+    _to_float,
     check_price,
     extract_price,
 )
+
+
+def test_to_float_handles_thousands_separator():
+    # The Movado regression: "$1,095.00" was parsing as 109.0
+    # because the regex grabbed first 3 digits after commas were stripped.
+    assert _to_float("$1,095.00") == 1095.0
+    assert _to_float("$10,000") == 10000.0
+    assert _to_float("1,234,567.89") == 1234567.89
+    # Sanity: still works without commas
+    assert _to_float("$99.99") == 99.99
+    assert _to_float("42") == 42.0
+
+
+def test_extracts_price_with_thousands_separator():
+    html = """
+    <html><body>
+      <div class="price">$1,095.00</div>
+    </body></html>
+    """
+    assert extract_price(html) == 1095.00
 
 
 def test_extracts_jsonld_price(read_fixture):
@@ -249,6 +270,56 @@ def test_check_price_playwright_failure_returns_unavailable(mocker):
     assert result.unavailable is True
     assert result.reason == "playwright_error"
     log.error.assert_called()
+
+
+def test_check_price_playwright_waits_for_full_load(mocker):
+    # JS-heavy retailers (Finish Line, SmartBuyGlasses) need a "load" wait
+    # so titles/h1 populate before we hand HTML to check_identity. networkidle
+    # is best-effort (sites with long-poll connections never fully idle).
+    response = MagicMock()
+    response.status_code = 403
+    response.text = "forbidden"
+    session = MagicMock()
+    session.get.return_value = response
+    mocker.patch("price_checker.time.sleep")
+
+    page = MagicMock()
+    page.content.return_value = _amazon_html()
+
+    check_price(
+        "https://blocked.example.com/x",
+        session=session,
+        error_log=MagicMock(),
+        page=page,
+    )
+
+    assert page.goto.call_args.kwargs.get("wait_until") == "load"
+    page.wait_for_load_state.assert_called_once_with("networkidle", timeout=8_000)
+
+
+def test_check_price_playwright_tolerates_networkidle_timeout(mocker):
+    # Some retailers never reach networkidle (analytics long-polls). The
+    # fetch must succeed anyway by returning whatever DOM is loaded.
+    response = MagicMock()
+    response.status_code = 403
+    response.text = "forbidden"
+    session = MagicMock()
+    session.get.return_value = response
+    mocker.patch("price_checker.time.sleep")
+
+    page = MagicMock()
+    page.wait_for_load_state.side_effect = Exception("timeout 8000ms exceeded")
+    page.content.return_value = _amazon_html()
+
+    result = check_price(
+        "https://blocked.example.com/x",
+        session=session,
+        error_log=MagicMock(),
+        page=page,
+    )
+
+    assert result.unavailable is False
+    assert result.current_price == 42.50
 
 
 def test_check_price_playwright_returns_html_for_validator(mocker):

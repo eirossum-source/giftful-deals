@@ -56,11 +56,43 @@ def _content_tokens(s: str) -> set:
     return {t for t in raw if len(t) > 2 and t not in _STOPWORDS}
 
 
+_CHALLENGE_PHRASES = (
+    "just a moment",
+    "checking your browser",
+    "are you human",
+    "verify you are human",
+    "captcha",
+    "access denied",
+    "request unsuccessful",
+    "cloudflare",
+    "your request was blocked",
+    "robot or human",
+)
+
+_MIN_IDENTIFIER_LEN = 10
+
+
+def _looks_like_challenge_page(soup: BeautifulSoup) -> bool:
+    body_text = soup.get_text(" ", strip=True)[:1500].lower()
+    return any(p in body_text for p in _CHALLENGE_PHRASES)
+
+
 def check_identity(giftful_name: str, html: str) -> Tuple[bool, float]:
+    """Returns (matches, score).
+
+    Returns False only when we have substantial page content AND zero
+    meaningful overlap with the Giftful product name. Empty pages, very
+    short titles, and bot-challenge pages all return (True, 0.0) — those
+    are "couldn't read" not "wrong product." Lets us flag genuinely-wrong
+    products while not punishing the scraper for getting bot-blocked.
+    """
     if not giftful_name or not html or not html.strip():
-        return False, 0.0
+        return True, 0.0
 
     soup = BeautifulSoup(html, "lxml")
+
+    if _looks_like_challenge_page(soup):
+        return True, 0.0
 
     candidates = []
     if soup.title and soup.title.get_text(strip=True):
@@ -73,11 +105,14 @@ def check_identity(giftful_name: str, html: str) -> Tuple[bool, float]:
         candidates.append(h1.get_text(strip=True))
 
     if not candidates:
-        return False, 0.0
+        return True, 0.0
+
+    if max(len(c) for c in candidates) < _MIN_IDENTIFIER_LEN:
+        return True, 0.0
 
     name_toks = _content_tokens(giftful_name)
     if not name_toks:
-        return False, 0.0
+        return True, 0.0
 
     best = 0.0
     for cand in candidates:
@@ -85,8 +120,6 @@ def check_identity(giftful_name: str, html: str) -> Tuple[bool, float]:
         if not cand_toks:
             continue
         overlap = len(name_toks & cand_toks)
-        # Use the smaller side to allow short retailer titles to still match
-        # long Giftful names when the meaningful tokens overlap.
         denom = min(len(name_toks), len(cand_toks))
         score = overlap / denom if denom else 0.0
         if score > best:

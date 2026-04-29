@@ -152,8 +152,8 @@ def test_empty_state_rendered_when_zero_deals():
 
 def test_title_and_eastern_time_timestamp():
     html = render([_deal()], generated_at=NOW)
-    # Generic title (no personal info)
-    assert ">Deals<" in html
+    # Branded title with intentional lowercase 'giftful'
+    assert "Today's giftful Deals" in html
     # ET timestamp present
     assert "ET" in html
 
@@ -164,6 +164,13 @@ def test_dark_theme_in_css():
     assert "background:#0e0f10" in html or "--bg:#0e0f10" in html
 
 
+def test_quicksand_font_loaded_for_title():
+    html = render([_deal()], generated_at=NOW)
+    # Google Fonts link present
+    assert "fonts.googleapis.com" in html
+    assert "Quicksand" in html
+
+
 def test_giftful_link_in_header():
     html = render([_deal()], generated_at=NOW)
     soup = BeautifulSoup(html, "lxml")
@@ -172,6 +179,16 @@ def test_giftful_link_in_header():
     link = header.select_one("a[href*='giftful.com']")
     assert link is not None
     assert "Giftful" in link.get_text()
+
+
+def test_rerun_workflow_link_in_footer():
+    html = render([_deal()], generated_at=NOW)
+    soup = BeautifulSoup(html, "lxml")
+    footer = soup.select_one("footer.site")
+    assert footer is not None
+    link = footer.select_one("a[href*='actions']")
+    assert link is not None
+    assert "github.com" in link["href"]
 
 
 def test_vanilla_js_filter_and_clipboard_hooks():

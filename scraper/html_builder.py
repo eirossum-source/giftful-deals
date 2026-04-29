@@ -318,6 +318,7 @@ _CSS = """
   --muted:#9aa0a6;
   --accent:#3aa86b;
   --accent-soft:#1f2e26;
+  --brand:#52A352;
   --drop:#3aa86b;
   --promo:#5b8def;
   --stock:#e0a23a;
@@ -332,7 +333,11 @@ header.site{
   max-width:1200px;margin:0 auto;padding:32px 24px 16px;
   display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;
 }
-header.site h1{font-size:clamp(22px,3vw,32px);letter-spacing:-.01em;margin:0;font-weight:700}
+header.site h1{
+  font-family:Quicksand,-apple-system,BlinkMacSystemFont,system-ui,sans-serif;
+  font-size:clamp(24px,3vw,34px);letter-spacing:-.01em;margin:0;
+  font-weight:700;color:var(--brand);
+}
 header.site .meta{color:var(--muted);font-size:13px;display:flex;gap:14px;flex-wrap:wrap;align-items:center}
 header.site .meta a{color:var(--accent);text-decoration:none}
 header.site .meta a:hover{text-decoration:underline}
@@ -492,12 +497,15 @@ def render(deals: List[Deal], generated_at: datetime, review_items=None) -> str:
         '<meta charset="utf-8"/>'
         '<meta name="viewport" content="width=device-width,initial-scale=1"/>'
         '<meta name="color-scheme" content="dark"/>'
-        f"<title>Deals — {html.escape(timestamp_et)}</title>"
+        f"<title>Today's giftful Deals — {html.escape(timestamp_et)}</title>"
+        '<link rel="preconnect" href="https://fonts.googleapis.com"/>'
+        '<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>'
+        '<link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@600;700&display=swap" rel="stylesheet"/>'
         f"<style>{_CSS}</style>"
         "</head>"
         "<body>"
         '<header class="site">'
-        "<h1>Deals</h1>"
+        "<h1>Today's giftful Deals</h1>"
         '<div class="meta">'
         f'<span>Last updated {html.escape(timestamp_et)}</span>'
         f'<a href="{html.escape(GIFTFUL_URL)}" target="_blank" rel="noopener noreferrer">Visit Giftful list →</a>'
@@ -505,7 +513,9 @@ def render(deals: List[Deal], generated_at: datetime, review_items=None) -> str:
         "</header>"
         f"<main>{body}</main>"
         '<footer class="site">'
-        "Updated automatically every Monday."
+        "Updated automatically every Monday. "
+        '<a href="https://github.com/eirossum-source/giftful-deals/actions/workflows/run_deals.yml" '
+        'target="_blank" rel="noopener noreferrer" style="color:var(--accent)">Run manually</a>.'
         "</footer>"
         f"<script>{_JS}</script>"
         "</body></html>"

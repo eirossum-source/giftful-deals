@@ -56,6 +56,7 @@ def test_happy_path_writes_file_and_summary(tmp_path, capsys):
         output_path=output,
         log_path=log_path,
         state_path=tmp_path / "state.json",
+        review_log_path=tmp_path / "review_log.json",
         now=datetime(2026, 4, 18, 7, 0, 0),
     )
 
@@ -95,6 +96,7 @@ def test_item_error_does_not_crash(tmp_path):
         output_path=tmp_path / "index.html",
         log_path=tmp_path / "errors.log",
         state_path=tmp_path / "state.json",
+        review_log_path=tmp_path / "review_log.json",
         now=datetime(2026, 4, 18),
     )
 
@@ -123,6 +125,7 @@ def test_zero_deals_still_sends_email(tmp_path):
         output_path=tmp_path / "index.html",
         log_path=tmp_path / "errors.log",
         state_path=tmp_path / "state.json",
+        review_log_path=tmp_path / "review_log.json",
         now=datetime(2026, 4, 18),
     )
 
@@ -149,6 +152,7 @@ def test_zero_deals_prints_diagnostic_price_samples(tmp_path, capsys):
         output_path=tmp_path / "index.html",
         log_path=tmp_path / "errors.log",
         state_path=tmp_path / "state.json",
+        review_log_path=tmp_path / "review_log.json",
         now=datetime(2026, 4, 18),
     )
 
@@ -177,6 +181,7 @@ def test_nonzero_deals_omits_diagnostic_samples(tmp_path, capsys):
         output_path=tmp_path / "index.html",
         log_path=tmp_path / "errors.log",
         state_path=tmp_path / "state.json",
+        review_log_path=tmp_path / "review_log.json",
         now=datetime(2026, 4, 18),
     )
 
@@ -244,6 +249,7 @@ def test_multi_store_checks_each_store_url(tmp_path):
         output_path=tmp_path / "index.html",
         log_path=tmp_path / "errors.log",
         state_path=tmp_path / "state.json",
+        review_log_path=tmp_path / "review_log.json",
         now=datetime(2026, 4, 18),
     )
 
@@ -268,6 +274,7 @@ def test_multi_store_deal_has_store_evaluations(tmp_path):
         output_path=tmp_path / "index.html",
         log_path=tmp_path / "errors.log",
         state_path=tmp_path / "state.json",
+        review_log_path=tmp_path / "review_log.json",
         now=datetime(2026, 4, 18),
     )
 
@@ -297,6 +304,7 @@ def test_multi_store_winner_is_lowest_price(tmp_path):
         output_path=tmp_path / "index.html",
         log_path=tmp_path / "errors.log",
         state_path=tmp_path / "state.json",
+        review_log_path=tmp_path / "review_log.json",
         now=datetime(2026, 4, 18),
     )
 
@@ -327,6 +335,7 @@ def test_fallback_single_url_when_no_store_urls(tmp_path):
         output_path=tmp_path / "index.html",
         log_path=tmp_path / "errors.log",
         state_path=tmp_path / "state.json",
+        review_log_path=tmp_path / "review_log.json",
         now=datetime(2026, 4, 18),
     )
 
@@ -358,6 +367,7 @@ def test_run_threads_page_kwarg_to_check_price(tmp_path):
         output_path=tmp_path / "index.html",
         log_path=tmp_path / "errors.log",
         state_path=tmp_path / "state.json",
+        review_log_path=tmp_path / "review_log.json",
         now=datetime(2026, 4, 18),
         page=fake_page,
     )
@@ -382,6 +392,7 @@ def test_run_threads_page_kwarg_for_multi_store(tmp_path):
         output_path=tmp_path / "index.html",
         log_path=tmp_path / "errors.log",
         state_path=tmp_path / "state.json",
+        review_log_path=tmp_path / "review_log.json",
         now=datetime(2026, 4, 18),
         page=fake_page,
     )
@@ -412,6 +423,7 @@ def test_run_omits_page_kwarg_when_no_page_provided(tmp_path):
         output_path=tmp_path / "index.html",
         log_path=tmp_path / "errors.log",
         state_path=tmp_path / "state.json",
+        review_log_path=tmp_path / "review_log.json",
         now=datetime(2026, 4, 18),
     )
 
@@ -444,6 +456,7 @@ def test_validator_flags_dead_link_to_review_section(tmp_path):
         output_path=tmp_path / "index.html",
         log_path=tmp_path / "errors.log",
         state_path=tmp_path / "state.json",
+        review_log_path=tmp_path / "review_log.json",
         now=datetime(2026, 4, 26),
     )
 
@@ -481,6 +494,7 @@ def test_drops_sold_out_items_from_deals(tmp_path):
         output_path=tmp_path / "index.html",
         log_path=tmp_path / "errors.log",
         state_path=tmp_path / "state.json",
+        review_log_path=tmp_path / "review_log.json",
         now=datetime(2026, 4, 26),
     )
 
@@ -535,6 +549,7 @@ def test_marks_back_in_stock_when_state_says_was_oos(tmp_path):
         output_path=tmp_path / "index.html",
         log_path=tmp_path / "errors.log",
         state_path=state_path,
+        review_log_path=tmp_path / "review_log.json",
         now=datetime(2026, 4, 26),
     )
 
@@ -542,6 +557,55 @@ def test_marks_back_in_stock_when_state_says_was_oos(tmp_path):
     deal = sender.call_args.kwargs["deals"][0]
     from filter import DealType as _DT
     assert _DT.BACK_IN_STOCK in deal.deal_types
+
+
+def test_writes_review_log_with_per_item_status(tmp_path):
+    import json as _json
+
+    items = [
+        Item(name="Dead", url="https://shop.example.com/dead", listed_price=100.0, image_url=""),
+        Item(name="Live", url="https://shop.example.com/live", listed_price=50.0, image_url=""),
+    ]
+    fetch = MagicMock(return_value=items)
+
+    dead_html = "<html><body><h1>Page Not Found</h1></body></html>"
+    live_html = """
+    <html><head><title>Live - Shop</title></head>
+    <body><h1>Live</h1><div class="price">$40</div>
+    <button>Add to Cart</button></body></html>
+    """
+    def check_side(url, **kw):
+        if "dead" in url:
+            return PriceResult(current_price=10.0, html=dead_html)
+        return PriceResult(current_price=40.0, html=live_html)
+
+    check = MagicMock(side_effect=check_side)
+    lookup = MagicMock(return_value=[])
+    sender = MagicMock()
+    review_log_path = tmp_path / "review_log.json"
+
+    run(
+        fetch_items=fetch,
+        check_price=check,
+        lookup_coupons=lookup,
+        send_email=sender,
+        output_path=tmp_path / "index.html",
+        log_path=tmp_path / "errors.log",
+        state_path=tmp_path / "state.json",
+        review_log_path=review_log_path,
+        now=datetime(2026, 4, 28),
+    )
+
+    log = _json.loads(review_log_path.read_text())
+    assert "run_at" in log
+    assert "items" in log
+    statuses = {(e["name"], e["status"]) for e in log["items"]}
+    assert ("Dead", "review") in statuses
+    # "Live" is OK so it's in the log too with status="ok"
+    statuses_dict = {e["name"]: e for e in log["items"]}
+    assert statuses_dict["Live"]["status"] == "ok"
+    # Review item has its reason populated
+    assert "page not found" in statuses_dict["Dead"]["reason"].lower()
 
 
 def test_writes_inventory_state(tmp_path):
@@ -574,6 +638,7 @@ def test_writes_inventory_state(tmp_path):
         output_path=tmp_path / "index.html",
         log_path=tmp_path / "errors.log",
         state_path=state_path,
+        review_log_path=tmp_path / "review_log.json",
         now=datetime(2026, 4, 26),
     )
 
@@ -605,6 +670,7 @@ def test_multi_store_partial_error_still_evaluates_others(tmp_path):
         output_path=tmp_path / "index.html",
         log_path=tmp_path / "errors.log",
         state_path=tmp_path / "state.json",
+        review_log_path=tmp_path / "review_log.json",
         now=datetime(2026, 4, 18),
     )
 

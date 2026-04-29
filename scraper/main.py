@@ -58,6 +58,7 @@ def run(
     output_path: Optional[Path] = None,
     log_path: Optional[Path] = None,
     state_path: Optional[Path] = None,
+    review_log_path: Optional[Path] = None,
     now: Optional[datetime] = None,
     session=None,
     page=None,
@@ -68,6 +69,7 @@ def run(
     output_path = Path(output_path or repo_root / "docs" / "index.html")
     log_path = Path(log_path or repo_root / "errors.log")
     state_path = Path(state_path or repo_root / "state" / "inventory.json")
+    review_log_path = Path(review_log_path or repo_root / "state" / "review_log.json")
     now = now or datetime.now(timezone.utc).replace(tzinfo=None)
     session = session or requests.Session()
 
@@ -91,6 +93,7 @@ def run(
 
     deals: list[Deal] = []
     review_items: list[dict] = []
+    review_log_entries: list[dict] = []
     price_samples: list[tuple[str, float, float | None]] = []
 
     for item in items:
@@ -107,11 +110,25 @@ def run(
 
                     if status == "review":
                         review_for_item.append(f"{store.display_name}: {reason}")
+                        review_log_entries.append({
+                            "name": item.name,
+                            "url": store.url,
+                            "store": store.display_name,
+                            "status": "review",
+                            "reason": reason,
+                        })
                         # Don't touch state for review items — they're "couldn't
                         # verify," not "sold out." Let prior state stand so we
                         # don't trigger spurious back-in-stock next run.
                         continue
                     if status == "sold_out":
+                        review_log_entries.append({
+                            "name": item.name,
+                            "url": store.url,
+                            "store": store.display_name,
+                            "status": "sold_out",
+                            "reason": reason or "out of stock",
+                        })
                         update_item(
                             new_state,
                             url=normalize_url(store.url),
@@ -123,6 +140,13 @@ def run(
                         )
                         continue
 
+                    review_log_entries.append({
+                        "name": item.name,
+                        "url": store.url,
+                        "store": store.display_name,
+                        "status": "ok",
+                        "reason": None,
+                    })
                     in_stock_any = True
                     promos = lookup_coupons(store.domain, session=session, error_log=log)
                     norm = normalize_url(store.url)
@@ -165,9 +189,23 @@ def run(
 
                 if status == "review":
                     review_items.append({"item": item, "reasons": [reason]})
+                    review_log_entries.append({
+                        "name": item.name,
+                        "url": item.url,
+                        "store": item.domain,
+                        "status": "review",
+                        "reason": reason,
+                    })
                     # Don't touch state for review items — see comment above.
                     continue
                 if status == "sold_out":
+                    review_log_entries.append({
+                        "name": item.name,
+                        "url": item.url,
+                        "store": item.domain,
+                        "status": "sold_out",
+                        "reason": reason or "out of stock",
+                    })
                     update_item(
                         new_state,
                         url=norm,
@@ -179,6 +217,13 @@ def run(
                     )
                     continue
 
+                review_log_entries.append({
+                    "name": item.name,
+                    "url": item.url,
+                    "store": item.domain,
+                    "status": "ok",
+                    "reason": None,
+                })
                 promos = lookup_coupons(item.domain, session=session, error_log=log)
                 back_in_stock = is_back_in_stock(prev_state, norm, True)
                 ok, types = is_deal(item, price_result, promos, back_in_stock=back_in_stock)
@@ -211,6 +256,20 @@ def run(
     output_path.write_text(html, encoding="utf-8")
 
     save_state(state_path, new_state)
+
+    import json as _json
+    review_log_path.parent.mkdir(parents=True, exist_ok=True)
+    review_log_path.write_text(
+        _json.dumps(
+            {
+                "run_at": now.isoformat(),
+                "items": review_log_entries,
+            },
+            indent=2,
+            sort_keys=False,
+        ),
+        encoding="utf-8",
+    )
 
     if send_email is not None:
         send_email(deals=deals, today=now.date())

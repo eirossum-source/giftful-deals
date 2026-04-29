@@ -126,22 +126,92 @@ def test_identity_rejects_completely_different_product():
     assert score < 0.5
 
 
-def test_identity_rejects_when_page_has_no_title_or_h1():
+def test_identity_passes_when_page_has_no_title_or_h1():
+    # No title/h1/og means the page didn't really render anything — give
+    # benefit of doubt instead of asserting "wrong product."
     html = "<html><body><p>some text</p></body></html>"
     matches, score = check_identity("Cool Sneaker", html)
-    assert matches is False
+    assert matches is True
 
 
-def test_identity_handles_empty_html():
+def test_identity_passes_on_empty_html():
+    # Empty HTML can't be a "wrong product" claim. Treat as unknown.
     matches, score = check_identity("Cool Sneaker", "")
-    assert matches is False
+    assert matches is True
     assert score == 0.0
 
 
-def test_identity_handles_empty_giftful_name():
+def test_identity_passes_on_empty_giftful_name():
+    # No Giftful name to compare against — can't make a claim either way.
     html = "<html><head><title>x</title></head></html>"
     matches, score = check_identity("", html)
+    assert matches is True
+
+
+def test_identity_passes_on_cloudflare_challenge_page():
+    html = """
+    <html><head><title>Just a moment...</title></head>
+    <body><h1>Checking your browser before accessing</h1>
+    <p>Please wait while we verify you are human.</p></body></html>
+    """
+    matches, score = check_identity("Beats Powerbeats Pro 2 Wireless Earbuds", html)
+    assert matches is True
+    assert score == 0.0
+
+
+def test_identity_passes_on_captcha_page():
+    html = """
+    <html><head><title>Verify</title></head>
+    <body>Please complete this captcha to continue.</body></html>
+    """
+    matches, score = check_identity("Some Real Product Name Here", html)
+    assert matches is True
+    assert score == 0.0
+
+
+def test_identity_passes_on_access_denied_page():
+    html = """
+    <html><head><title>Access Denied</title></head>
+    <body><h1>Access Denied</h1><p>Your request was blocked.</p></body></html>
+    """
+    matches, score = check_identity("Some Real Product Name Here", html)
+    assert matches is True
+    assert score == 0.0
+
+
+def test_identity_passes_on_short_brand_only_title():
+    # <title>ASOS</title> is too short to identify the product. Don't claim
+    # mismatch — the page didn't really load anything to compare against.
+    html = "<html><head><title>ASOS</title></head><body></body></html>"
+    matches, score = check_identity("ASOS DESIGN baggy jeans in light wash blue", html)
+    assert matches is True
+    assert score == 0.0
+
+
+def test_identity_passes_on_empty_titles_and_no_h1():
+    html = "<html><head><title></title></head><body><p>nothing</p></body></html>"
+    matches, score = check_identity("Some Product", html)
+    assert matches is True
+    assert score == 0.0
+
+
+def test_identity_still_rejects_genuinely_different_product():
+    # Long, well-formed product page for an iPhone — Giftful name is for
+    # a totally unrelated item. This SHOULD be flagged as mismatch.
+    html = """
+    <html><head>
+      <title>Apple iPhone 15 Pro Max - 256GB - Apple Store</title>
+      <meta property="og:title" content="iPhone 15 Pro Max" />
+    </head><body>
+      <h1>iPhone 15 Pro Max</h1>
+      <div class="price">$1199</div>
+      <button>Add to Cart</button>
+      <p>The iPhone 15 Pro Max features a 6.7-inch display with ProMotion technology.</p>
+    </body></html>
+    """
+    matches, score = check_identity("Vintage Brown Suede Loafers", html)
     assert matches is False
+    assert score < 0.5
 
 
 # ---------- check_sold_out ----------

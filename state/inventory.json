@@ -3,7 +3,7 @@
     "https://cottonon.com/US/baggy-jean/3611774-123.html?dwvar_3611774-123_color=3611774-123&cgid=co&originalPid=3611774-123": {
       "current_price": 69.99,
       "in_stock": true,
-      "last_seen": "2026-04-29",
+      "last_seen": "2026-04-30",
       "listed_price": 69.99,
       "name": "Baggy Jean",
       "prev_in_stock": null,
@@ -11,17 +11,17 @@
     },
     "https://malta-apparel.com/products/servant-premium-snapback-cream-black": {
       "current_price": 44.0,
-      "in_stock": false,
-      "last_seen": "2026-04-29",
+      "in_stock": true,
+      "last_seen": "2026-04-30",
       "listed_price": 44.0,
       "name": "\u2018SERVANT\u2019 Premium SnapBack - Cream/Black",
       "prev_in_stock": null,
-      "sold_out_since": "2026-04-29"
+      "sold_out_since": null
     },
     "https://sartolane.com/products/handbraided-black-belt-1": {
       "current_price": 110.0,
       "in_stock": true,
-      "last_seen": "2026-04-29",
+      "last_seen": "2026-04-30",
       "listed_price": 110.0,
       "name": "Hand-Braided Black Leather 1\" Belt",
       "prev_in_stock": null,
@@ -30,7 +30,7 @@
     "https://shop.lululemon.com/p/men-shorts/Heavy-Soft-Jersey-Short-8-5-MD/_/prod20007502?color=72761&sz=L&skuId=158101952&cid=pdp_share_header_link_icon&cid=aff_con": {
       "current_price": null,
       "in_stock": true,
-      "last_seen": "2026-04-29",
+      "last_seen": "2026-04-30",
       "listed_price": 49.0,
       "name": "Heavyweight Soft Jersey Short 8.5\"",
       "prev_in_stock": null,
@@ -39,7 +39,7 @@
     "https://shop.lululemon.com/p/men-shorts/Pace-Breaker-Short-Linerless-Updated/_/prod11430005?color=19222&sz=L&skuId=158577303&cid=pdp_share_header_link_icon&cid=aff_con": {
       "current_price": null,
       "in_stock": true,
-      "last_seen": "2026-04-29",
+      "last_seen": "2026-04-30",
       "listed_price": 68.0,
       "name": "Pace Breaker Linerless Short 9\"",
       "prev_in_stock": null,
@@ -48,7 +48,7 @@
     "https://shop.lululemon.com/p/men-shorts/Pace-Breaker-Short-Linerless-Updated/_/prod11430005?color=33928&sz=L&skuId=153837590&cid=pdp_share_header_link_icon&cid=aff_con": {
       "current_price": null,
       "in_stock": true,
-      "last_seen": "2026-04-29",
+      "last_seen": "2026-04-30",
       "listed_price": 68.0,
       "name": "Pace Breaker Linerless Short 9\"",
       "prev_in_stock": null,
@@ -57,7 +57,7 @@
     "https://shop.lululemon.com/p/mens-trousers/Mens-Daydrift-Relaxed-Fit-Pleated-Trouser-Tall/_/prod20009307?color=0001&cid=pdp_share_header_link_icon&cid=aff_con": {
       "current_price": null,
       "in_stock": true,
-      "last_seen": "2026-04-29",
+      "last_seen": "2026-04-30",
       "listed_price": 148.0,
       "name": "Men's Daydrift Relaxed-Fit Pleated Trouser Tall",
       "prev_in_stock": null,
@@ -66,7 +66,7 @@
     "https://suitsupply.com/en-us/men/accessories/belts/black-belt/A25204.html": {
       "current_price": 99.0,
       "in_stock": true,
-      "last_seen": "2026-04-29",
+      "last_seen": "2026-04-30",
       "listed_price": 99.0,
       "name": "Black Belt",
       "prev_in_stock": null,
@@ -75,7 +75,7 @@
     "https://suitsupply.com/en-us/men/accessories/belts/dark-brown-belt/A24109.html": {
       "current_price": 99.0,
       "in_stock": true,
-      "last_seen": "2026-04-29",
+      "last_seen": "2026-04-30",
       "listed_price": 99.0,
       "name": "Dark Brown Belt",
       "prev_in_stock": null,
@@ -84,7 +84,7 @@
     "https://supernote.com/pages/supernote-nomad": {
       "current_price": null,
       "in_stock": true,
-      "last_seen": "2026-04-29",
+      "last_seen": "2026-04-30",
       "listed_price": 329.0,
       "name": "Supernote Nomad",
       "prev_in_stock": null,
@@ -93,7 +93,7 @@
     "https://www.abercrombie.com/shop/us/p/baggy-jean-58874902?faceout=model&seq=95&pagefm=navigation-grid&prodvm=navigation-grid": {
       "current_price": null,
       "in_stock": true,
-      "last_seen": "2026-04-29",
+      "last_seen": "2026-04-30",
       "listed_price": 49.97,
       "name": "Men's Baggy Workwear Jean | Men's Clearance | Abercrombie.co...",
       "prev_in_stock": null,
@@ -102,7 +102,7 @@
     "https://www.abercrombie.com/shop/us/p/baggy-jean-62043322": {
       "current_price": null,
       "in_stock": true,
-      "last_seen": "2026-04-29",
+      "last_seen": "2026-04-30",
       "listed_price": 90.0,
       "name": "Men's Baggy Jean | Men's Bottoms | Abercrombie.com",
       "prev_in_stock": null,
@@ -111,7 +111,7 @@
     "https://www.abercrombie.com/shop/us/p/baggy-workwear-pant-59860093?faceout=model&seq=16&pagefm=navigation-grid&prodvm=navigation-grid": {
       "current_price": null,
       "in_stock": true,
-      "last_seen": "2026-04-29",
+      "last_seen": "2026-04-30",
       "listed_price": 42.99,
       "name": "Men's Baggy 5-Pocket Pant | Men's Bottoms | Abercrombie.com",
       "prev_in_stock": null,
@@ -120,7 +120,7 @@
     "https://www.abercrombie.com/shop/us/p/long-sleeve-classic-waffle-tee-61005322?categoryId=12202&faceout=model&seq=06&pagefm=navigation-grid&prodvm=navigation-grid": {
       "current_price": null,
       "in_stock": true,
-      "last_seen": "2026-04-29",
+      "last_seen": "2026-04-30",
       "listed_price": 50.0,
       "name": "Men's Long-Sleeve Classic Waffle Tee | Men's | Abercrombie.c...",
       "prev_in_stock": null,
@@ -129,7 +129,7 @@
     "https://www.abercrombie.com/shop/us/p/long-sleeve-premium-heavyweight-20-tee-61005329?categoryId=12202&faceout=model&seq=11&pagefm=navigation-grid&prodvm=navigation-grid": {
       "current_price": null,
       "in_stock": true,
-      "last_seen": "2026-04-29",
+      "last_seen": "2026-04-30",
       "listed_price": 37.5,
       "name": "Men's Long-Sleeve Premium Heavyweight 2.0 Tee | Men's | Aber...",
       "prev_in_stock": null,
@@ -138,16 +138,43 @@
     "https://www.abercrombie.com/shop/us/p/premium-heavyweight-20-tee-58965824?categoryId=12202&faceout=life&seq=15&pagefm=navigation-grid&prodvm=navigation-grid": {
       "current_price": null,
       "in_stock": true,
-      "last_seen": "2026-04-29",
+      "last_seen": "2026-04-30",
       "listed_price": 40.0,
       "name": "Men's Premium Heavyweight 2.0 Tee | Men's | Abercrombie.com",
+      "prev_in_stock": null,
+      "sold_out_since": null
+    },
+    "https://www.amazon.com/dp/B0BZWRSRWV?th=1&psc=1": {
+      "current_price": 59.99,
+      "in_stock": true,
+      "last_seen": "2026-04-30",
+      "listed_price": 59.99,
+      "name": "Ring Battery Doorbell (newest model), Home or business secur...",
+      "prev_in_stock": null,
+      "sold_out_since": null
+    },
+    "https://www.amazon.com/dp/B0CD7F5NPN?th=1&psc=1": {
+      "current_price": 30.68,
+      "in_stock": true,
+      "last_seen": "2026-04-30",
+      "listed_price": 30.68,
+      "name": "WateLves Barefoot Water Shoes Women Men Minimalist Comfortab...",
+      "prev_in_stock": null,
+      "sold_out_since": null
+    },
+    "https://www.amazon.com/dp/B0D68XZY2S?th=1&psc=1": {
+      "current_price": 89.96,
+      "in_stock": true,
+      "last_seen": "2026-04-30",
+      "listed_price": 89.96,
+      "name": "Norelco Philips All-in-One 7000 Series 23-Piece Trimmer - El...",
       "prev_in_stock": null,
       "sold_out_since": null
     },
     "https://www.amazon.com/dp/B0D8FH3W7C?th=1&psc=1": {
       "current_price": 129.0,
       "in_stock": true,
-      "last_seen": "2026-04-29",
+      "last_seen": "2026-04-30",
       "listed_price": 101.4,
       "name": "Trezor Safe 5 - Crypto Hardware Wallet",
       "prev_in_stock": null,
@@ -156,7 +183,7 @@
     "https://www.amazon.com/dp/B0DT2344N3?th=1&psc=1": {
       "current_price": 249.0,
       "in_stock": true,
-      "last_seen": "2026-04-29",
+      "last_seen": "2026-04-30",
       "listed_price": 249.0,
       "name": "Beats Powerbeats Pro 2 - Wireless Noise Cancelling Workout E...",
       "prev_in_stock": null,
@@ -165,7 +192,7 @@
     "https://www.apple.com/shop/buy-airpods/airpods-pro-3": {
       "current_price": 249.0,
       "in_stock": true,
-      "last_seen": "2026-04-29",
+      "last_seen": "2026-04-30",
       "listed_price": 249.0,
       "name": "AirPods Pro 3",
       "prev_in_stock": null,
@@ -174,7 +201,7 @@
     "https://www.asos.com/us/4505/4505-icon-cotton-oversized-pump-training-tank-with-quick-dry-finish-in-off-white/prd/209562162": {
       "current_price": null,
       "in_stock": true,
-      "last_seen": "2026-04-29",
+      "last_seen": "2026-04-30",
       "listed_price": 27.99,
       "name": "4505 Icon cotton oversized pump training tank with quick dry...",
       "prev_in_stock": null,
@@ -183,7 +210,7 @@
     "https://www.asos.com/us/4505/4505-icon-heavyweight-cotton-oversized-long-sleeve-t-shirt-with-quick-dry-finish-in-off-white/prd/209570706": {
       "current_price": null,
       "in_stock": true,
-      "last_seen": "2026-04-29",
+      "last_seen": "2026-04-30",
       "listed_price": 34.99,
       "name": "4505 Icon heavyweight cotton oversized long sleeve T-shirt w...",
       "prev_in_stock": null,
@@ -192,7 +219,7 @@
     "https://www.asos.com/us/4505/4505-icon-heavyweight-cotton-oversized-t-shirt-with-quick-dry-finish-in-off-white/prd/207632239": {
       "current_price": null,
       "in_stock": true,
-      "last_seen": "2026-04-29",
+      "last_seen": "2026-04-30",
       "listed_price": 29.99,
       "name": "4505 Icon heavyweight cotton oversized t-shirt with quick dr...",
       "prev_in_stock": null,
@@ -201,7 +228,7 @@
     "https://www.asos.com/us/4505/4505-icon-heavyweight-cotton-oversized-t-shirt-with-quick-dry-finish-in-off-white/prd/209567035": {
       "current_price": null,
       "in_stock": true,
-      "last_seen": "2026-04-29",
+      "last_seen": "2026-04-30",
       "listed_price": 29.99,
       "name": "4505 Icon heavyweight cotton oversized t-shirt with quick dr...",
       "prev_in_stock": null,
@@ -210,7 +237,7 @@
     "https://www.asos.com/us/4505/4505-icon-quick-dry-mesh-training-t-shirt-in-black/prd/205579830": {
       "current_price": null,
       "in_stock": true,
-      "last_seen": "2026-04-29",
+      "last_seen": "2026-04-30",
       "listed_price": 22.99,
       "name": "4505 Icon quick dry mesh training T-shirt in black",
       "prev_in_stock": null,
@@ -219,7 +246,7 @@
     "https://www.asos.com/us/4505/4505-long-sleeve-oversized-cotton-training-t-shirt-with-quick-dry-finish-in-off-white/prd/209298511": {
       "current_price": 26.24,
       "in_stock": true,
-      "last_seen": "2026-04-29",
+      "last_seen": "2026-04-30",
       "listed_price": 34.99,
       "name": "4505 long sleeve oversized cotton training T-shirt with quic...",
       "prev_in_stock": null,
@@ -228,7 +255,7 @@
     "https://www.asos.com/us/asos-design/asos-design-baggy-jeans-in-light-wash-blue/prd/204625766": {
       "current_price": 35.99,
       "in_stock": true,
-      "last_seen": "2026-04-29",
+      "last_seen": "2026-04-30",
       "listed_price": 47.99,
       "name": "ASOS DESIGN baggy jeans in light wash blue",
       "prev_in_stock": null,
@@ -237,7 +264,7 @@
     "https://www.asos.com/us/asos-design/asos-design-boxy-oversized-t-shirt-in-cream-boucle/prd/210662742": {
       "current_price": null,
       "in_stock": true,
-      "last_seen": "2026-04-29",
+      "last_seen": "2026-04-30",
       "listed_price": 34.99,
       "name": "ASOS DESIGN boxy oversized T-shirt in cream boucle",
       "prev_in_stock": null,
@@ -246,7 +273,7 @@
     "https://www.asos.com/us/asos-design/asos-design-heavyweight-boxy-oversized-t-shirt-in-black-textured-fabric/prd/210527097": {
       "current_price": null,
       "in_stock": true,
-      "last_seen": "2026-04-29",
+      "last_seen": "2026-04-30",
       "listed_price": 39.99,
       "name": "ASOS DESIGN heavyweight boxy oversized T-shirt in black text...",
       "prev_in_stock": null,
@@ -255,16 +282,16 @@
     "https://www.asos.com/us/asos-design/asos-design-heavyweight-relaxed-long-sleeve-t-shirt-in-dark-brown-waffle/prd/209020360": {
       "current_price": 26.24,
       "in_stock": false,
-      "last_seen": "2026-04-29",
+      "last_seen": "2026-04-30",
       "listed_price": 34.99,
       "name": "ASOS DESIGN heavyweight relaxed long sleeve T-shirt in dark ...",
       "prev_in_stock": null,
-      "sold_out_since": "2026-04-29"
+      "sold_out_since": "2026-04-30"
     },
     "https://www.asos.com/us/asos-design/asos-design-oversized-boxy-fit-fisherman-rib-knit-sweater-in-heathered-stone/prd/208014846": {
       "current_price": null,
       "in_stock": true,
-      "last_seen": "2026-04-29",
+      "last_seen": "2026-04-30",
       "listed_price": 47.99,
       "name": "ASOS DESIGN oversized boxy fit fisherman rib knit sweater in...",
       "prev_in_stock": null,
@@ -273,16 +300,16 @@
     "https://www.asos.com/us/asos-design/asos-design-pleated-wide-leg-dress-pants-in-charcoal-wool-blend/prd/208811441": {
       "current_price": 61.74,
       "in_stock": false,
-      "last_seen": "2026-04-29",
+      "last_seen": "2026-04-30",
       "listed_price": 64.99,
       "name": "ASOS DESIGN pleated wide leg dress pants in charcoal wool bl...",
       "prev_in_stock": null,
-      "sold_out_since": "2026-04-29"
+      "sold_out_since": "2026-04-30"
     },
     "https://www.asos.com/us/asos-design/asos-design-pleated-wide-leg-dress-pants-with-belt-detail-in-mink/prd/208783602": {
       "current_price": null,
       "in_stock": true,
-      "last_seen": "2026-04-29",
+      "last_seen": "2026-04-30",
       "listed_price": 49.49,
       "name": "ASOS DESIGN pleated wide leg dress pants with belt detail in...",
       "prev_in_stock": null,
@@ -291,7 +318,7 @@
     "https://www.asos.com/us/asos-design/asos-design-smart-pleated-linen-blend-barrel-pants-in-ecru/prd/209917520": {
       "current_price": null,
       "in_stock": true,
-      "last_seen": "2026-04-29",
+      "last_seen": "2026-04-30",
       "listed_price": 64.99,
       "name": "ASOS DESIGN smart pleated linen blend barrel pants in ecru",
       "prev_in_stock": null,
@@ -300,7 +327,7 @@
     "https://www.asos.com/us/asos-design/asos-design-super-heavyweight-boxy-oversized-t-shirt-in-black/prd/210214903": {
       "current_price": null,
       "in_stock": true,
-      "last_seen": "2026-04-29",
+      "last_seen": "2026-04-30",
       "listed_price": 29.99,
       "name": "ASOS DESIGN super heavyweight boxy oversized T-shirt in blac...",
       "prev_in_stock": null,
@@ -309,7 +336,7 @@
     "https://www.asos.com/us/collusion/collusion-boxy-t-shirt-in-red/prd/210037605": {
       "current_price": null,
       "in_stock": true,
-      "last_seen": "2026-04-29",
+      "last_seen": "2026-04-30",
       "listed_price": 15.99,
       "name": "COLLUSION Boxy T-shirt in red",
       "prev_in_stock": null,
@@ -318,16 +345,16 @@
     "https://www.asos.com/us/jack-jones/jack-jones-alex-baggy-jeans-in-light-blue-wash/prd/206247100": {
       "current_price": 64.8,
       "in_stock": false,
-      "last_seen": "2026-04-29",
+      "last_seen": "2026-04-30",
       "listed_price": 81.0,
       "name": "Jack & Jones alex baggy jeans in light blue wash",
       "prev_in_stock": null,
-      "sold_out_since": "2026-04-29"
+      "sold_out_since": "2026-04-30"
     },
     "https://www.asos.com/us/nike/nike-club-washed-shorts-in-brown/prd/209187461": {
       "current_price": null,
       "in_stock": true,
-      "last_seen": "2026-04-29",
+      "last_seen": "2026-04-30",
       "listed_price": 65.0,
       "name": "Nike Club washed shorts in brown",
       "prev_in_stock": null,
@@ -336,7 +363,7 @@
     "https://www.asos.com/us/the-north-face/the-north-face-full-zip-cabin-fleece-in-black/prd/208018284": {
       "current_price": null,
       "in_stock": true,
-      "last_seen": "2026-04-29",
+      "last_seen": "2026-04-30",
       "listed_price": 140.0,
       "name": "The North Face Full Zip Cabin Fleece in black",
       "prev_in_stock": null,
@@ -345,7 +372,7 @@
     "https://www.asos.com/us/topman/topman-relaxed-fit-t-shirt-in-white/prd/208302434": {
       "current_price": null,
       "in_stock": true,
-      "last_seen": "2026-04-29",
+      "last_seen": "2026-04-30",
       "listed_price": 21.0,
       "name": "Topman relaxed fit t-shirt in white",
       "prev_in_stock": null,
@@ -354,7 +381,7 @@
     "https://www.asos.com/us/weekday/weekday-simon-hoodie-in-black-in-scuba-style-fabric/prd/209038557": {
       "current_price": null,
       "in_stock": true,
-      "last_seen": "2026-04-29",
+      "last_seen": "2026-04-30",
       "listed_price": 80.0,
       "name": "Weekday Simon hoodie in black in scuba-style fabric",
       "prev_in_stock": null,
@@ -363,7 +390,7 @@
     "https://www.asos.com/us/weekday/weekday-simon-hoodie-in-burgundy-in-scuba-style-fabric/prd/209213658": {
       "current_price": null,
       "in_stock": true,
-      "last_seen": "2026-04-29",
+      "last_seen": "2026-04-30",
       "listed_price": 80.0,
       "name": "Weekday Simon hoodie in burgundy in scuba-style fabric",
       "prev_in_stock": null,
@@ -372,7 +399,7 @@
     "https://www.birkenstock.com/us/boston-soft-footbed-suede-leather/boston-suede-suedeleather-softfootbed-eva-u_90.html?dwvar_boston-suede-suedeleather-softfootbed-eva-u__46_width=S&dwvar_boston-suede-suedeleather-softfootbed-eva-u__46_size=260&gad_source=1&gad_campaignid=9432284340&clickId=5435180800": {
       "current_price": 169.95,
       "in_stock": true,
-      "last_seen": "2026-04-29",
+      "last_seen": "2026-04-30",
       "listed_price": 169.95,
       "name": "Buy Boston Soft Footbed Suede Leather Mocha for USD 169.95 |...",
       "prev_in_stock": null,
@@ -381,7 +408,7 @@
     "https://www.brilliantearth.com/Bailey-7.5-in.-Rope-Chain-Bracelet-(3.3mm)-14K-Gold-BE5SRC75/": {
       "current_price": 775.0,
       "in_stock": true,
-      "last_seen": "2026-04-29",
+      "last_seen": "2026-04-30",
       "listed_price": 775.0,
       "name": "Bailey 7.5 in. Rope Chain Bracelet (3.3mm)",
       "prev_in_stock": null,
@@ -390,25 +417,34 @@
     "https://www.colehaan.com/products/mens-american-classics-penny-loafers-c36028": {
       "current_price": 165.0,
       "in_stock": false,
-      "last_seen": "2026-04-29",
+      "last_seen": "2026-04-30",
       "listed_price": 165.0,
       "name": "Men's American Classics Penny Loafers",
       "prev_in_stock": null,
-      "sold_out_since": "2026-04-29"
+      "sold_out_since": "2026-04-30"
     },
     "https://www.etsy.com/listing/1840466647/faith-sweatshirt-faith-gift-christian": {
       "current_price": null,
       "in_stock": true,
-      "last_seen": "2026-04-29",
+      "last_seen": "2026-04-30",
       "listed_price": 12.49,
       "name": "Faith Sweatshirt, Faith Gift, Christian Sweatshirt, Faith Cr...",
+      "prev_in_stock": null,
+      "sold_out_since": null
+    },
+    "https://www.finishline.com/pdp/mens-birkenstock-essentials-arizona-eva-sandals/prod22090008/129421/001": {
+      "current_price": null,
+      "in_stock": true,
+      "last_seen": "2026-04-30",
+      "listed_price": 50.0,
+      "name": "Men's Birkenstock Essentials Arizona",
       "prev_in_stock": null,
       "sold_out_since": null
     },
     "https://www.goat.com/sneakers/dunk-low-sb-white-gum-cd2563-101": {
       "current_price": null,
       "in_stock": true,
-      "last_seen": "2026-04-29",
+      "last_seen": "2026-04-30",
       "listed_price": 166.0,
       "name": "Nike Dunk Low SB 'White Gum'",
       "prev_in_stock": null,
@@ -417,7 +453,7 @@
     "https://www.goat.com/sneakers/salehe-bembury-x-realtree-x-pollex-clog-edge-camo-207393-camo": {
       "current_price": null,
       "in_stock": true,
-      "last_seen": "2026-04-29",
+      "last_seen": "2026-04-30",
       "listed_price": 231.0,
       "name": "Crocs Salehe Bembury x Realtree x Pollex Clog 'Edge Camo'",
       "prev_in_stock": null,
@@ -426,16 +462,16 @@
     "https://www.goodqualityhuman.com/collections/hats/products/made-for-kindness": {
       "current_price": 49.0,
       "in_stock": false,
-      "last_seen": "2026-04-29",
+      "last_seen": "2026-04-30",
       "listed_price": 49.0,
       "name": "MADE FOR KINDNESS",
       "prev_in_stock": null,
-      "sold_out_since": "2026-04-29"
+      "sold_out_since": "2026-04-30"
     },
     "https://www.higherculturela.com/products/black-tee-holy-vibes": {
       "current_price": 32.0,
       "in_stock": true,
-      "last_seen": "2026-04-29",
+      "last_seen": "2026-04-30",
       "listed_price": 34.0,
       "name": "\"HOLY VIBES\" TEE (BLACK)",
       "prev_in_stock": null,
@@ -444,7 +480,7 @@
     "https://www.higherculturela.com/products/holy-vibes-tee-camo": {
       "current_price": 32.0,
       "in_stock": true,
-      "last_seen": "2026-04-29",
+      "last_seen": "2026-04-30",
       "listed_price": 32.0,
       "name": "\"HOLY VIBES\" TEE (CAMO)",
       "prev_in_stock": null,
@@ -453,25 +489,25 @@
     "https://www.higherculturela.com/products/my-friend-jesus-hoodie-camo": {
       "current_price": 54.0,
       "in_stock": false,
-      "last_seen": "2026-04-29",
+      "last_seen": "2026-04-30",
       "listed_price": 54.0,
       "name": "\"MY FRIEND JESUS\" HOODIE (CAMO)",
       "prev_in_stock": null,
-      "sold_out_since": "2026-04-29"
+      "sold_out_since": "2026-04-30"
     },
     "https://www.higherculturela.com/products/pure-heart-hat": {
       "current_price": 30.0,
       "in_stock": false,
-      "last_seen": "2026-04-29",
+      "last_seen": "2026-04-30",
       "listed_price": 30.0,
       "name": "Pure Heart / Classic Hat",
       "prev_in_stock": null,
-      "sold_out_since": "2026-04-29"
+      "sold_out_since": "2026-04-30"
     },
     "https://www.levi.com/US/en_US/clothing/men/jeans/loose/578TM-baggy-mens-jeans/p/A47500022": {
       "current_price": null,
       "in_stock": true,
-      "last_seen": "2026-04-29",
+      "last_seen": "2026-04-30",
       "listed_price": 110.0,
       "name": "578\u2122 Baggy Men's Jeans",
       "prev_in_stock": null,
@@ -480,7 +516,7 @@
     "https://www.movado.com/us/en/shop-watches/museum-classic-0607200.html": {
       "current_price": 1095.0,
       "in_stock": true,
-      "last_seen": "2026-04-29",
+      "last_seen": "2026-04-30",
       "listed_price": 1095.0,
       "name": "Museum Classic",
       "prev_in_stock": null,
@@ -489,7 +525,7 @@
     "https://www.nike.com/t/club-mens-fleece-shorts-fKfOAroW/IQ5903-289": {
       "current_price": 65.0,
       "in_stock": true,
-      "last_seen": "2026-04-29",
+      "last_seen": "2026-04-30",
       "listed_price": 65.0,
       "name": "Nike Club Men's Fleece Shorts",
       "prev_in_stock": null,
@@ -498,7 +534,7 @@
     "https://www.nike.com/t/tech-mens-dri-fit-shori-knit-shorts-6PkNu38K/IF1125-010": {
       "current_price": 85.0,
       "in_stock": true,
-      "last_seen": "2026-04-29",
+      "last_seen": "2026-04-30",
       "listed_price": 85.0,
       "name": "Nike Tech Men's Dri-FIT Shori Knit Shorts",
       "prev_in_stock": null,
@@ -507,7 +543,7 @@
     "https://www.nordstrom.com/s/the-mens-clog/8139745?color=001&size=12&width=d": {
       "current_price": null,
       "in_stock": true,
-      "last_seen": "2026-04-29",
+      "last_seen": "2026-04-30",
       "listed_price": 159.0,
       "name": "The Men's Clog",
       "prev_in_stock": null,
@@ -516,16 +552,25 @@
     "https://www.smartbuyglasses.com/designer-eyeglasses/Tom-Ford/Tom-Ford-FT5737-B-045-Blue-Light-Block-566083.html": {
       "current_price": 239.0,
       "in_stock": true,
-      "last_seen": "2026-04-29",
+      "last_seen": "2026-04-30",
       "listed_price": 239.0,
       "name": "Tom Ford FT5737-B",
+      "prev_in_stock": null,
+      "sold_out_since": null
+    },
+    "https://www.tommyjohn.com/products/second-skin-boxer-brief-8-3-pack-31?variant=33953202536493": {
+      "current_price": 108.0,
+      "in_stock": true,
+      "last_seen": "2026-04-30",
+      "listed_price": 114.0,
+      "name": "Second Skin Boxer Brief 8\" (3-Pack)",
       "prev_in_stock": null,
       "sold_out_since": null
     },
     "https://www.ugg.com/men-boots/classic-ultra-mini-weather-hybrid/1174196.html": {
       "current_price": null,
       "in_stock": true,
-      "last_seen": "2026-04-29",
+      "last_seen": "2026-04-30",
       "listed_price": 200.0,
       "name": "UGG\u00ae Men's Classic Ultra Mini Weather Hybrid Suede Classic B...",
       "prev_in_stock": null,
@@ -534,16 +579,16 @@
     "https://www.uniqlo.com/us/en/products/E481177-000/00?colorDisplayCode=01&sizeDisplayCode=003&pldDisplayCode=000": {
       "current_price": 29.9,
       "in_stock": false,
-      "last_seen": "2026-04-29",
+      "last_seen": "2026-04-30",
       "listed_price": 29.9,
       "name": "Waffle T-Shirt | Long Sleeve",
       "prev_in_stock": null,
-      "sold_out_since": "2026-04-29"
+      "sold_out_since": "2026-04-30"
     },
     "https://www.uniqlo.com/us/en/products/E482758-000/00?colorDisplayCode=31&sizeDisplayCode=005&pldDisplayCode=000": {
       "current_price": 39.9,
       "in_stock": true,
-      "last_seen": "2026-04-29",
+      "last_seen": "2026-04-30",
       "listed_price": 39.9,
       "name": "Wide Sweat Shorts",
       "prev_in_stock": null,
@@ -552,7 +597,7 @@
     "https://www.walmart.com/ip/Movado-Men-s-Signature-Yellow-Gold-Black-Dial-Leather-Band-Swiss-Watch/15934473050?wmlspartner=wlpa&selectedSellerId=101422885&selectedOfferId=0819F4F494B23B58BA0CA8C1CC9CBFF5&conditionGroupCode=1&sourceid=dsn_gdn_2005b0c9-e4c7-4f46-8aaa-443883a5e447&veh=dsn&wmlspartner=dsn_gdn_2005b0c9-e4c7-4f46-8aaa-443883a5e447&cn=00c3_fy27_mp_mp_lo_int_dis_pmax-main&wl9=pla&wl11=online&gad_source=1&gad_campaignid=23143211640&gbraid=0AAAAADmfBIohpf2ikgaQNnYHhG6HMuJP1": {
       "current_price": null,
       "in_stock": true,
-      "last_seen": "2026-04-29",
+      "last_seen": "2026-04-30",
       "listed_price": 339.0,
       "name": "Movado Men's Signature Yellow Gold Black Dial Leather Band S...",
       "prev_in_stock": null,
@@ -561,7 +606,7 @@
     "https://www.zara.com/us/en/100-linen-relaxed-fit-shorts-p05070903.html?v1=495680223&v2=2432164": {
       "current_price": null,
       "in_stock": true,
-      "last_seen": "2026-04-29",
+      "last_seen": "2026-04-30",
       "listed_price": 59.9,
       "name": "100% LINEN RELAXED FIT SHORTS",
       "prev_in_stock": null,
@@ -570,7 +615,7 @@
     "https://www.zara.com/us/en/carpenter-pocket-shorts-p00108475.html": {
       "current_price": null,
       "in_stock": true,
-      "last_seen": "2026-04-29",
+      "last_seen": "2026-04-30",
       "listed_price": 59.9,
       "name": "CARPENTER POCKET SHORTS",
       "prev_in_stock": null,
@@ -579,7 +624,7 @@
     "https://www.zara.com/us/en/pinstripe-pleated-pants-p00706950.html?v1=483550070&v2=2432096": {
       "current_price": null,
       "in_stock": true,
-      "last_seen": "2026-04-29",
+      "last_seen": "2026-04-30",
       "listed_price": 79.9,
       "name": "PINSTRIPE PLEATED PANTS",
       "prev_in_stock": null,
@@ -588,7 +633,7 @@
     "https://www.zara.com/us/en/regular-fit-waffle-jumper-p03332301.html?v1=489339320": {
       "current_price": null,
       "in_stock": true,
-      "last_seen": "2026-04-29",
+      "last_seen": "2026-04-30",
       "listed_price": 69.9,
       "name": "REGULAR FIT WAFFLE JUMPER",
       "prev_in_stock": null,
@@ -597,7 +642,7 @@
     "https://www.zara.com/us/en/regular-fit-wool-blend-coat-p05070100.html": {
       "current_price": null,
       "in_stock": true,
-      "last_seen": "2026-04-29",
+      "last_seen": "2026-04-30",
       "listed_price": 90.3,
       "name": "REGULAR FIT WOOL BLEND COAT",
       "prev_in_stock": null,
@@ -606,7 +651,7 @@
     "https://www.zara.com/us/en/relaxed-fit-interlock-jogger-shorts-p00761491.html": {
       "current_price": null,
       "in_stock": true,
-      "last_seen": "2026-04-29",
+      "last_seen": "2026-04-30",
       "listed_price": 49.9,
       "name": "RELAXED FIT INTERLOCK JOGGER SHORTS",
       "prev_in_stock": null,
@@ -615,7 +660,7 @@
     "https://www.zara.com/us/en/relaxed-fit-interlock-sweatshirt-p00761490.html": {
       "current_price": null,
       "in_stock": true,
-      "last_seen": "2026-04-29",
+      "last_seen": "2026-04-30",
       "listed_price": 49.9,
       "name": "RELAXED FIT INTERLOCK SWEATSHIRT",
       "prev_in_stock": null,
@@ -624,7 +669,7 @@
     "https://www.zara.com/us/en/relaxed-fit-linen-shirt-p05070904.html?v1=495684333&v2=2432164": {
       "current_price": null,
       "in_stock": true,
-      "last_seen": "2026-04-29",
+      "last_seen": "2026-04-30",
       "listed_price": 69.9,
       "name": "100% LINEN RELAXED FIT SHIRT",
       "prev_in_stock": null,
@@ -633,7 +678,7 @@
     "https://www.zara.com/us/en/waffle-textured-t-shirt-p00526345.html?v1=480810139": {
       "current_price": null,
       "in_stock": true,
-      "last_seen": "2026-04-29",
+      "last_seen": "2026-04-30",
       "listed_price": 29.94,
       "name": "WAFFLE TEXTURED T-SHIRT",
       "prev_in_stock": null,
@@ -642,7 +687,7 @@
     "https://www.zara.com/us/en/washed-balloon-fit-jogging-pants-p03443425.html": {
       "current_price": null,
       "in_stock": true,
-      "last_seen": "2026-04-29",
+      "last_seen": "2026-04-30",
       "listed_price": 59.9,
       "name": "WASHED BALLOON FIT JOGGING PANTS",
       "prev_in_stock": null,
@@ -651,7 +696,7 @@
     "https://www.zara.com/us/en/washed-tank-top-p00722460.html?v1=499201763&v2=2432042": {
       "current_price": null,
       "in_stock": true,
-      "last_seen": "2026-04-29",
+      "last_seen": "2026-04-30",
       "listed_price": 29.9,
       "name": "WASHED TANK TOP",
       "prev_in_stock": null,
@@ -660,7 +705,7 @@
     "https://www2.hm.com/en_us/productpage.1029317042.html": {
       "current_price": null,
       "in_stock": true,
-      "last_seen": "2026-04-29",
+      "last_seen": "2026-04-30",
       "listed_price": 12.99,
       "name": "Regular Fit Jersey Shirt",
       "prev_in_stock": null,
@@ -669,7 +714,7 @@
     "https://www2.hm.com/en_us/productpage.1285130003.html": {
       "current_price": null,
       "in_stock": true,
-      "last_seen": "2026-04-29",
+      "last_seen": "2026-04-30",
       "listed_price": 24.99,
       "name": "Loose-Fit T-Shirt",
       "prev_in_stock": null,
@@ -678,7 +723,7 @@
     "https://www2.hm.com/en_us/productpage.1290470003.html": {
       "current_price": null,
       "in_stock": true,
-      "last_seen": "2026-04-29",
+      "last_seen": "2026-04-30",
       "listed_price": 39.99,
       "name": "Regular-Fit Resort Shirt",
       "prev_in_stock": null,
@@ -687,7 +732,7 @@
     "https://www2.hm.com/en_us/productpage.1299855001.html": {
       "current_price": null,
       "in_stock": true,
-      "last_seen": "2026-04-29",
+      "last_seen": "2026-04-30",
       "listed_price": 49.99,
       "name": "Relaxed-Fit Pants",
       "prev_in_stock": null,
@@ -696,7 +741,7 @@
     "https://www2.hm.com/en_us/productpage.1309319007.html": {
       "current_price": null,
       "in_stock": true,
-      "last_seen": "2026-04-29",
+      "last_seen": "2026-04-30",
       "listed_price": 12.99,
       "name": "Relaxed-Fit T-Shirt",
       "prev_in_stock": null,
@@ -705,7 +750,7 @@
     "https://www2.hm.com/en_us/productpage.1311089001.html": {
       "current_price": null,
       "in_stock": true,
-      "last_seen": "2026-04-29",
+      "last_seen": "2026-04-30",
       "listed_price": 39.99,
       "name": "Regular-Fit Rib-Knit Shirt",
       "prev_in_stock": null,
@@ -714,7 +759,7 @@
     "https://www2.hm.com/en_us/productpage.1311268002.html": {
       "current_price": null,
       "in_stock": true,
-      "last_seen": "2026-04-29",
+      "last_seen": "2026-04-30",
       "listed_price": 44.99,
       "name": "Relaxed-Fit Cotton-Blend Shirt",
       "prev_in_stock": null,
@@ -723,7 +768,7 @@
     "https://www2.hm.com/en_us/productpage.1316752002.html": {
       "current_price": null,
       "in_stock": true,
-      "last_seen": "2026-04-29",
+      "last_seen": "2026-04-30",
       "listed_price": 49.99,
       "name": "Loose-Fit Tailored Pants",
       "prev_in_stock": null,
@@ -732,7 +777,7 @@
     "https://www2.hm.com/en_us/productpage.1328819002.html": {
       "current_price": null,
       "in_stock": true,
-      "last_seen": "2026-04-29",
+      "last_seen": "2026-04-30",
       "listed_price": 29.99,
       "name": "Oversized-Fit T-Shirt",
       "prev_in_stock": null,
@@ -741,7 +786,7 @@
     "https://www2.hm.com/en_us/productpage.1331191003.html": {
       "current_price": null,
       "in_stock": true,
-      "last_seen": "2026-04-29",
+      "last_seen": "2026-04-30",
       "listed_price": 39.99,
       "name": "Regular-Fit Textured-Knit Shirt",
       "prev_in_stock": null,

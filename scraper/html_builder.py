@@ -72,10 +72,17 @@ def _price_block_html(current_price, reference_price) -> str:
     return f'<span class="price-current">{_fmt_price(reference_price)}</span>'
 
 
+def _effective_reference(baseline: float, price_result) -> float:
+    """Higher of the Giftful baseline and the retailer's strikethrough."""
+    retailer_list = getattr(price_result, "list_price", None) or 0.0
+    return max(baseline, retailer_list)
+
+
 def _badges_for_winner(winner) -> str:
     badges = []
     if DealType.PRICE_DROP in winner.deal_types and winner.price_result.current_price is not None:
-        pct = _pct_drop(winner.store.listed_price, winner.price_result.current_price)
+        ref = _effective_reference(winner.store.listed_price, winner.price_result)
+        pct = _pct_drop(ref, winner.price_result.current_price)
         badges.append(f'<span class="badge badge-drop">-{pct}%</span>')
     if DealType.PROMO in winner.deal_types:
         badges.append('<span class="badge badge-promo">PROMO</span>')
@@ -91,10 +98,11 @@ def _badges_for_legacy(deal: Deal, item) -> str:
         DealType.PRICE_DROP in deal.deal_types
         and price is not None
         and price.current_price is not None
-        and price.current_price < item.listed_price
     ):
-        pct = _pct_drop(item.listed_price, price.current_price)
-        badges.append(f'<span class="badge badge-drop">-{pct}%</span>')
+        ref = _effective_reference(item.listed_price, price)
+        if price.current_price < ref:
+            pct = _pct_drop(ref, price.current_price)
+            badges.append(f'<span class="badge badge-drop">-{pct}%</span>')
     if DealType.PROMO in deal.deal_types:
         badges.append('<span class="badge badge-promo">PROMO</span>')
     if DealType.BACK_IN_STOCK in deal.deal_types:
@@ -134,6 +142,8 @@ def _multi_card_html(deal: Deal) -> str:
         f'<ul class="stores-secondary">{"".join(alt_items)}</ul>' if alt_items else ""
     )
 
+    winner_ref = _effective_reference(winner.store.listed_price, winner.price_result)
+
     return (
         f'<article class="deal-card" '
         f'data-types="{html.escape(all_types)}" '
@@ -147,7 +157,7 @@ def _multi_card_html(deal: Deal) -> str:
         f'<div class="store-winner">'
         f'<div class="winner-name">{html.escape(winner.store.display_name)}</div>'
         f'<div class="price-block">'
-        f'{_price_block_html(winner.price_result.current_price, winner.store.listed_price)}'
+        f'{_price_block_html(winner.price_result.current_price, winner_ref)}'
         f"</div>"
         f'<div class="promos">{_promo_chips_html(winner.promos)}</div>'
         f"</div>"
@@ -169,6 +179,8 @@ def _card_html(deal: Deal) -> str:
         for t in deal.deal_types
     )
 
+    legacy_ref = _effective_reference(item.listed_price, price)
+
     return (
         f'<article class="deal-card" '
         f'data-types="{_deal_type_values(deal)}" '
@@ -180,7 +192,7 @@ def _card_html(deal: Deal) -> str:
         f'<h3 class="deal-name">{html.escape(item.name)}</h3>'
         f"</a>"
         f'<div class="price-block">'
-        f'{_price_block_html(price.current_price, item.listed_price)}'
+        f'{_price_block_html(price.current_price, legacy_ref)}'
         f"</div>"
         f'<div class="promos">{_promo_chips_html(deal.promos)}</div>'
         f'<div class="tags">{tags}</div>'

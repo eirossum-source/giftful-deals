@@ -314,6 +314,32 @@ def test_multi_store_card_data_store_includes_all_domains():
     assert "bestbuy.com" in domains
 
 
+def test_card_shows_retailer_strikethrough_when_higher_than_giftful_listed():
+    # When retailer reports a higher list price than giftful, show the
+    # retailer's list as the strikethrough so the savings reflect the
+    # retailer-side sale (e.g. Amazon $99.99 -> $59.99 with giftful at $59.99).
+    item = Item(
+        name="Ring Battery Doorbell",
+        url="https://www.amazon.com/dp/B0BZWRSRWV",
+        listed_price=59.99,
+        image_url="",
+    )
+    price = PriceResult(current_price=59.99, list_price=99.99)
+    deal = Deal(item=item, price_result=price, promos=[], deal_types=[DealType.PRICE_DROP])
+    html_out = render([deal], generated_at=NOW)
+    soup = BeautifulSoup(html_out, "lxml")
+    card = soup.select_one(".deal-card")
+    listed = card.select_one(".price-listed")
+    current = card.select_one(".price-current")
+    assert listed is not None
+    assert "$99.99" in listed.get_text()
+    assert "$59.99" in current.get_text()
+    # 40% discount badge expected
+    badge = card.select_one(".badge-drop")
+    assert badge is not None
+    assert "40%" in badge.get_text()
+
+
 def test_review_section_links_to_category_url_when_present():
     item = Item(
         name="Beats Powerbeats Pro 2",

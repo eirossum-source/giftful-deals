@@ -76,13 +76,23 @@ class Deal:
         return w.deal_types if w else []
 
 
+def _effective_reference_price(baseline: float, price_result) -> float:
+    """Pick the higher of the Giftful-side baseline and the retailer's
+    strikethrough/list price. Captures retailer-side sales (e.g. Amazon
+    "List Price $99.99 -> $59.99") even when the Giftful baseline already
+    matches the live price."""
+    retailer_list = getattr(price_result, "list_price", None) or 0.0
+    return max(baseline, retailer_list)
+
+
 def evaluate_store(store, price_result, promos, back_in_stock: bool = False) -> Tuple[bool, List[DealType]]:
     types: List[DealType] = []
 
     if (
         not price_result.unavailable
         and price_result.current_price is not None
-        and price_result.current_price < store.listed_price
+        and price_result.current_price
+        < _effective_reference_price(store.listed_price, price_result)
     ):
         types.append(DealType.PRICE_DROP)
 
@@ -101,7 +111,8 @@ def is_deal(item, price_result, promos, back_in_stock: bool = False) -> Tuple[bo
     if (
         not price_result.unavailable
         and price_result.current_price is not None
-        and price_result.current_price < item.listed_price
+        and price_result.current_price
+        < _effective_reference_price(item.listed_price, price_result)
     ):
         types.append(DealType.PRICE_DROP)
 

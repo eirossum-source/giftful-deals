@@ -7,8 +7,88 @@ from price_checker import (
     USER_AGENTS,
     _to_float,
     check_price,
+    extract_list_price,
     extract_price,
 )
+
+
+def test_extract_list_price_amazon_strikethrough():
+    # Amazon shows current $59.99 with a strikethrough List Price $99.99.
+    html = """
+    <html><body>
+      <span class="a-price-whole">59.</span>
+      <span class="a-price"><span class="a-offscreen">$59.99</span></span>
+      <span class="a-text-price" data-a-strike="true"><span class="a-offscreen">$99.99</span></span>
+      <span class="basisPrice"><span class="a-offscreen">$99.99</span></span>
+    </body></html>
+    """
+    assert extract_list_price(html) == 99.99
+
+
+def test_extract_list_price_returns_none_when_no_strikethrough():
+    html = """
+    <html><body>
+      <span class="a-price"><span class="a-offscreen">$59.99</span></span>
+    </body></html>
+    """
+    assert extract_list_price(html) is None
+
+
+def test_extract_list_price_jsonld_higher_price_specification():
+    # Schema.org PriceSpecification with priceType MSRP / SRP / ListPrice.
+    html = """
+    <html><body>
+    <script type="application/ld+json">
+    {"@type":"Product","offers":{
+      "price":59.99,
+      "priceSpecification":{"@type":"UnitPriceSpecification","priceType":"https://schema.org/ListPrice","price":99.99}
+    }}
+    </script>
+    </body></html>
+    """
+    assert extract_list_price(html) == 99.99
+
+
+def test_check_price_includes_list_price_in_result(mocker):
+    response = MagicMock()
+    response.status_code = 200
+    response.text = (
+        '<html><body>'
+        '<span class="a-price"><span class="a-offscreen">$59.99</span></span>'
+        '<span class="a-text-price" data-a-strike="true">'
+        '<span class="a-offscreen">$99.99</span></span>'
+        '</body></html>'
+    )
+    session = MagicMock()
+    session.get.return_value = response
+    mocker.patch("price_checker.time.sleep")
+
+    result = check_price(
+        "https://www.amazon.com/dp/X", session=session, error_log=MagicMock()
+    )
+    assert result.current_price == 59.99
+    assert result.list_price == 99.99
+
+
+def test_check_price_sends_full_browser_headers(mocker):
+    response = MagicMock()
+    response.status_code = 200
+    response.text = "<html></html>"
+    session = MagicMock()
+    session.get.return_value = response
+    mocker.patch("price_checker.time.sleep")
+
+    check_price(
+        "https://www.amazon.com/dp/X", session=session, error_log=MagicMock()
+    )
+
+    headers = session.get.call_args.kwargs["headers"]
+    # Browser fingerprint headers Amazon's bot-detection looks for.
+    assert headers.get("Accept-Language", "").startswith("en")
+    assert "Sec-Fetch-Dest" in headers
+    assert "Sec-Fetch-Mode" in headers
+    assert "User-Agent" in headers
+    assert "Mozilla" in headers["User-Agent"]
 
 
 def test_to_float_handles_thousands_separator():

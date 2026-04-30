@@ -59,6 +59,37 @@ def test_unavailable_price_with_promo_still_deal():
     assert types == [DealType.PROMO]
 
 
+def test_price_drop_via_retailer_strikethrough_when_giftful_price_matches_current():
+    # Giftful list = current at retailer, but retailer also shows a
+    # strikethrough List Price higher than current (e.g. Amazon "List
+    # Price: $99.99 ... $59.99 (-40%)"). That's a real sale; we should
+    # capture it as a PRICE_DROP.
+    item = Item(name="Ring", listed_price=59.99, image_url="")
+    price = PriceResult(current_price=59.99, list_price=99.99)
+    ok, types = is_deal(item, price, [])
+    assert ok is True
+    assert DealType.PRICE_DROP in types
+
+
+def test_no_price_drop_when_retailer_strikethrough_below_current():
+    # Defensive: even if a stray strikethrough is below current (shouldn't
+    # happen on a sale page but pages get weird), don't flag a deal.
+    item = Item(name="Thing", listed_price=100.0, image_url="")
+    price = PriceResult(current_price=100.0, list_price=80.0)
+    ok, types = is_deal(item, price, [])
+    assert ok is False
+
+
+def test_price_drop_when_giftful_listed_price_is_higher_than_strikethrough():
+    # Giftful baseline is the higher reference. Retailer strikethrough is
+    # ignored because the giftful listed price already wins.
+    item = Item(name="Thing", listed_price=120.0, image_url="")
+    price = PriceResult(current_price=80.0, list_price=100.0)
+    ok, types = is_deal(item, price, [])
+    assert ok is True
+    assert DealType.PRICE_DROP in types
+
+
 def test_unavailable_price_no_promo_excluded():
     price = PriceResult(unavailable=True, reason="blocked")
     ok, types = is_deal(ITEM, price, [])

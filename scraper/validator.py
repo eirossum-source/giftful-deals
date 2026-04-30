@@ -63,6 +63,7 @@ _CHALLENGE_PHRASES = (
     "verify you are human",
     "captcha",
     "access denied",
+    "access has been denied",
     "request unsuccessful",
     "cloudflare",
     "your request was blocked",
@@ -74,6 +75,7 @@ _CHALLENGE_PHRASES = (
     "sorry, we just need to make sure",
     "discuss automated access",
     "automated access to amazon",
+    "click the button below to continue",
     # Google / generic anti-bot interstitial
     "unusual traffic",
     "automated traffic",
@@ -87,7 +89,67 @@ _MIN_IDENTIFIER_LEN = 10
 
 def _looks_like_challenge_page(soup: BeautifulSoup) -> bool:
     body_text = soup.get_text(" ", strip=True)[:1500].lower()
-    return any(p in body_text for p in _CHALLENGE_PHRASES)
+    if any(p in body_text for p in _CHALLENGE_PHRASES):
+        return True
+    return _looks_like_amazon_soft_block(soup)
+
+
+def _looks_like_amazon_soft_block(soup: BeautifulSoup) -> bool:
+    """Amazon's "Click the button below to continue shopping" interstitial.
+
+    The page returns title="Amazon.com" with no <h1> and a body that asks
+    you to click through. The bare phrase "continue shopping" is too
+    common (cart pages contain it) to add to _CHALLENGE_PHRASES directly,
+    so we gate it on the title shape.
+    """
+    title = (soup.title.get_text(strip=True) if soup.title else "").lower()
+    if title not in ("amazon.com", "amazon.ca", ""):
+        return False
+    h1 = soup.find("h1")
+    if h1 and h1.get_text(strip=True):
+        return False
+    body = soup.get_text(" ", strip=True)[:600].lower()
+    return "continue shopping" in body or "click the button below" in body
+
+
+def _jsonld_product_names(soup: BeautifulSoup) -> list:
+    """Walk JSON-LD blocks and collect Product.name strings."""
+    names: list = []
+
+    def _walk(node):
+        if isinstance(node, list):
+            for n in node:
+                _walk(n)
+            return
+        if not isinstance(node, dict):
+            return
+        type_val = node.get("@type")
+        types = type_val if isinstance(type_val, list) else [type_val]
+        if "Product" in types:
+            n = node.get("name")
+            if isinstance(n, str) and n.strip():
+                names.append(n.strip())
+        for v in node.values():
+            if isinstance(v, (dict, list)):
+                _walk(v)
+
+    for script in soup.find_all("script", type="application/ld+json"):
+        raw = script.string or script.get_text() or ""
+        if not raw.strip():
+            continue
+        try:
+            data = json.loads(raw)
+        except json.JSONDecodeError:
+            continue
+        _walk(data)
+    return names
+
+
+def _prefix_tokens(s: str, n: int = 3) -> list:
+    """First `n` significant tokens of `s` in original order."""
+    raw = _TOKEN_RE.findall((s or "").lower())
+    sig = [t for t in raw if len(t) > 2 and t not in _STOPWORDS]
+    return sig[:n]
 
 
 def check_identity(giftful_name: str, html: str) -> Tuple[bool, float]:
@@ -113,9 +175,16 @@ def check_identity(giftful_name: str, html: str) -> Tuple[bool, float]:
     og = soup.find("meta", attrs={"property": "og:title"})
     if og and og.get("content"):
         candidates.append(og["content"])
+    og_desc = soup.find("meta", attrs={"property": "og:description"})
+    if og_desc and og_desc.get("content"):
+        candidates.append(og_desc["content"])
+    desc = soup.find("meta", attrs={"name": "description"})
+    if desc and desc.get("content"):
+        candidates.append(desc["content"])
     h1 = soup.find("h1")
     if h1 and h1.get_text(strip=True):
         candidates.append(h1.get_text(strip=True))
+    candidates.extend(_jsonld_product_names(soup))
 
     if not candidates:
         return True, 0.0
@@ -138,7 +207,23 @@ def check_identity(giftful_name: str, html: str) -> Tuple[bool, float]:
         if score > best:
             best = score
 
-    return best >= 0.5, best
+    # Prefix-token match: brand+product-type at the start of the Giftful
+    # name is highly identifying. Catches cases where the candidate page
+    # has many extra unrelated tokens diluting the whole-set ratio.
+    prefix = _prefix_tokens(giftful_name, n=3)
+    prefix_score = 0.0
+    if prefix:
+        for cand in candidates:
+            cand_toks = _content_tokens(cand)
+            if not cand_toks:
+                continue
+            hits = sum(1 for t in prefix if t in cand_toks)
+            score = hits / len(prefix)
+            if score > prefix_score:
+                prefix_score = score
+
+    matches = best >= 0.5 or prefix_score >= 0.67
+    return matches, max(best, prefix_score)
 
 
 _SOLD_OUT_TEXT_RE = re.compile(r"\bsold\s+out\b", re.I)

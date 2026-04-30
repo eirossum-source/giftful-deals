@@ -272,6 +272,89 @@ def test_check_price_playwright_failure_returns_unavailable(mocker):
     log.error.assert_called()
 
 
+def test_check_price_playwright_clicks_amazon_continue_shopping(mocker):
+    # Amazon soft-block: page lands on title "Amazon.com" with no h1 and
+    # body has "Click the button below to continue shopping". Playwright
+    # must click the "Continue shopping" anchor and re-await the product.
+    response = MagicMock()
+    response.status_code = 403
+    response.text = "forbidden"
+    session = MagicMock()
+    session.get.return_value = response
+    mocker.patch("price_checker.time.sleep")
+
+    page = MagicMock()
+    page.url = "https://www.amazon.com/dp/B0BZWRSRWV"
+    page.title.return_value = "Amazon.com"
+    # First evaluate call returns the soft-block body; subsequent calls
+    # are not asserted on (the function only inspects body once).
+    page.evaluate.return_value = (
+        "Click the button below to continue shopping. Conditions of Use"
+    )
+
+    # Locator chain: page.locator(...).first -> .count() == 1 -> .click()
+    link = MagicMock()
+    link.count.return_value = 1
+    locator = MagicMock()
+    locator.first = link
+    page.locator.return_value = locator
+
+    page.content.return_value = (
+        '<html><body>'
+        '<span class="a-price"><span class="a-offscreen">$42.50</span></span>'
+        '</body></html>'
+    )
+
+    result = check_price(
+        "https://www.amazon.com/dp/B0BZWRSRWV",
+        session=session,
+        error_log=MagicMock(),
+        page=page,
+    )
+
+    page.locator.assert_called()
+    link.click.assert_called_once()
+    # The post-click load wait should also be requested
+    assert any(
+        c.args and c.args[0] == "load"
+        for c in page.wait_for_load_state.call_args_list
+    )
+    assert result.unavailable is False
+    assert result.current_price == 42.50
+
+
+def test_check_price_playwright_skips_click_on_normal_amazon_page(mocker):
+    # If the Amazon page isn't the soft block, click-through must NOT fire.
+    response = MagicMock()
+    response.status_code = 403
+    response.text = "forbidden"
+    session = MagicMock()
+    session.get.return_value = response
+    mocker.patch("price_checker.time.sleep")
+
+    page = MagicMock()
+    page.url = "https://www.amazon.com/dp/B0BZWRSRWV"
+    page.title.return_value = "Ring Battery Doorbell - Amazon.com"
+    page.evaluate.return_value = "Buy now and save"
+
+    link = MagicMock()
+    link.count.return_value = 1
+    locator = MagicMock()
+    locator.first = link
+    page.locator.return_value = locator
+
+    page.content.return_value = _amazon_html()
+
+    check_price(
+        "https://www.amazon.com/dp/B0BZWRSRWV",
+        session=session,
+        error_log=MagicMock(),
+        page=page,
+    )
+
+    link.click.assert_not_called()
+
+
 def test_check_price_playwright_waits_for_full_load(mocker):
     # JS-heavy retailers (Finish Line, SmartBuyGlasses) need a "load" wait
     # so titles/h1 populate before we hand HTML to check_identity. networkidle

@@ -205,6 +205,105 @@ def test_identity_passes_on_unusual_traffic_page():
     assert score == 0.0
 
 
+def test_identity_passes_on_amazon_continue_shopping_interstitial():
+    # Amazon's soft block: title is "Amazon.com" exactly, no h1, body has
+    # "Click the button below to continue shopping". This is what currently
+    # leaks past _CHALLENGE_PHRASES because the wording is generic.
+    html = """
+    <html><head><title>Amazon.com</title></head>
+    <body>
+      <p>Click the button below to continue shopping</p>
+      <a>Continue shopping</a>
+      <p>Conditions of Use Privacy Policy © 1996-2025, Amazon.com, Inc.</p>
+    </body></html>
+    """
+    matches, score = check_identity("Ring Battery Doorbell newest model", html)
+    assert matches is True
+    assert score == 0.0
+
+
+def test_identity_passes_on_finishline_access_has_been_denied():
+    # Finish Line (and other JD properties) shows "Your Access Has Been
+    # Denied..." rather than the literal "Access Denied" we already catch.
+    html = """
+    <html><head><title></title></head>
+    <body>
+      <h1>Your Access Has Been Denied...</h1>
+      <p>Please check back in 15 minutes as this may be temporary.</p>
+    </body></html>
+    """
+    matches, score = check_identity("Men's Birkenstock Essentials Arizona", html)
+    assert matches is True
+    assert score == 0.0
+
+
+def test_identity_uses_jsonld_product_name_as_candidate():
+    # Some retailers (Shopify) emit a stripped <title> in the requests-based
+    # response but a reliable <script type="application/ld+json"> Product.
+    # Identity must use that Product.name to match.
+    html = """
+    <html><head><title>Shop</title></head>
+    <body>
+      <script type="application/ld+json">
+      {"@type":"Product","name":"Second Skin Boxer Brief 8\\" (3-Pack)","offers":{"price":108}}
+      </script>
+    </body></html>
+    """
+    matches, score = check_identity('Second Skin Boxer Brief 8" (3-Pack)', html)
+    assert matches is True
+    assert score >= 0.5
+
+
+def test_identity_uses_meta_description_as_candidate():
+    # Title is > 10 chars and unrelated; only the meta description carries
+    # the product name. Without meta-as-candidate, this would fail with
+    # score 0.0; with it, it should match.
+    html = """
+    <html><head>
+      <title>Amazon Online Shopping for Electronics Apparel</title>
+      <meta name="description" content="WateLves Barefoot Water Shoes for Women and Men, minimalist comfortable design"/>
+    </head><body></body></html>
+    """
+    matches, score = check_identity(
+        "WateLves Barefoot Water Shoes Women Men Minimalist Comfortable", html
+    )
+    assert matches is True
+
+
+def test_identity_prefix_match_succeeds_when_only_first_tokens_present():
+    # Whole-set score is intentionally below 0.5 (candidate has many
+    # unrelated tokens diluting it); prefix score should rescue it because
+    # the brand + product type at the start of the Giftful name appears
+    # verbatim in the candidate.
+    html = """
+    <html><head>
+      <title>Beats Powerbeats Pro at MyShop - everyday low prices on a wide range of electronics from major brands worldwide</title>
+    </head></html>
+    """
+    matches, score = check_identity(
+        "Beats Powerbeats Pro 2 Wireless Noise Cancelling Workout Earbuds",
+        html,
+    )
+    assert matches is True
+
+
+def test_identity_prefix_match_does_not_save_genuinely_wrong_product():
+    # Real iPhone page; Giftful item is unrelated. Prefix tokens of giftful
+    # name should not appear -> still rejects.
+    html = """
+    <html><head>
+      <title>Apple iPhone 15 Pro Max - 256GB - Apple Store</title>
+      <meta property="og:title" content="iPhone 15 Pro Max" />
+    </head><body>
+      <h1>iPhone 15 Pro Max</h1>
+      <button>Add to Cart</button>
+      <p>The iPhone 15 Pro Max features a 6.7-inch display.</p>
+    </body></html>
+    """
+    matches, score = check_identity("Vintage Brown Suede Loafers Cowhide", html)
+    assert matches is False
+
+
 def test_identity_passes_on_press_and_hold_challenge():
     # PerimeterX / DataDome flavor used by some retailers (Finish Line uses similar)
     html = """

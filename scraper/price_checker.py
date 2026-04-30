@@ -153,12 +153,54 @@ def extract_price(html: str) -> Optional[float]:
     return None
 
 
+def _is_amazon_soft_block(page) -> bool:
+    if "amazon.com" not in (page.url or "").lower():
+        return False
+    try:
+        title = (page.title() or "").strip().lower()
+    except Exception:
+        title = ""
+    if title not in ("amazon.com", "amazon.ca", ""):
+        return False
+    try:
+        body_snippet = (
+            page.evaluate(
+                "() => document.body ? document.body.innerText.slice(0, 600) : ''"
+            )
+            or ""
+        ).lower()
+    except Exception:
+        body_snippet = ""
+    return (
+        "click the button below to continue" in body_snippet
+        or "continue shopping" in body_snippet
+    )
+
+
 def _fetch_via_playwright(url: str, page) -> Optional[str]:
     page.goto(url, wait_until="load", timeout=30_000)
     try:
         page.wait_for_load_state("networkidle", timeout=8_000)
     except Exception:
         pass
+
+    # Amazon "Click the button below to continue shopping" soft block —
+    # click through to land on the actual product page.
+    try:
+        if _is_amazon_soft_block(page):
+            link = page.locator(
+                "a:has-text('Continue shopping'), button:has-text('Continue shopping')"
+            ).first
+            if link.count() > 0:
+                link.click(timeout=5_000)
+                page.wait_for_load_state("load", timeout=15_000)
+                try:
+                    page.wait_for_load_state("networkidle", timeout=6_000)
+                except Exception:
+                    pass
+    except Exception:
+        pass
+
     return page.content()
 
 

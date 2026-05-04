@@ -31,14 +31,14 @@
       "sold_out_since": null
     },
     "https://shop.lululemon.com/p/men-shorts/Heavy-Soft-Jersey-Short-8-5-MD/_/prod20007502?color=72761&sz=L&skuId=158101952&cid=pdp_share_header_link_icon&cid=aff_con": {
-      "current_price": 59.0,
-      "identity_score": null,
-      "in_stock": false,
+      "current_price": null,
+      "identity_score": 0.0,
+      "in_stock": true,
       "last_seen": "2026-05-04",
       "listed_price": 49.0,
       "name": "Heavyweight Soft Jersey Short 8.5\"",
       "prev_in_stock": null,
-      "sold_out_since": "2026-05-04"
+      "sold_out_since": null
     },
     "https://shop.lululemon.com/p/men-shorts/Pace-Breaker-Short-Linerless-Updated/_/prod11430005?color=19222&sz=L&skuId=158577303&cid=pdp_share_header_link_icon&cid=aff_con": {
       "current_price": null,
@@ -61,14 +61,14 @@
       "sold_out_since": null
     },
     "https://shop.lululemon.com/p/mens-trousers/Mens-Daydrift-Relaxed-Fit-Pleated-Trouser-Tall/_/prod20009307?color=0001&cid=pdp_share_header_link_icon&cid=aff_con": {
-      "current_price": 148.0,
-      "identity_score": null,
-      "in_stock": false,
+      "current_price": null,
+      "identity_score": 0.0,
+      "in_stock": true,
       "last_seen": "2026-05-04",
       "listed_price": 148.0,
       "name": "Men's Daydrift Relaxed-Fit Pleated Trouser Tall",
       "prev_in_stock": null,
-      "sold_out_since": "2026-05-04"
+      "sold_out_since": null
     },
     "https://suitsupply.com/en-us/men/accessories/belts/black-belt/A25204.html": {
       "current_price": 99.0,
@@ -251,14 +251,14 @@
       "sold_out_since": null
     },
     "https://www.asos.com/us/4505/4505-icon-quick-dry-mesh-training-t-shirt-in-black/prd/205579830": {
-      "current_price": null,
-      "identity_score": 0.0,
-      "in_stock": true,
+      "current_price": 22.99,
+      "identity_score": null,
+      "in_stock": false,
       "last_seen": "2026-05-04",
       "listed_price": 22.99,
       "name": "4505 Icon quick dry mesh training T-shirt in black",
       "prev_in_stock": null,
-      "sold_out_since": null
+      "sold_out_since": "2026-05-04"
     },
     "https://www.asos.com/us/4505/4505-long-sleeve-oversized-cotton-training-t-shirt-with-quick-dry-finish-in-off-white/prd/209298511": {
       "current_price": 34.99,
@@ -311,14 +311,14 @@
       "sold_out_since": null
     },
     "https://www.asos.com/us/asos-design/asos-design-pleated-wide-leg-dress-pants-in-charcoal-wool-blend/prd/208811441": {
-      "current_price": 64.99,
-      "identity_score": null,
-      "in_stock": false,
+      "current_price": null,
+      "identity_score": 0.0,
+      "in_stock": true,
       "last_seen": "2026-05-04",
       "listed_price": 61.74,
       "name": "ASOS DESIGN pleated wide leg dress pants in charcoal wool bl...",
       "prev_in_stock": null,
-      "sold_out_since": "2026-05-04"
+      "sold_out_since": null
     },
     "https://www.asos.com/us/asos-design/asos-design-pleated-wide-leg-dress-pants-with-belt-detail-in-mink/prd/208783602": {
       "current_price": null,

@@ -267,21 +267,30 @@ def _normalize_domain(domain: str) -> str:
 
 
 _ONSITE_CODE_RE = re.compile(
-    r"(?:"
-    r"[Uu]se\s+code|"
-    r"[Ww]ith\s+code|"
-    r"[Pp]romo\s+code|"
-    r"[Cc]oupon\s+code|"
-    r"[Ee]nter\s+code|"
-    r"[Cc]ode:|"
-    r"off\s+using|"
-    r"%\s+off\s+with"
+    # Trigger phrase is case-insensitive ("Use Code", "use code", "USE CODE"
+    # all appear in the wild). The code itself stays uppercase-anchored so we
+    # don't pick up arbitrary words.
+    r"(?i:"
+    r"use\s+code"
+    r"|with\s+code"
+    r"|promo\s+code"
+    r"|coupon\s+code"
+    r"|enter\s+code"
+    r"|code:"
+    r"|off\s+using"
+    r"|%\s+off\s+with"
     r")\s*[-:]?\s*([A-Z][A-Z0-9]{3,14})\b"
 )
 _ONSITE_CODE_DENYLIST = {
     "CODE", "PROMO", "COUPON", "SAVE", "OFFER", "DEAL", "GIFT",
     "FREE", "SHIP", "ENTER", "CHECKOUT", "DISCOUNT",
 }
+
+# Trailing prepositional phrases that read awkwardly once the code is stripped.
+_ORPHAN_TAIL_RE = re.compile(
+    r"\s*\b(?:in\s+cart|at\s+checkout|on\s+(?:your\s+)?order|in\s+checkout)\b\.?$",
+    re.I,
+)
 
 
 def extract_onsite_codes(html: str) -> List[PromoCode]:
@@ -309,18 +318,50 @@ def extract_onsite_codes(html: str) -> List[PromoCode]:
             continue
         if code in seen:
             continue
-        # Capture the sentence containing the code, then clean.
-        prev_ends = list(_SENTENCE_END_RE.finditer(text[: match.start()]))
-        sent_start = prev_ends[-1].end() if prev_ends else max(0, match.start() - 60)
-        next_end = _SENTENCE_END_RE.search(text[match.end():])
-        sent_end = (
-            match.end() + next_end.end()
-            if next_end
-            else min(len(text), match.end() + 80)
-        )
-        snippet = _clean_text(text[sent_start:sent_end], max_chars=120)
+        snippet = _build_onsite_snippet(text, match)
         seen[code] = PromoCode(code=code, description=snippet, expiry=None)
     return list(seen.values())
+
+
+def _build_onsite_snippet(text: str, match: "re.Match[str]") -> str:
+    """Return a clean offer-headline snippet for an onsite code match.
+
+    Captures up to ~250 chars before the trigger and up to the next sentence
+    end after it, snaps the start to the nearest prior sentence boundary,
+    strips the trigger phrase + code (it's already shown in the chip), and
+    drops orphaned trailing prepositions like "in cart" / "at checkout".
+    """
+    WINDOW_BEFORE = 250
+    WINDOW_AFTER = 80
+
+    raw_start = max(0, match.start() - WINDOW_BEFORE)
+    # If the window was cropped from a longer string, snap forward to the
+    # first sentence boundary so we don't start on a mid-sentence fragment.
+    # When raw_start is 0 we're already at the beginning of the document.
+    if raw_start > 0:
+        leading = text[raw_start:match.start()]
+        first_end = _SENTENCE_END_RE.search(leading)
+        window_start = raw_start + first_end.end() if first_end else raw_start
+    else:
+        window_start = 0
+    leading = text[window_start:match.start()]
+
+    next_end = _SENTENCE_END_RE.search(text[match.end():])
+    window_end = (
+        match.end() + next_end.end() if next_end
+        else min(len(text), match.end() + WINDOW_AFTER)
+    )
+
+    window = text[window_start:window_end]
+    # Strip the matched trigger phrase + code so the chip isn't double-mentioned.
+    window = window.replace(match.group(0), " ")
+    window = _ORPHAN_TAIL_RE.sub("", window).strip(" .,;:—-")
+
+    if not window:
+        # Trigger sentence had nothing else; reuse the leading sentence(s).
+        window = leading.strip(" .,;:—-")
+
+    return _clean_text(window, max_chars=80)
 
 
 def lookup(

@@ -166,14 +166,26 @@ def run(
             aggregator_cache[slug] = lookup_coupons(
                 slug, session=session, error_log=log
             )
-        merged: list[PromoCode] = list(aggregator_cache[slug])
-        seen = {c.code.upper() for c in merged}
+
+        merged: list[PromoCode] = []
+        seen: set[str] = set()
+
+        # Onsite first — retailer-confirmed text is the highest-signal source.
+        # Aggregator descriptions often leak accessibility-popup junk, so when
+        # both surfaces have the same code the onsite description must win.
         if page_html:
             for code in extract_onsite_codes(page_html):
                 key = code.code.upper()
                 if key not in seen:
                     merged.append(code)
                     seen.add(key)
+
+        for code in aggregator_cache[slug]:
+            key = code.code.upper()
+            if key not in seen:
+                merged.append(code)
+                seen.add(key)
+
         return merged
 
     for item in items:

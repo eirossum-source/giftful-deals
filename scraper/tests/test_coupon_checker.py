@@ -445,3 +445,74 @@ def test_onsite_snippet_trimmed_to_clean_sentence():
     assert len(desc) <= 121  # snippet window + ellipsis grace
     # Description must not end in a partial word
     assert desc[-1] in (".", "!", "?", "…") or desc[-1].isalnum()
+
+
+# --- description quality on real retailer text ------------------------------
+# These three tests use the literal visible text from production retailer
+# pages. The description must surface the *offer headline*, never the
+# trigger phrase ("Use Code XXX") since the code is already shown in the chip.
+
+
+def test_onsite_brilliantearth_freegift_keeps_offer_headline():
+    """BrilliantEarth product page: prior sentences carry the offer.
+
+    Visible text on https://www.brilliantearth.com/Bailey-...:
+        "Free 1/4 Carat Lab Diamond Studs With Purchase Over $500.
+         A $200 Value. Use Code FREEGIFT in Cart."
+    The trigger sentence ("Use Code FREEGIFT in Cart") has no offer info;
+    the headline lives in the FIRST sentence of the block.
+    """
+    html_doc = (
+        "<html><body><div class='offer'>"
+        "Free 1/4 Carat Lab Diamond Studs With Purchase Over $500. "
+        "A $200 Value. Use Code FREEGIFT in Cart."
+        "</div></body></html>"
+    )
+    codes = extract_onsite_codes(html_doc)
+    by_code = {c.code: c for c in codes}
+    assert "FREEGIFT" in by_code
+    desc = by_code["FREEGIFT"].description
+    assert "FREEGIFT" not in desc.upper()
+    assert "use code" not in desc.lower()
+    assert "Free 1/4 Carat Lab Diamond Studs" in desc
+    assert "Purchase Over $500" in desc
+
+
+def test_onsite_movado_mom20_strips_trigger_keeps_offer():
+    """Movado Museum Classic: single sentence with inline trigger.
+
+    Visible text: "20% off at checkout with code MOM20"
+    Expected description: "20% off at checkout" (trigger + code stripped).
+    """
+    html_doc = (
+        "<html><body><span class='promo'>"
+        "20% off at checkout with code MOM20"
+        "</span></body></html>"
+    )
+    codes = extract_onsite_codes(html_doc)
+    by_code = {c.code: c for c in codes}
+    assert "MOM20" in by_code
+    desc = by_code["MOM20"].description
+    assert "MOM20" not in desc.upper()
+    assert "with code" not in desc.lower()
+    assert "20% off" in desc.lower()
+
+
+def test_onsite_asos_bloom_falls_back_to_prior_sentence():
+    """ASOS Nike shorts: trigger sentence is bare, headline is in prior sentence.
+
+    Visible text: "20% off spring essentials! Use code: BLOOM"
+    Expected description: "20% off spring essentials" (prior sentence).
+    """
+    html_doc = (
+        "<html><body><div class='banner'>"
+        "20% off spring essentials! Use code: BLOOM"
+        "</div></body></html>"
+    )
+    codes = extract_onsite_codes(html_doc)
+    by_code = {c.code: c for c in codes}
+    assert "BLOOM" in by_code
+    desc = by_code["BLOOM"].description
+    assert "BLOOM" not in desc.upper()
+    assert "use code" not in desc.lower()
+    assert "20% off spring essentials" in desc.lower()

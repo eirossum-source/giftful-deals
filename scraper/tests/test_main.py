@@ -922,3 +922,51 @@ def test_onsite_codes_surface_as_promo_deal(tmp_path):
     assert len(deals) == 1
     promos = deals[0].promos
     assert any(p.code == "BJDDM" for p in promos)
+
+
+def test_onsite_description_wins_over_aggregator_for_shared_code(tmp_path):
+    """When the same code appears onsite and on an aggregator, the onsite
+    description must win — aggregator HTML often leaks accessibility-popup
+    junk into descriptions, while the retailer's own page shows the real
+    offer headline.
+    """
+    items = [
+        Item(
+            name="Watch",
+            url="https://www.movado.com/watch",
+            listed_price=595.0,
+            image_url="",
+        ),
+    ]
+    onsite_html = (
+        "<html><body><div class='promo'>"
+        "20% off at checkout with code MOM20"
+        "</div></body></html>"
+    )
+    fetch = MagicMock(return_value=items)
+    check = MagicMock(
+        return_value=PriceResult(current_price=476.0, html=onsite_html)
+    )
+    # Aggregator returns the same code with junk text — must lose to onsite.
+    junk = "Popup heading Close Accessibility Press enter for more options"
+    lookup = MagicMock(return_value=[PromoCode("MOM20", junk, None)])
+    sender = MagicMock()
+
+    run(
+        fetch_items=fetch,
+        check_price=check,
+        lookup_coupons=lookup,
+        send_email=sender,
+        output_path=tmp_path / "index.html",
+        log_path=tmp_path / "errors.log",
+        state_path=tmp_path / "state.json",
+        review_log_path=tmp_path / "review_log.json",
+        now=datetime(2026, 4, 18),
+    )
+
+    deals = sender.call_args.kwargs["deals"]
+    assert len(deals) == 1
+    mom20 = next(p for p in deals[0].promos if p.code == "MOM20")
+    assert "Popup" not in mom20.description
+    assert "Accessibility" not in mom20.description
+    assert "20% off" in mom20.description.lower()

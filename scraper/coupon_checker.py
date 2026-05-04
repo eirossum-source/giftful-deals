@@ -292,35 +292,85 @@ _ORPHAN_TAIL_RE = re.compile(
     re.I,
 )
 
+# Phrases that appear next to actual offers — used to score candidate windows
+# when the same code appears multiple times on a page (e.g. once in a footer
+# account block and once in the real promo banner).
+_OFFER_SIGNAL_RE = re.compile(
+    r"\$\s*\d|"            # "$500", "$ 200"
+    r"\d+%|"               # "20%"
+    r"\b(?:free|off|save|saving|discount|gift|bonus|sale|"
+    r"complimentary|reward|promo)\b",
+    re.I,
+)
+
 
 def extract_onsite_codes(html: str) -> List[PromoCode]:
     """Extract promo codes from a retailer product page.
 
-    Looks for trigger phrases ("use code: XXXX", "with code XXXX", etc.) in the
-    visible page text. Codes shown to actual buyers are the highest-signal source —
-    no extra HTTP request, retailer-confirmed valid.
+    Walks the DOM looking for trigger phrases ("use code: XXXX", "with code
+    XXXX", etc.) inside text nodes. Anchoring to the smallest containing
+    element bounds each candidate snippet to a banner / paragraph / span —
+    so footer and nav chrome stay out of the rendered description.
+
+    When the same code appears in multiple containers (common on retailer
+    pages — banner + footer "use code" link), the candidate with the
+    strongest offer signals nearby wins.
     """
     if not html:
         return []
     soup = BeautifulSoup(html, "lxml")
     for tag in soup(["script", "style", "noscript", "template"]):
         tag.decompose()
-    text = soup.get_text(separator=" ", strip=True)
 
-    seen: dict[str, PromoCode] = {}
-    for match in _ONSITE_CODE_RE.finditer(text):
-        raw = match.group(1)
-        code = raw.upper()
-        if code in _ONSITE_CODE_DENYLIST:
+    # candidates[code] = list of (container_text, match-in-container)
+    candidates: dict[str, list[tuple[str, "re.Match[str]"]]] = {}
+    for text_node in soup.find_all(string=True):
+        # Each text node lives in some element; use that element's full
+        # text as the candidate context (still bounded to the local block).
+        parent = getattr(text_node, "parent", None)
+        if parent is None:
             continue
-        if not re.search(r"\d", code) and len(code) < 5:
-            # Pure-letter codes shorter than 5 chars are usually false positives.
+        container_text = parent.get_text(" ", strip=True)
+        if not container_text:
             continue
-        if code in seen:
+        for match in _ONSITE_CODE_RE.finditer(container_text):
+            code = match.group(1).upper()
+            if code in _ONSITE_CODE_DENYLIST:
+                continue
+            if not re.search(r"\d", code) and len(code) < 5:
+                continue
+            candidates.setdefault(code, []).append((container_text, match))
+
+    results: list[PromoCode] = []
+    seen_codes: set[str] = set()
+    for code, occurrences in candidates.items():
+        if code in seen_codes:
             continue
-        snippet = _build_onsite_snippet(text, match)
-        seen[code] = PromoCode(code=code, description=snippet, expiry=None)
-    return list(seen.values())
+        seen_codes.add(code)
+
+        best_text, best_match = occurrences[0]
+        best_score = _score_container(best_text, best_match)
+        for ctext, m in occurrences[1:]:
+            score = _score_container(ctext, m)
+            if score > best_score:
+                best_text, best_match, best_score = ctext, m, score
+
+        if best_score == 0:
+            # No offer signal in any container — likely just a chrome link.
+            # Emit the code so an aggregator description can still be used,
+            # but suppress the meaningless container text.
+            results.append(PromoCode(code=code, description="", expiry=None))
+        else:
+            snippet = _build_onsite_snippet(best_text, best_match)
+            results.append(PromoCode(code=code, description=snippet, expiry=None))
+    return results
+
+
+def _score_container(container_text: str, match: "re.Match[str]") -> int:
+    """Count offer signals in the container, excluding the trigger phrase
+    itself so "20% off with code" doesn't double-count its own 'off'."""
+    cleaned = container_text.replace(match.group(0), " ")
+    return len(_OFFER_SIGNAL_RE.findall(cleaned))
 
 
 def _build_onsite_snippet(text: str, match: "re.Match[str]") -> str:

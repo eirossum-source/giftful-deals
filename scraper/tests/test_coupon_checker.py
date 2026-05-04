@@ -498,6 +498,47 @@ def test_onsite_movado_mom20_strips_trigger_keeps_offer():
     assert "20% off" in desc.lower()
 
 
+def test_onsite_picks_promo_banner_over_footer_chrome():
+    """When the same code appears in chrome (footer/account block) AND in
+    the real promo banner, the banner's snippet (with offer signals nearby)
+    must win — chrome text never has %, $, free, off etc. nearby.
+    """
+    html_doc = (
+        "<html><body>"
+        "<header><nav>Login Register Account Help</nav></header>"
+        "<div class='banner'>20% off at checkout with code MOM20</div>"
+        "<footer>"
+        "Best of Movado sellers Exclusives Login Register Check use code MOM20"
+        "</footer>"
+        "</body></html>"
+    )
+    codes = extract_onsite_codes(html_doc)
+    by_code = {c.code: c for c in codes}
+    assert "MOM20" in by_code
+    desc = by_code["MOM20"].description
+    assert "20% off" in desc.lower()
+    assert "Login" not in desc
+    assert "Register" not in desc
+
+
+def test_onsite_drops_description_when_only_chrome_match():
+    """If the trigger only appears in chrome (no offer signal anywhere
+    nearby), emit the code with empty description rather than render
+    meaningless nav text."""
+    html_doc = (
+        "<html><body>"
+        "<footer>Customer service Login Register Account use code FREEGIFT"
+        " Privacy policy Terms</footer>"
+        "</body></html>"
+    )
+    codes = extract_onsite_codes(html_doc)
+    by_code = {c.code: c for c in codes}
+    # Code is still emitted (aggregator may still surface it usefully) but
+    # the junk description is suppressed.
+    assert "FREEGIFT" in by_code
+    assert by_code["FREEGIFT"].description == ""
+
+
 def test_onsite_asos_bloom_falls_back_to_prior_sentence():
     """ASOS Nike shorts: trigger sentence is bare, headline is in prior sentence.
 

@@ -307,15 +307,48 @@ _OFFER_SIGNAL_RE = re.compile(
 # whose text is the whole page. Cap candidate containers below that.
 _MAX_CONTAINER_CHARS = 1500
 
+# Lines starting with these words after a non-terminal newline almost always
+# continue the previous sentence — element boundaries split a single offer
+# headline like "Free 1/4 Carat Lab Diamond Studs / With Purchase Over $500".
+_CONTINUATION_START_RE = re.compile(
+    r"^(?:[a-z]|with|in|on|for|to|from|and|or|by|at|when|while|over|under|"
+    r"of|the|a|an|plus|including|valid)\b",
+    re.I,
+)
+
+
+def _merge_continuation_lines(text: str) -> str:
+    """Rejoin element-split sentence fragments so a single offer headline
+    stays whole when scoring/picking sentences downstream."""
+    lines = [ln for ln in text.split("\n") if ln.strip()]
+    merged: list[str] = []
+    for line in lines:
+        line = line.strip()
+        if (
+            merged
+            and not re.search(r"[.!?]$", merged[-1])
+            and _CONTINUATION_START_RE.match(line)
+        ):
+            merged[-1] = merged[-1] + " " + line
+        else:
+            merged.append(line)
+    return "\n".join(merged)
+
 
 def _smallest_matching_ancestor(text_node):
     """Return (element, container_text) for the smallest ancestor whose
     rendered text contains at least one complete trigger match. Walks up
     because the trigger phrase is often split across nested tags
-    (e.g. ``Use Code <span>CODE</span>``)."""
+    (e.g. ``Use Code <span>CODE</span>``).
+
+    Uses ``\n`` as the join separator so sibling-element text blocks stay
+    separable later — banners like ``<div>20% off…</div>`` packed next to
+    titles and prices in the same parent need to be picked back out as
+    distinct sentences when the page text contains no periods.
+    """
     el = getattr(text_node, "parent", None)
     while el is not None and getattr(el, "name", None) not in (None, "[document]"):
-        txt = el.get_text(" ", strip=True)
+        txt = el.get_text("\n", strip=True)
         if txt and _ONSITE_CODE_RE.search(txt):
             return el, txt
         el = el.parent
@@ -373,13 +406,16 @@ def extract_onsite_codes(html: str) -> List[PromoCode]:
             continue
         seen_codes.add(code)
 
-        # Sort: higher offer-signal count first, smaller container second.
-        # Smaller containers are tighter — body-level wrappers always lose
-        # to banner-sized blocks even when both score the same.
-        occurrences_sorted = sorted(
-            occurrences,
-            key=lambda om: (-_score_container(om[0], om[1]), len(om[0])),
-        )
+        # Among containers with at least one offer signal, prefer the
+        # smallest — a tight banner element ("20% off ... use code XXX")
+        # almost always carries the actual headline, while large product
+        # cards sweep in titles, prices, and chrome that drown it out.
+        # Containers with zero signals fall to last priority (chrome only).
+        def _key(om):
+            s = _score_container(om[0], om[1])
+            return (s == 0, len(om[0]), -s)
+
+        occurrences_sorted = sorted(occurrences, key=_key)
         best_text, best_match = occurrences_sorted[0]
         best_score = _score_container(best_text, best_match)
 
@@ -416,11 +452,17 @@ def _build_onsite_snippet(text: str, match: "re.Match[str]") -> str:
     if not cleaned:
         return ""
 
-    # Split on sentence-ending punctuation. Keep punctuation as a separator
-    # cue but drop empty fragments.
+    # Merge "continuation" lines: when an element-level newline split a
+    # logical sentence in two ("Free 1/4 Carat Lab Diamond Studs" /
+    # "With Purchase Over $500"), rejoin them so the headline stays whole.
+    cleaned = _merge_continuation_lines(cleaned)
+
+    # Split on sentence-ending punctuation OR element-level newlines (the
+    # \n joiner in _smallest_matching_ancestor preserves block boundaries
+    # so banner text doesn't run on into surrounding titles / prices).
     sentences = [
         s.strip(" .,;:—-")
-        for s in re.split(r"[.!?](?=\s|$)", cleaned)
+        for s in re.split(r"[.!?](?=\s|$)|\n+", cleaned)
         if s.strip()
     ]
     if not sentences:

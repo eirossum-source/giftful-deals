@@ -303,6 +303,24 @@ _OFFER_SIGNAL_RE = re.compile(
     re.I,
 )
 
+# Once we walk up past banner-sized containers we hit page wrappers / body,
+# whose text is the whole page. Cap candidate containers below that.
+_MAX_CONTAINER_CHARS = 1500
+
+
+def _smallest_matching_ancestor(text_node):
+    """Return (element, container_text) for the smallest ancestor whose
+    rendered text contains at least one complete trigger match. Walks up
+    because the trigger phrase is often split across nested tags
+    (e.g. ``Use Code <span>CODE</span>``)."""
+    el = getattr(text_node, "parent", None)
+    while el is not None and getattr(el, "name", None) not in (None, "[document]"):
+        txt = el.get_text(" ", strip=True)
+        if txt and _ONSITE_CODE_RE.search(txt):
+            return el, txt
+        el = el.parent
+    return None, None
+
 
 def extract_onsite_codes(html: str) -> List[PromoCode]:
     """Extract promo codes from a retailer product page.
@@ -324,14 +342,21 @@ def extract_onsite_codes(html: str) -> List[PromoCode]:
 
     # candidates[code] = list of (container_text, match-in-container)
     candidates: dict[str, list[tuple[str, "re.Match[str]"]]] = {}
+    seen_elements: set[int] = set()
     for text_node in soup.find_all(string=True):
-        # Each text node lives in some element; use that element's full
-        # text as the candidate context (still bounded to the local block).
-        parent = getattr(text_node, "parent", None)
-        if parent is None:
+        if not str(text_node).strip():
             continue
-        container_text = parent.get_text(" ", strip=True)
-        if not container_text:
+        element, container_text = _smallest_matching_ancestor(text_node)
+        if element is None or container_text is None:
+            continue
+        if id(element) in seen_elements:
+            continue
+        seen_elements.add(id(element))
+        # Cap container text — once we walk up to <body>/<html>, the candidate
+        # is "the whole page," which always wins on offer-signal score because
+        # it sweeps in every promo word on the page. Anything larger than a
+        # banner-sized block is treated as too noisy to render directly.
+        if len(container_text) > _MAX_CONTAINER_CHARS:
             continue
         for match in _ONSITE_CODE_RE.finditer(container_text):
             code = match.group(1).upper()
@@ -348,12 +373,15 @@ def extract_onsite_codes(html: str) -> List[PromoCode]:
             continue
         seen_codes.add(code)
 
-        best_text, best_match = occurrences[0]
+        # Sort: higher offer-signal count first, smaller container second.
+        # Smaller containers are tighter — body-level wrappers always lose
+        # to banner-sized blocks even when both score the same.
+        occurrences_sorted = sorted(
+            occurrences,
+            key=lambda om: (-_score_container(om[0], om[1]), len(om[0])),
+        )
+        best_text, best_match = occurrences_sorted[0]
         best_score = _score_container(best_text, best_match)
-        for ctext, m in occurrences[1:]:
-            score = _score_container(ctext, m)
-            if score > best_score:
-                best_text, best_match, best_score = ctext, m, score
 
         if best_score == 0:
             # No offer signal in any container — likely just a chrome link.
@@ -376,42 +404,41 @@ def _score_container(container_text: str, match: "re.Match[str]") -> int:
 def _build_onsite_snippet(text: str, match: "re.Match[str]") -> str:
     """Return a clean offer-headline snippet for an onsite code match.
 
-    Captures up to ~250 chars before the trigger and up to the next sentence
-    end after it, snaps the start to the nearest prior sentence boundary,
-    strips the trigger phrase + code (it's already shown in the chip), and
-    drops orphaned trailing prepositions like "in cart" / "at checkout".
+    Strips the trigger phrase + code from the container text, splits into
+    sentences, and returns the sentence with the strongest offer signals.
+    The first sentence in a banner block is often a side-note ("Expedited
+    delivery available in checkout") — the actual offer ("Free 1/4 Carat
+    Lab Diamond Studs With Purchase Over $500") lives further along.
     """
-    WINDOW_BEFORE = 250
-    WINDOW_AFTER = 80
+    cleaned = text.replace(match.group(0), " ")
+    cleaned = _ORPHAN_TAIL_RE.sub("", cleaned).strip(" .,;:—-")
 
-    raw_start = max(0, match.start() - WINDOW_BEFORE)
-    # If the window was cropped from a longer string, snap forward to the
-    # first sentence boundary so we don't start on a mid-sentence fragment.
-    # When raw_start is 0 we're already at the beginning of the document.
-    if raw_start > 0:
-        leading = text[raw_start:match.start()]
-        first_end = _SENTENCE_END_RE.search(leading)
-        window_start = raw_start + first_end.end() if first_end else raw_start
-    else:
-        window_start = 0
-    leading = text[window_start:match.start()]
+    if not cleaned:
+        return ""
 
-    next_end = _SENTENCE_END_RE.search(text[match.end():])
-    window_end = (
-        match.end() + next_end.end() if next_end
-        else min(len(text), match.end() + WINDOW_AFTER)
-    )
+    # Split on sentence-ending punctuation. Keep punctuation as a separator
+    # cue but drop empty fragments.
+    sentences = [
+        s.strip(" .,;:—-")
+        for s in re.split(r"[.!?](?=\s|$)", cleaned)
+        if s.strip()
+    ]
+    if not sentences:
+        return _clean_text(cleaned, max_chars=80)
 
-    window = text[window_start:window_end]
-    # Strip the matched trigger phrase + code so the chip isn't double-mentioned.
-    window = window.replace(match.group(0), " ")
-    window = _ORPHAN_TAIL_RE.sub("", window).strip(" .,;:—-")
+    def _sig(s: str) -> int:
+        return len(_OFFER_SIGNAL_RE.findall(s))
 
-    if not window:
-        # Trigger sentence had nothing else; reuse the leading sentence(s).
-        window = leading.strip(" .,;:—-")
+    # Pick the highest-scoring sentence. On ties, the earlier sentence wins
+    # (more likely to be the headline rather than fine-print).
+    best_idx = max(range(len(sentences)), key=lambda i: (_sig(sentences[i]), -i))
+    best_sentence = sentences[best_idx]
+    if _sig(best_sentence) == 0:
+        # No sentence had an offer signal — fall back to the first sentence
+        # (matches the simple single-sentence banner case).
+        best_sentence = sentences[0]
 
-    return _clean_text(window, max_chars=80)
+    return _clean_text(best_sentence, max_chars=80)
 
 
 def lookup(

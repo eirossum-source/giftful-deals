@@ -107,15 +107,96 @@ def _fetch(url: str, session, error_log) -> Optional[str]:
     return resp.text or ""
 
 
+def _normalize_domain(domain: str) -> str:
+    return re.sub(r"^www\.", "", (domain or "").strip().lower())
+
+
+_ONSITE_CODE_RE = re.compile(
+    r"(?:"
+    r"[Uu]se\s+code|"
+    r"[Ww]ith\s+code|"
+    r"[Pp]romo\s+code|"
+    r"[Cc]oupon\s+code|"
+    r"[Ee]nter\s+code|"
+    r"[Cc]ode:|"
+    r"off\s+using|"
+    r"%\s+off\s+with"
+    r")\s*[-:]?\s*([A-Z][A-Z0-9]{3,14})\b"
+)
+_ONSITE_CODE_DENYLIST = {
+    "CODE", "PROMO", "COUPON", "SAVE", "OFFER", "DEAL", "GIFT",
+    "FREE", "SHIP", "ENTER", "CHECKOUT", "DISCOUNT",
+}
+
+
+def extract_onsite_codes(html: str) -> List[PromoCode]:
+    """Extract promo codes from a retailer product page.
+
+    Looks for trigger phrases ("use code: XXXX", "with code XXXX", etc.) in the
+    visible page text. Codes shown to actual buyers are the highest-signal source —
+    no extra HTTP request, retailer-confirmed valid.
+    """
+    if not html:
+        return []
+    soup = BeautifulSoup(html, "lxml")
+    for tag in soup(["script", "style", "noscript", "template"]):
+        tag.decompose()
+    text = soup.get_text(separator=" ", strip=True)
+
+    seen: dict[str, PromoCode] = {}
+    for match in _ONSITE_CODE_RE.finditer(text):
+        raw = match.group(1)
+        code = raw.upper()
+        if code in _ONSITE_CODE_DENYLIST:
+            continue
+        if not re.search(r"\d", code) and len(code) < 5:
+            # Pure-letter codes shorter than 5 chars are usually false positives.
+            continue
+        if code in seen:
+            continue
+        # Pull a description from the surrounding sentence.
+        start = max(0, match.start() - 60)
+        end = min(len(text), match.end() + 80)
+        snippet = text[start:end].strip()
+        seen[code] = PromoCode(code=code, description=snippet, expiry=None)
+    return list(seen.values())
+
+
 def lookup(
     domain: str,
     session,
     error_log,
     today: Optional[date] = None,
+    onsite_html: Optional[str] = None,
 ) -> List[PromoCode]:
+    """Look up promo codes for a domain.
+
+    Order: (1) extract from the retailer's own HTML if provided, (2) CouponFollow,
+    (3) DealsPotr fallback when CouponFollow turns up nothing. De-dupes across
+    sources by code (case-insensitive).
+    """
     today = today or date.today()
-    cf_url = f"https://couponfollow.com/site/{domain}"
-    html = _fetch(cf_url, session, error_log)
-    if not html:
-        return []
-    return parse_couponfollow(html, today=today)
+    slug = _normalize_domain(domain)
+
+    found: dict[str, PromoCode] = {}
+
+    if onsite_html:
+        for code in extract_onsite_codes(onsite_html):
+            found.setdefault(code.code.upper(), code)
+
+    cf_url = f"https://couponfollow.com/site/{slug}"
+    cf_html = _fetch(cf_url, session, error_log)
+    cf_codes: List[PromoCode] = []
+    if cf_html:
+        cf_codes = parse_couponfollow(cf_html, today=today)
+        for code in cf_codes:
+            found.setdefault(code.code.upper(), code)
+
+    if not cf_codes:
+        ds_url = f"https://dealspotr.com/promo-codes/{slug}"
+        ds_html = _fetch(ds_url, session, error_log)
+        if ds_html:
+            for code in parse_dealspotr(ds_html, today=today):
+                found.setdefault(code.code.upper(), code)
+
+    return list(found.values())

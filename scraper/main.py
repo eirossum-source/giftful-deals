@@ -9,7 +9,12 @@ from filter import Deal, StoreEvaluation, evaluate_store, is_deal
 from giftful import StoreLink, fetch_list
 from html_builder import render
 from price_checker import check_price as real_check_price
-from coupon_checker import lookup as real_lookup
+from coupon_checker import (
+    PromoCode,
+    extract_onsite_codes,
+    lookup as real_lookup,
+    _normalize_domain,
+)
 from emailer import send as real_send
 from inventory import (
     is_back_in_stock,
@@ -96,6 +101,24 @@ def run(
     review_log_entries: list[dict] = []
     price_samples: list[tuple[str, float, float | None]] = []
 
+    aggregator_cache: dict[str, list[PromoCode]] = {}
+
+    def _coupons_for(domain: str, page_html: Optional[str]) -> list[PromoCode]:
+        slug = _normalize_domain(domain)
+        if slug not in aggregator_cache:
+            aggregator_cache[slug] = lookup_coupons(
+                slug, session=session, error_log=log
+            )
+        merged: list[PromoCode] = list(aggregator_cache[slug])
+        seen = {c.code.upper() for c in merged}
+        if page_html:
+            for code in extract_onsite_codes(page_html):
+                key = code.code.upper()
+                if key not in seen:
+                    merged.append(code)
+                    seen.add(key)
+        return merged
+
     for item in items:
         if item.store_urls:
             evaluations: list[StoreEvaluation] = []
@@ -148,7 +171,7 @@ def run(
                         "reason": None,
                     })
                     in_stock_any = True
-                    promos = lookup_coupons(store.domain, session=session, error_log=log)
+                    promos = _coupons_for(store.domain, price_result.html)
                     norm = normalize_url(store.url)
                     back_in_stock = is_back_in_stock(prev_state, norm, True)
                     ok, types = evaluate_store(store, price_result, promos, back_in_stock=back_in_stock)
@@ -224,7 +247,7 @@ def run(
                     "status": "ok",
                     "reason": None,
                 })
-                promos = lookup_coupons(item.domain, session=session, error_log=log)
+                promos = _coupons_for(item.domain, price_result.html)
                 back_in_stock = is_back_in_stock(prev_state, norm, True)
                 ok, types = is_deal(item, price_result, promos, back_in_stock=back_in_stock)
                 if ok:

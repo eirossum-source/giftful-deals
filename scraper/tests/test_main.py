@@ -676,3 +676,90 @@ def test_multi_store_partial_error_still_evaluates_others(tmp_path):
 
     assert summary["deals"] == 1
     assert summary["errors"] == 1
+
+
+def test_coupons_looked_up_once_per_unique_domain(tmp_path):
+    """Per-domain cache: many items at the same retailer -> one aggregator call."""
+    items = [
+        Item(
+            name="Item A",
+            url="https://www.acme.com/a",
+            listed_price=100.0,
+            image_url="",
+        ),
+        Item(
+            name="Item B",
+            url="https://www.acme.com/b",
+            listed_price=120.0,
+            image_url="",
+        ),
+        Item(
+            name="Item C",
+            url="https://www.other.com/c",
+            listed_price=80.0,
+            image_url="",
+        ),
+    ]
+    fetch = MagicMock(return_value=items)
+    check = MagicMock(return_value=PriceResult(current_price=50.0))
+    lookup = MagicMock(return_value=[])
+    sender = MagicMock()
+
+    run(
+        fetch_items=fetch,
+        check_price=check,
+        lookup_coupons=lookup,
+        send_email=sender,
+        output_path=tmp_path / "index.html",
+        log_path=tmp_path / "errors.log",
+        state_path=tmp_path / "state.json",
+        review_log_path=tmp_path / "review_log.json",
+        now=datetime(2026, 4, 18),
+    )
+
+    # 3 items, 2 unique domains -> 2 aggregator calls (not 3).
+    assert lookup.call_count == 2
+    domains_passed = [call.args[0] for call in lookup.call_args_list]
+    # And the slug passed in should be www-stripped.
+    assert "acme.com" in domains_passed
+    assert "other.com" in domains_passed
+
+
+def test_onsite_codes_surface_as_promo_deal(tmp_path):
+    """A page whose HTML has 'use code: XYZ123' yields a PROMO deal even with no aggregator hits."""
+    items = [
+        Item(
+            name="Shorts",
+            url="https://www.asos.com/shorts",
+            listed_price=65.0,
+            image_url="",
+        ),
+    ]
+    onsite_html = (
+        '<html><body><div class="banner">'
+        "20% off using essentials. Use code: BJDDM"
+        "</div></body></html>"
+    )
+    fetch = MagicMock(return_value=items)
+    check = MagicMock(
+        return_value=PriceResult(current_price=65.0, html=onsite_html)
+    )
+    lookup = MagicMock(return_value=[])  # aggregators find nothing
+    sender = MagicMock()
+
+    run(
+        fetch_items=fetch,
+        check_price=check,
+        lookup_coupons=lookup,
+        send_email=sender,
+        output_path=tmp_path / "index.html",
+        log_path=tmp_path / "errors.log",
+        state_path=tmp_path / "state.json",
+        review_log_path=tmp_path / "review_log.json",
+        now=datetime(2026, 4, 18),
+    )
+
+    deals = sender.call_args.kwargs["deals"]
+    assert len(deals) == 1
+    promos = deals[0].promos
+    assert any(p.code == "BJDDM" for p in promos)

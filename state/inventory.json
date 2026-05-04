@@ -46,13 +46,13 @@
       "sold_out_since": null
     },
     "https://shop.lululemon.com/p/men-shorts/Pace-Breaker-Short-Linerless-Updated/_/prod11430005?color=33928&sz=L&skuId=153837590&cid=pdp_share_header_link_icon&cid=aff_con": {
-      "current_price": null,
-      "in_stock": true,
+      "current_price": 68.0,
+      "in_stock": false,
       "last_seen": "2026-05-04",
       "listed_price": 68.0,
       "name": "Pace Breaker Linerless Short 9\"",
       "prev_in_stock": null,
-      "sold_out_since": null
+      "sold_out_since": "2026-05-04"
     },
     "https://shop.lululemon.com/p/mens-trousers/Mens-Daydrift-Relaxed-Fit-Pleated-Trouser-Tall/_/prod20009307?color=0001&cid=pdp_share_header_link_icon&cid=aff_con": {
       "current_price": null,
@@ -130,7 +130,7 @@
       "current_price": null,
       "in_stock": true,
       "last_seen": "2026-05-04",
-      "listed_price": 37.5,
+      "listed_price": 50.0,
       "name": "Men's Long-Sleeve Premium Heavyweight 2.0 Tee | Men's | Aber...",
       "prev_in_stock": null,
       "sold_out_since": null
@@ -226,16 +226,16 @@
       "sold_out_since": null
     },
     "https://www.asos.com/us/4505/4505-icon-quick-dry-mesh-training-t-shirt-in-black/prd/205579830": {
-      "current_price": 22.99,
-      "in_stock": false,
+      "current_price": null,
+      "in_stock": true,
       "last_seen": "2026-05-04",
       "listed_price": 22.99,
       "name": "4505 Icon quick dry mesh training T-shirt in black",
       "prev_in_stock": null,
-      "sold_out_since": "2026-05-04"
+      "sold_out_since": null
     },
     "https://www.asos.com/us/4505/4505-long-sleeve-oversized-cotton-training-t-shirt-with-quick-dry-finish-in-off-white/prd/209298511": {
-      "current_price": null,
+      "current_price": 34.99,
       "in_stock": true,
       "last_seen": "2026-05-04",
       "listed_price": 34.99,
@@ -244,7 +244,7 @@
       "sold_out_since": null
     },
     "https://www.asos.com/us/asos-design/asos-design-baggy-jeans-in-light-wash-blue/prd/204625766": {
-      "current_price": null,
+      "current_price": 47.99,
       "in_stock": true,
       "last_seen": "2026-05-04",
       "listed_price": 47.99,
@@ -483,15 +483,6 @@
       "last_seen": "2026-05-04",
       "listed_price": 239.0,
       "name": "Tom Ford FT5737-B",
-      "prev_in_stock": null,
-      "sold_out_since": null
-    },
-    "https://www.tommyjohn.com/products/second-skin-boxer-brief-8-3-pack-31?variant=33953202536493": {
-      "current_price": 108.0,
-      "in_stock": true,
-      "last_seen": "2026-05-04",
-      "listed_price": 114.0,
-      "name": "Second Skin Boxer Brief 8\" (3-Pack)",
       "prev_in_stock": null,
       "sold_out_since": null
     },

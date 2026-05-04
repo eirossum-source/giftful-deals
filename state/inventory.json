@@ -145,7 +145,7 @@
       "identity_score": 0.0,
       "in_stock": true,
       "last_seen": "2026-05-04",
-      "listed_price": 50.0,
+      "listed_price": 40.0,
       "name": "Men's Long-Sleeve Premium Heavyweight 2.0 Tee | Men's | Aber...",
       "prev_in_stock": null,
       "sold_out_since": null
@@ -251,18 +251,18 @@
       "sold_out_since": null
     },
     "https://www.asos.com/us/4505/4505-icon-quick-dry-mesh-training-t-shirt-in-black/prd/205579830": {
-      "current_price": 22.99,
-      "identity_score": null,
-      "in_stock": false,
+      "current_price": null,
+      "identity_score": 0.0,
+      "in_stock": true,
       "last_seen": "2026-05-04",
       "listed_price": 22.99,
       "name": "4505 Icon quick dry mesh training T-shirt in black",
       "prev_in_stock": null,
-      "sold_out_since": "2026-05-04"
+      "sold_out_since": null
     },
     "https://www.asos.com/us/4505/4505-long-sleeve-oversized-cotton-training-t-shirt-with-quick-dry-finish-in-off-white/prd/209298511": {
-      "current_price": 34.99,
-      "identity_score": 1.0,
+      "current_price": null,
+      "identity_score": 0.0,
       "in_stock": true,
       "last_seen": "2026-05-04",
       "listed_price": 26.24,
@@ -291,14 +291,14 @@
       "sold_out_since": null
     },
     "https://www.asos.com/us/asos-design/asos-design-heavyweight-relaxed-long-sleeve-t-shirt-in-dark-brown-waffle/prd/209020360": {
-      "current_price": 34.99,
-      "identity_score": null,
-      "in_stock": false,
+      "current_price": null,
+      "identity_score": 0.0,
+      "in_stock": true,
       "last_seen": "2026-05-04",
       "listed_price": 26.24,
       "name": "ASOS DESIGN heavyweight relaxed long sleeve T-shirt in dark ...",
       "prev_in_stock": null,
-      "sold_out_since": "2026-05-04"
+      "sold_out_since": null
     },
     "https://www.asos.com/us/asos-design/asos-design-oversized-boxy-fit-fisherman-rib-knit-sweater-in-heathered-stone/prd/208014846": {
       "current_price": null,
@@ -561,14 +561,14 @@
       "sold_out_since": null
     },
     "https://www.uniqlo.com/us/en/products/E481177-000/00?colorDisplayCode=01&sizeDisplayCode=003&pldDisplayCode=000": {
-      "current_price": null,
-      "identity_score": 0.0,
-      "in_stock": true,
+      "current_price": 29.9,
+      "identity_score": null,
+      "in_stock": false,
       "last_seen": "2026-05-04",
       "listed_price": 29.9,
       "name": "Waffle T-Shirt | Long Sleeve",
       "prev_in_stock": null,
-      "sold_out_since": null
+      "sold_out_since": "2026-05-04"
     },
     "https://www.uniqlo.com/us/en/products/E482758-000/00?colorDisplayCode=31&sizeDisplayCode=005&pldDisplayCode=000": {
       "current_price": 39.9,

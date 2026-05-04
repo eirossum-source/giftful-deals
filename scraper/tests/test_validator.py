@@ -2,6 +2,7 @@ from validator import (
     check_identity,
     check_link_integrity,
     check_sold_out,
+    identity_diagnostic_snippet,
 )
 
 
@@ -432,3 +433,27 @@ def test_sold_out_ignores_phrase_in_unrelated_text():
 
 def test_sold_out_handles_empty_html():
     assert check_sold_out("") is False
+
+
+# ---------- identity_diagnostic_snippet ----------
+
+
+def test_identity_diagnostic_returns_title():
+    html = """
+    <html><head><title>Boxer Briefs | Tommy John</title></head>
+    <body><h1>Our Best Boxer Briefs</h1></body></html>
+    """
+    snippet = identity_diagnostic_snippet(html)
+    assert "Boxer Briefs" in snippet
+    assert len(snippet) <= 120
+
+
+def test_identity_diagnostic_falls_back_to_h1_when_no_title():
+    html = "<html><body><h1>Some Long H1 Heading Text</h1></body></html>"
+    snippet = identity_diagnostic_snippet(html)
+    assert "Some Long H1 Heading Text" in snippet
+
+
+def test_identity_diagnostic_handles_empty_html():
+    assert identity_diagnostic_snippet("") == ""
+    assert identity_diagnostic_snippet(None) == ""

@@ -433,6 +433,165 @@ def test_run_omits_page_kwarg_when_no_page_provided(tmp_path):
     assert check.call_args.kwargs.get("page") is None
 
 
+def test_identity_retry_via_playwright_when_score_zero(tmp_path):
+    """When the requests-derived html scores 0.00 on identity check, the
+    runner re-fetches via Playwright and re-validates. If the retry html
+    matches, the item is processed as ok rather than flagged for review.
+
+    Mirrors the Tommy John soft-block scenario: requests gets a generic
+    landing page; Playwright (which executes anti-bot JS) gets the real
+    product page.
+    """
+    import json as _json
+    from unittest.mock import patch
+
+    items = [
+        Item(
+            name="Second Skin Boxer Brief 8 3-Pack",
+            url="https://www.tommyjohn.com/products/second-skin-boxer-brief-8-3-pack-31",
+            listed_price=68.0,
+            image_url="",
+        ),
+    ]
+    fetch = MagicMock(return_value=items)
+    bad_html = """
+    <html><head><title>Find Your Perfect Underwear</title></head>
+    <body><h1>Shop By Category</h1><div>browse our collection</div></body></html>
+    """
+    good_html = """
+    <html><head><title>Second Skin Boxer Brief 8" (3-Pack) | Tommy John</title></head>
+    <body><h1>Second Skin Boxer Brief 8 (3-Pack)</h1>
+    <div class="price">$54</div><button>Add to Cart</button></body></html>
+    """
+    check = MagicMock(return_value=PriceResult(current_price=54.0, html=bad_html))
+    lookup = MagicMock(return_value=[])
+    sender = MagicMock()
+    sentinel_page = MagicMock(name="page")
+
+    retry_result = PriceResult(current_price=54.0, html=good_html)
+    with patch("main.recheck_via_playwright", return_value=retry_result) as recheck:
+        run(
+            fetch_items=fetch,
+            check_price=check,
+            lookup_coupons=lookup,
+            send_email=sender,
+            output_path=tmp_path / "index.html",
+            log_path=tmp_path / "errors.log",
+            state_path=tmp_path / "state.json",
+            review_log_path=tmp_path / "review_log.json",
+            now=datetime(2026, 5, 4),
+            page=sentinel_page,
+        )
+
+    assert recheck.called, "Playwright retry should fire on score 0.00"
+    log = _json.loads((tmp_path / "review_log.json").read_text())
+    statuses = {(e["name"], e["status"]) for e in log["items"]}
+    assert ("Second Skin Boxer Brief 8 3-Pack", "ok") in statuses
+
+
+def test_review_log_includes_diagnostic_snippet_on_identity_fail(tmp_path):
+    """When identity flags as mismatch, the review_log reason field includes
+    `saw: <title-snippet>` so future false positives are debuggable without
+    re-fetching the page."""
+    import json as _json
+
+    items = [
+        Item(
+            name="Vintage Brown Loafers",
+            url="https://shop.example.com/x",
+            listed_price=200.0,
+            image_url="",
+        ),
+    ]
+    fetch = MagicMock(return_value=items)
+    mismatch_html = """
+    <html><head><title>Sneakers Collection — Outlet Page</title></head>
+    <body><h1>All Sneakers</h1><button>Add to Cart</button></body></html>
+    """
+    check = MagicMock(return_value=PriceResult(current_price=180.0, html=mismatch_html))
+    lookup = MagicMock(return_value=[])
+    sender = MagicMock()
+
+    run(
+        fetch_items=fetch,
+        check_price=check,
+        lookup_coupons=lookup,
+        send_email=sender,
+        output_path=tmp_path / "index.html",
+        log_path=tmp_path / "errors.log",
+        state_path=tmp_path / "state.json",
+        review_log_path=tmp_path / "review_log.json",
+        now=datetime(2026, 5, 4),
+    )
+
+    log = _json.loads((tmp_path / "review_log.json").read_text())
+    entry = next(e for e in log["items"] if e["name"] == "Vintage Brown Loafers")
+    assert entry["status"] == "review"
+    assert "saw:" in entry["reason"]
+    assert "Sneakers" in entry["reason"]
+
+
+def test_soft_fail_when_prior_run_identified_url(tmp_path):
+    """If the current run scores 0.00 but inventory has a prior pass for
+    the same URL, treat as ok (likely intermittent bot block) and emit
+    diagnostic reason. Item still appears as a deal, not in the review section."""
+    import json as _json
+    from unittest.mock import patch
+
+    state_path = tmp_path / "state.json"
+    state_path.write_text(
+        _json.dumps(
+            {
+                "items": {
+                    "https://shop.example.com/x": {
+                        "name": "Vintage Brown Loafers",
+                        "last_seen": "2026-04-26",
+                        "in_stock": True,
+                        "current_price": 180.0,
+                        "listed_price": 200.0,
+                        "sold_out_since": None,
+                        "identity_score": 1.0,
+                    }
+                }
+            }
+        ),
+        encoding="utf-8",
+    )
+
+    items = [
+        Item(
+            name="Vintage Brown Loafers",
+            url="https://shop.example.com/x",
+            listed_price=200.0,
+            image_url="",
+        ),
+    ]
+    fetch = MagicMock(return_value=items)
+    soft_block_html = """
+    <html><head><title>Welcome to ShopExample</title></head>
+    <body><h1>Browse our store</h1><button>Sign in</button></body></html>
+    """
+    check = MagicMock(return_value=PriceResult(current_price=170.0, html=soft_block_html))
+    lookup = MagicMock(return_value=[])
+    sender = MagicMock()
+
+    # No page provided — Playwright retry doesn't fire; pure soft-fail path.
+    summary = run(
+        fetch_items=fetch,
+        check_price=check,
+        lookup_coupons=lookup,
+        send_email=sender,
+        output_path=tmp_path / "index.html",
+        log_path=tmp_path / "errors.log",
+        state_path=state_path,
+        review_log_path=tmp_path / "review_log.json",
+        now=datetime(2026, 5, 4),
+    )
+
+    assert summary["deals"] == 1
+    assert summary.get("review", 0) == 0
+
+
 def test_validator_flags_dead_link_to_review_section(tmp_path):
     items = [
         Item(

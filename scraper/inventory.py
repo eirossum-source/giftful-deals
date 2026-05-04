@@ -75,6 +75,7 @@ def update_item(
     current_price: Optional[float],
     listed_price: float,
     today: Optional[date] = None,
+    identity_score: Optional[float] = None,
 ) -> None:
     today = today or date.today()
     items = state.setdefault("items", {})
@@ -85,6 +86,15 @@ def update_item(
     else:
         sold_out_since = prev.get("sold_out_since") or today.isoformat()
 
+    # Carry forward last known identity score when the current run didn't
+    # produce one (e.g., sold-out paths skip identity scoring). Avoids
+    # losing soft-fail rescue context across runs.
+    resolved_identity = (
+        identity_score
+        if identity_score is not None
+        else prev.get("identity_score")
+    )
+
     items[url] = {
         "name": name,
         "last_seen": today.isoformat(),
@@ -93,6 +103,7 @@ def update_item(
         "current_price": current_price,
         "listed_price": listed_price,
         "sold_out_since": sold_out_since,
+        "identity_score": resolved_identity,
     }
 
 

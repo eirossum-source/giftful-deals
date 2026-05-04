@@ -9,6 +9,7 @@ from coupon_checker import (
     lookup,
     parse_couponfollow,
     parse_dealspotr,
+    parse_retailmenot,
 )
 
 
@@ -111,12 +112,12 @@ def test_lookup_falls_back_to_dealspotr_on_couponfollow_404(mocker, read_fixture
     assert session.get.call_count == 2
 
 
-def test_lookup_returns_empty_when_both_sources_empty(mocker, read_fixture):
+def test_lookup_returns_empty_when_all_sources_empty(mocker, read_fixture):
     session = MagicMock()
     empty = MagicMock()
     empty.status_code = 200
     empty.text = read_fixture("couponfollow_empty.html")
-    session.get.side_effect = [empty, empty]
+    session.get.side_effect = [empty, empty, empty]
     mocker.patch("coupon_checker.time.sleep")
 
     codes = lookup(
@@ -127,7 +128,7 @@ def test_lookup_returns_empty_when_both_sources_empty(mocker, read_fixture):
     )
 
     assert codes == []
-    assert session.get.call_count == 2
+    assert session.get.call_count == 3
 
 
 def test_lookup_strips_www_prefix(mocker, read_fixture):
@@ -255,3 +256,192 @@ def test_extract_onsite_codes_dedupes_across_repeats():
 def test_extract_onsite_codes_handles_empty_html():
     assert extract_onsite_codes("") == []
     assert extract_onsite_codes(None) == []
+
+
+# --- description cleanup ----------------------------------------------------
+
+
+def test_couponfollow_prefers_title_element_over_description():
+    """When a card has both a title element and a description, use the title.
+
+    Real CouponFollow cards put the human-friendly headline (e.g. "20% Off
+    Sitewide") in a title element and the long fine-print in description.
+    """
+    html_doc = """
+    <html><body><ul class="offers">
+      <li class="offer" data-code="ASOS25">
+        <h3 class="coupon-title">25% Off Everything</h3>
+        <span class="description">
+          Promotional period totaling over $200 online or in stores and enter
+          the promo code ASOS25 in cart during checkout will receive a discount
+        </span>
+      </li>
+    </ul></body></html>
+    """
+    codes = parse_couponfollow(html_doc, today=FROZEN_TODAY)
+    assert len(codes) == 1
+    assert codes[0].description == "25% Off Everything"
+
+
+def test_couponfollow_truncates_long_description_at_sentence():
+    """No title element — use first sentence of description."""
+    html_doc = """
+    <html><body><ul class="offers">
+      <li class="offer" data-code="MOM20">
+        <span class="description">
+          20% Off Sitewide at Movado. Valid through end of month. Excludes some items.
+        </span>
+      </li>
+    </ul></body></html>
+    """
+    codes = parse_couponfollow(html_doc, today=FROZEN_TODAY)
+    assert len(codes) == 1
+    assert codes[0].description == "20% Off Sitewide at Movado"
+
+
+def test_couponfollow_truncates_long_description_at_word_boundary():
+    """No sentence boundary in first 80 chars — word-cap with ellipsis."""
+    long_desc = (
+        "period totaling over $500 online or in stores and enter the promo code "
+        "FREEGIFT in cart during checkout will receive a pair of earrings"
+    )
+    html_doc = f"""
+    <html><body><ul class="offers">
+      <li class="offer" data-code="FREEGIFT">
+        <span class="description">{long_desc}</span>
+      </li>
+    </ul></body></html>
+    """
+    codes = parse_couponfollow(html_doc, today=FROZEN_TODAY)
+    assert len(codes) == 1
+    desc = codes[0].description
+    assert len(desc) <= 81  # 80 + ellipsis
+    assert desc.endswith("…")
+    # No mid-word cut: must end on whitespace then ellipsis
+    assert " " in desc
+    assert not desc[-2].isalnum() or desc[-2:].endswith("…")
+
+
+def test_couponfollow_parses_click_to_reveal_clipboard_attribute():
+    """Real CouponFollow cards omit data-code; the code lives in
+    data-clipboard-text on a reveal button."""
+    html_doc = """
+    <html><body><ul class="offers">
+      <li class="offer">
+        <h3 class="offer-title">35% Off App Orders</h3>
+        <button class="reveal" data-clipboard-text="WELCOMEAPP">Get Code</button>
+      </li>
+      <li class="offer">
+        <h3 class="offer-title">Free Shipping</h3>
+        <button class="reveal" data-clipboard-text="BJDDM">Get Code</button>
+      </li>
+    </ul></body></html>
+    """
+    codes = parse_couponfollow(html_doc, today=FROZEN_TODAY)
+    code_set = {c.code for c in codes}
+    assert {"WELCOMEAPP", "BJDDM"} <= code_set
+
+
+def test_couponfollow_parses_inline_json_codes():
+    """Some CouponFollow pages ship offers as JSON in a script tag.
+
+    The aggregator wraps the offer list in a JSON blob inside <script>;
+    parsing the static DOM alone misses those codes.
+    """
+    html_doc = """
+    <html><body>
+      <ul class="offers"></ul>
+      <script type="application/json" id="offers-data">
+        [{"code":"WELCOME35","title":"35% off your first order"},
+         {"code":"BJDDM","title":"20% off select items"}]
+      </script>
+    </body></html>
+    """
+    codes = parse_couponfollow(html_doc, today=FROZEN_TODAY)
+    code_set = {c.code for c in codes}
+    assert {"WELCOME35", "BJDDM"} <= code_set
+
+
+def test_couponfollow_aria_label_get_code_pattern():
+    """Reveal buttons sometimes carry the code in aria-label rather than
+    data-clipboard-text — e.g., aria-label="Get Code WELCOME35"."""
+    html_doc = """
+    <html><body><ul class="offers">
+      <li class="offer">
+        <h3 class="offer-title">Welcome offer</h3>
+        <button class="reveal" aria-label="Get Code WELCOME35">Reveal</button>
+      </li>
+    </ul></body></html>
+    """
+    codes = parse_couponfollow(html_doc, today=FROZEN_TODAY)
+    assert any(c.code == "WELCOME35" for c in codes)
+
+
+def test_retailmenot_parser_basic():
+    html_doc = """
+    <html><body>
+      <div class="offer" data-code="RMN15">
+        <h3 class="offer-title">15% off select items</h3>
+      </div>
+      <div class="offer">
+        <h3 class="offer-title">Free shipping</h3>
+        <button data-clipboard-text="SHIPFREE">Show Code</button>
+      </div>
+    </body></html>
+    """
+    codes = parse_retailmenot(html_doc, today=FROZEN_TODAY)
+    code_set = {c.code for c in codes}
+    assert {"RMN15", "SHIPFREE"} <= code_set
+
+
+def test_lookup_falls_through_to_retailmenot_when_cf_and_ds_empty(mocker, read_fixture):
+    """CouponFollow + DealsPotr both empty → try RetailMeNot."""
+    session = MagicMock()
+    empty_cf = MagicMock()
+    empty_cf.status_code = 200
+    empty_cf.text = read_fixture("couponfollow_empty.html")
+    empty_ds = MagicMock()
+    empty_ds.status_code = 200
+    empty_ds.text = "<html><body></body></html>"
+    rmn_resp = MagicMock()
+    rmn_resp.status_code = 200
+    rmn_resp.text = """
+    <html><body>
+      <div class="offer" data-code="RMNCODE">
+        <h3 class="offer-title">25% off</h3>
+      </div>
+    </body></html>
+    """
+    session.get.side_effect = [empty_cf, empty_ds, rmn_resp]
+    mocker.patch("coupon_checker.time.sleep")
+
+    codes = lookup(
+        "asos.com",
+        session=session,
+        error_log=MagicMock(),
+        today=FROZEN_TODAY,
+    )
+
+    assert {c.code for c in codes} == {"RMNCODE"}
+    assert session.get.call_count == 3
+    urls = [c.args[0] for c in session.get.call_args_list]
+    assert "couponfollow.com" in urls[0]
+    assert "dealspotr.com" in urls[1]
+    assert "retailmenot.com" in urls[2]
+
+
+def test_onsite_snippet_trimmed_to_clean_sentence():
+    """Onsite extraction snippets should not cut off mid-word and should
+    prefer a sentence boundary if one is nearby."""
+    long_text = (
+        "Welcome bonus! Sign up today and use code WELCOME35 at checkout. "
+        "Some restrictions apply, see site for full terms and conditions."
+    )
+    html_doc = f"<html><body><p>{long_text}</p></body></html>"
+    codes = extract_onsite_codes(html_doc)
+    code_by_str = {c.code: c for c in codes}
+    assert "WELCOME35" in code_by_str
+    desc = code_by_str["WELCOME35"].description
+    assert len(desc) <= 121  # snippet window + ellipsis grace
+    # Description must not end in a partial word
+    assert desc[-1] in (".", "!", "?", "…") or desc[-1].isalnum()

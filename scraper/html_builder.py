@@ -427,7 +427,7 @@ main{max-width:1200px;margin:0 auto;padding:0 24px 64px}
   padding:7px 11px;border-radius:10px;display:flex;flex-direction:column;align-items:flex-start;gap:2px;
 }
 .promo-chip .promo-code{font-weight:700;letter-spacing:.04em;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:13px}
-.promo-chip .promo-desc{font-size:11px;color:var(--muted)}
+.promo-chip .promo-desc{font-size:11px;color:var(--muted);max-width:240px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;word-break:break-word}
 .promo-chip .promo-copied{
   position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
   background:var(--accent);color:#fff;border-radius:9px;opacity:0;transition:opacity .15s;

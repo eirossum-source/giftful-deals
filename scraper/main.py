@@ -23,7 +23,13 @@ from inventory import (
     save_state,
     update_item,
 )
-from validator import check_identity, check_link_integrity, check_sold_out
+from validator import (
+    check_identity,
+    check_link_integrity,
+    check_sold_out,
+    identity_diagnostic_snippet,
+)
+from price_checker import recheck_via_playwright
 
 
 _UNSET = object()
@@ -36,23 +42,74 @@ def _default_fetch(session=None):
 def _validate(item_name: str, html: Optional[str]):
     """Run patch-only validators on retailer HTML.
 
-    Returns (status, reason) where status is one of:
+    Returns (status, reason, score) where status is one of:
       "ok"         — page is valid, item identity matches, in stock
       "review"     — page is dead or shows a different product
       "sold_out"   — page is valid but item is out of stock
       "skip"       — no html available; treat as before (fall through to deal logic)
+    `score` is the identity-match score (0.0 if not applicable).
     """
     if not html:
-        return "skip", None
+        return "skip", None, 0.0
     is_dead, dead_reason = check_link_integrity(html)
     if is_dead:
-        return "review", f"dead link ({dead_reason})"
+        return "review", f"dead link ({dead_reason})", 0.0
     matches, score = check_identity(item_name, html)
     if not matches:
-        return "review", f"product name mismatch (score {score:.2f})"
+        snippet = identity_diagnostic_snippet(html)
+        snippet_part = f', saw: "{snippet}"' if snippet else ""
+        return (
+            "review",
+            f"product name mismatch (score {score:.2f}{snippet_part})",
+            score,
+        )
     if check_sold_out(html):
-        return "sold_out", "out of stock"
-    return "ok", None
+        return "sold_out", "out of stock", score
+    return "ok", None, score
+
+
+def _resolve_identity(
+    item_name: str,
+    url: str,
+    price_result,
+    page,
+    log,
+    prev_state: dict,
+):
+    """Run identity check; retry via Playwright on score 0.0; honor prior pass.
+
+    Returns (price_result, status, reason, score). When the requests fetch
+    yields score 0.00, retries with Playwright (retailers' soft-block
+    landing pages often hit this). If still 0.00 but the previous run on
+    this URL had a passing identity, downgrades to 'ok' and emits a
+    diagnostic reason — guards against intermittent retailer bot blocks
+    yanking known-good items off the page.
+    """
+    status, reason, score = _validate(item_name, price_result.html)
+
+    if status == "review" and score == 0.0 and page is not None:
+        retry = recheck_via_playwright(url, page, log)
+        if retry.html:
+            new_status, new_reason, new_score = _validate(item_name, retry.html)
+            if new_status != "review":
+                price_result = retry
+                status, reason, score = new_status, new_reason, new_score
+            elif new_score > 0.0:
+                price_result = retry
+                status, reason, score = new_status, new_reason, new_score
+
+    if status == "review" and score == 0.0:
+        from inventory import normalize_url
+        prev = (prev_state or {}).get("items", {}).get(normalize_url(url)) or {}
+        prior_score = prev.get("identity_score")
+        if isinstance(prior_score, (int, float)) and prior_score >= 0.5:
+            reason = (
+                f"identity unverified this run (score 0.00); "
+                f"prior run matched ({prior_score:.2f}) — trusting prior"
+            )
+            status = "ok"
+
+    return price_result, status, reason, score
 
 
 def run(
@@ -129,7 +186,9 @@ def run(
                     price_result = check_price(
                         store.url, session=session, error_log=log, page=page
                     )
-                    status, reason = _validate(item.name, price_result.html)
+                    price_result, status, reason, identity_score = _resolve_identity(
+                        item.name, store.url, price_result, page, log, prev_state
+                    )
 
                     if status == "review":
                         review_for_item.append(f"{store.display_name}: {reason}")
@@ -168,7 +227,7 @@ def run(
                         "url": store.url,
                         "store": store.display_name,
                         "status": "ok",
-                        "reason": None,
+                        "reason": reason,
                     })
                     in_stock_any = True
                     promos = _coupons_for(store.domain, price_result.html)
@@ -191,6 +250,7 @@ def run(
                         current_price=price_result.current_price,
                         listed_price=store.listed_price,
                         today=today,
+                        identity_score=identity_score,
                     )
                     price_samples.append(
                         (item.name, store.listed_price, price_result.current_price)
@@ -207,7 +267,9 @@ def run(
                 price_result = check_price(
                     item.url, session=session, error_log=log, page=page
                 )
-                status, reason = _validate(item.name, price_result.html)
+                price_result, status, reason, identity_score = _resolve_identity(
+                    item.name, item.url, price_result, page, log, prev_state
+                )
                 norm = normalize_url(item.url)
 
                 if status == "review":
@@ -245,7 +307,7 @@ def run(
                     "url": item.url,
                     "store": item.domain,
                     "status": "ok",
-                    "reason": None,
+                    "reason": reason,
                 })
                 promos = _coupons_for(item.domain, price_result.html)
                 back_in_stock = is_back_in_stock(prev_state, norm, True)
@@ -267,6 +329,7 @@ def run(
                     current_price=price_result.current_price,
                     listed_price=item.listed_price,
                     today=today,
+                    identity_score=identity_score,
                 )
                 price_samples.append(
                     (item.name, item.listed_price, price_result.current_price)

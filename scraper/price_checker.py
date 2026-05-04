@@ -316,6 +316,29 @@ def _fetch_via_playwright(url: str, page) -> Optional[str]:
     return page.content()
 
 
+def recheck_via_playwright(url: str, page, error_log) -> PriceResult:
+    """Force a Playwright-based fetch (skip the requests path).
+
+    Used by the identity-mismatch retry: when `check_price` returned an
+    HTML body that the validator can't reconcile (e.g. a soft-block
+    landing page), this lets the caller force a re-fetch via the JS
+    runtime so we can re-validate against the real product page.
+    """
+    if page is None:
+        return PriceResult(unavailable=True, reason="no_browser")
+    try:
+        html = _fetch_via_playwright(url, page) or ""
+    except Exception as exc:
+        error_log.error(f"playwright recheck failed for {url}: {exc}")
+        return PriceResult(unavailable=True, reason="playwright_error")
+    return PriceResult(
+        current_price=extract_price(html),
+        list_price=extract_list_price(html),
+        unavailable=False,
+        html=html,
+    )
+
+
 def check_price(url: str, session, error_log, page=None) -> PriceResult:
     headers = dict(_BROWSER_HEADERS)
     headers["User-Agent"] = random.choice(USER_AGENTS)

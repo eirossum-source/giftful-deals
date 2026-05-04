@@ -226,6 +226,26 @@ def check_identity(giftful_name: str, html: str) -> Tuple[bool, float]:
     return matches, max(best, prefix_score)
 
 
+def identity_diagnostic_snippet(html: str, max_chars: int = 120) -> str:
+    """Return a short snippet describing what `check_identity` saw on a page.
+
+    Used in review_log diagnostics so a 0.00 mismatch is debuggable without
+    re-fetching the page. Prefers <title>, then <h1>, then og:title.
+    """
+    if not html or not str(html).strip():
+        return ""
+    soup = BeautifulSoup(html, "lxml")
+    if soup.title and soup.title.get_text(strip=True):
+        return soup.title.get_text(strip=True)[:max_chars]
+    h1 = soup.find("h1")
+    if h1 and h1.get_text(strip=True):
+        return h1.get_text(strip=True)[:max_chars]
+    og = soup.find("meta", attrs={"property": "og:title"})
+    if og and og.get("content"):
+        return og["content"][:max_chars]
+    return ""
+
+
 _SOLD_OUT_TEXT_RE = re.compile(r"\bsold\s+out\b", re.I)
 _CTA_RE = re.compile(
     r"add\s+to\s+(cart|bag|basket)|buy\s+now|add\s+to\s+wishlist", re.I

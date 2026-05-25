@@ -1,6 +1,20 @@
 {
-  "run_at": "2026-05-18T17:20:39.035591",
+  "run_at": "2026-05-25T11:11:09.935348",
   "items": [
+    {
+      "name": "REGULAR FIT WOOL BLEND COAT",
+      "url": "https://www.zara.com/us/en/regular-fit-wool-blend-coat-p05070100.html?sv1=affiliate&sv_campaign_id=1454410&awc=21094_1779707388_92ee139d1a7bb0849a9691e8e7a5fcb8&utm_source=awin&utm_medium=affiliation&utm_campaign=1454410&utm_content=Giftful&utm_term=21094_1779707388_92ee139d1a7bb0849a9691e8e7a5fcb8",
+      "store": "zara.com",
+      "status": "ok",
+      "reason": null
+    },
+    {
+      "name": "The North Face Full Zip Cabin Fleece in black",
+      "url": "https://www.asos.com/us/the-north-face/the-north-face-full-zip-cabin-fleece-in-black/prd/208018284?acquisitionsource=pasteboard",
+      "store": "asos.com",
+      "status": "ok",
+      "reason": null
+    },
     {
       "name": "Supernote Nomad",
       "url": "https://supernote.com/pages/supernote-nomad",
@@ -45,14 +59,14 @@
     },
     {
       "name": "Pace Breaker Linerless Short 9\"",
-      "url": "https://shop.lululemon.com/p/men-shorts/Pace-Breaker-Short-Linerless-Updated/_/prod11430005?color=33928&sz=L&skuId=153837590&cid=pdp_share_header_link_icon&cid=aff_con&sv1=affiliate&sv_campaign_id=1454410&awc=30347_1779124761_16aea71f9d070ad8c39016dd9db5427e",
+      "url": "https://shop.lululemon.com/p/men-shorts/Pace-Breaker-Short-Linerless-Updated/_/prod11430005?color=33928&sz=L&skuId=153837590&cid=pdp_share_header_link_icon&cid=aff_con&sv1=affiliate&sv_campaign_id=1454410&awc=30347_1779707399_5b1d715231785fa425cd9e0b9f4c3158",
       "store": "shop.lululemon.com",
-      "status": "sold_out",
-      "reason": "out of stock"
+      "status": "ok",
+      "reason": null
     },
     {
       "name": "WASHED BALLOON FIT JOGGING PANTS",
-      "url": "https://www.zara.com/us/en/washed-balloon-fit-jogging-pants-p03443425.html?sv1=affiliate&sv_campaign_id=1454410&awc=21094_1779124763_f469e6dc83464ffc7d2765291ddf7b32&utm_source=awin&utm_medium=affiliation&utm_campaign=1454410&utm_content=Giftful&utm_term=21094_1779124763_f469e6dc83464ffc7d2765291ddf7b32",
+      "url": "https://www.zara.com/us/en/washed-balloon-fit-jogging-pants-p03443425.html?sv1=affiliate&sv_campaign_id=1454410&awc=21094_1779707400_1864798530f5f84d1b70760f728e6965&utm_source=awin&utm_medium=affiliation&utm_campaign=1454410&utm_content=Giftful&utm_term=21094_1779707400_1864798530f5f84d1b70760f728e6965",
       "store": "zara.com",
       "status": "ok",
       "reason": null
@@ -66,7 +80,7 @@
     },
     {
       "name": "Pace Breaker Linerless Short 9\"",
-      "url": "https://shop.lululemon.com/p/men-shorts/Pace-Breaker-Short-Linerless-Updated/_/prod11430005?color=19222&sz=L&skuId=158577303&cid=pdp_share_header_link_icon&cid=aff_con&sv1=affiliate&sv_campaign_id=1454410&awc=30347_1779124765_bcc64d5a2d457b5a38f8fd2b1d8c86f9",
+      "url": "https://shop.lululemon.com/p/men-shorts/Pace-Breaker-Short-Linerless-Updated/_/prod11430005?color=19222&sz=L&skuId=158577303&cid=pdp_share_header_link_icon&cid=aff_con&sv1=affiliate&sv_campaign_id=1454410&awc=30347_1779707402_eb8c7fe53204eeedf06c0aa00051fae3",
       "store": "shop.lululemon.com",
       "status": "ok",
       "reason": null
@@ -80,7 +94,7 @@
     },
     {
       "name": "RELAXED FIT INTERLOCK JOGGER SHORTS",
-      "url": "https://www.zara.com/us/en/relaxed-fit-interlock-jogger-shorts-p00761491.html?sv1=affiliate&sv_campaign_id=1454410&awc=21094_1779124768_6d116fe0aebd978f564fa72621c3dd9f&utm_source=awin&utm_medium=affiliation&utm_campaign=1454410&utm_content=Giftful&utm_term=21094_1779124768_6d116fe0aebd978f564fa72621c3dd9f",
+      "url": "https://www.zara.com/us/en/relaxed-fit-interlock-jogger-shorts-p00761491.html?sv1=affiliate&sv_campaign_id=1454410&awc=21094_1779707405_0f585c7429299a904a51491cd84d2eab&utm_source=awin&utm_medium=affiliation&utm_campaign=1454410&utm_content=Giftful&utm_term=21094_1779707405_0f585c7429299a904a51491cd84d2eab",
       "store": "zara.com",
       "status": "ok",
       "reason": null
@@ -94,10 +108,10 @@
     },
     {
       "name": "Heavyweight Soft Jersey Short 8.5\"",
-      "url": "https://shop.lululemon.com/p/men-shorts/Heavy-Soft-Jersey-Short-8-5-MD/_/prod20007502?color=72761&sz=L&skuId=158101952&cid=pdp_share_header_link_icon&cid=aff_con&sv1=affiliate&sv_campaign_id=1454410&awc=30347_1779124770_24ca5a4247b4da2e9823b275d0ce71b7",
+      "url": "https://shop.lululemon.com/p/men-shorts/Heavy-Soft-Jersey-Short-8-5-MD/_/prod20007502?color=72761&sz=L&skuId=158101952&cid=pdp_share_header_link_icon&cid=aff_con&sv1=affiliate&sv_campaign_id=1454410&awc=30347_1779707407_15c0dc41ef2440130554a52251d66beb",
       "store": "shop.lululemon.com",
-      "status": "sold_out",
-      "reason": "out of stock"
+      "status": "ok",
+      "reason": null
     },
     {
       "name": "4505 Icon heavyweight cotton oversized t-shirt with quick dr...",
@@ -215,12 +229,12 @@
       "name": "ASOS DESIGN heavyweight relaxed long sleeve T-shirt in dark ...",
       "url": "https://www.asos.com/us/asos-design/asos-design-heavyweight-relaxed-long-sleeve-t-shirt-in-dark-brown-waffle/prd/209020360?acquisitionsource=pasteboard",
       "store": "asos.com",
-      "status": "ok",
-      "reason": null
+      "status": "sold_out",
+      "reason": "out of stock"
     },
     {
       "name": "WAFFLE TEXTURED T-SHIRT",
-      "url": "https://www.zara.com/us/en/waffle-textured-t-shirt-p00526345.html?v1=480810139&sv1=affiliate&sv_campaign_id=1454410&awc=21094_1779124791_325600c0dcfc0624f9b0c3422df08871&utm_source=awin&utm_medium=affiliation&utm_campaign=1454410&utm_content=Giftful&utm_term=21094_1779124791_325600c0dcfc0624f9b0c3422df08871",
+      "url": "https://www.zara.com/us/en/waffle-textured-t-shirt-p00526345.html?v1=480810139&sv1=affiliate&sv_campaign_id=1454410&awc=21094_1779707427_b86fe4384a14d44925eee75ff7e33d51&utm_source=awin&utm_medium=affiliation&utm_campaign=1454410&utm_content=Giftful&utm_term=21094_1779707427_b86fe4384a14d44925eee75ff7e33d51",
       "store": "zara.com",
       "status": "ok",
       "reason": null
@@ -241,7 +255,7 @@
     },
     {
       "name": "RELAXED FIT INTERLOCK SWEATSHIRT",
-      "url": "https://www.zara.com/us/en/relaxed-fit-interlock-sweatshirt-p00761490.html?sv1=affiliate&sv_campaign_id=1454410&awc=21094_1779124794_5b28d282cbc623dc6643f377b1d2fe30&utm_source=awin&utm_medium=affiliation&utm_campaign=1454410&utm_content=Giftful&utm_term=21094_1779124794_5b28d282cbc623dc6643f377b1d2fe30",
+      "url": "https://www.zara.com/us/en/relaxed-fit-interlock-sweatshirt-p00761490.html?sv1=affiliate&sv_campaign_id=1454410&awc=21094_1779707430_22d826fc7722acf7ca0837542b7cf75d&utm_source=awin&utm_medium=affiliation&utm_campaign=1454410&utm_content=Giftful&utm_term=21094_1779707430_22d826fc7722acf7ca0837542b7cf75d",
       "store": "zara.com",
       "status": "ok",
       "reason": null
@@ -283,7 +297,7 @@
     },
     {
       "name": "REGULAR FIT WAFFLE JUMPER",
-      "url": "https://www.zara.com/us/en/regular-fit-waffle-jumper-p03332301.html?v1=489339320&sv1=affiliate&sv_campaign_id=1454410&awc=21094_1779124800_748949e8ddb08edcc52c7341dea6583e&utm_source=awin&utm_medium=affiliation&utm_campaign=1454410&utm_content=Giftful&utm_term=21094_1779124800_748949e8ddb08edcc52c7341dea6583e",
+      "url": "https://www.zara.com/us/en/regular-fit-waffle-jumper-p03332301.html?v1=489339320&sv1=affiliate&sv_campaign_id=1454410&awc=21094_1779707436_dc6f302808ff3b2cddbef801ae490643&utm_source=awin&utm_medium=affiliation&utm_campaign=1454410&utm_content=Giftful&utm_term=21094_1779707436_dc6f302808ff3b2cddbef801ae490643",
       "store": "zara.com",
       "status": "ok",
       "reason": null
@@ -304,7 +318,7 @@
     },
     {
       "name": "Men's Daydrift Relaxed-Fit Pleated Trouser Tall",
-      "url": "https://shop.lululemon.com/p/mens-trousers/Mens-Daydrift-Relaxed-Fit-Pleated-Trouser-Tall/_/prod20009307?color=0001&cid=pdp_share_header_link_icon&cid=aff_con&sv1=affiliate&sv_campaign_id=1454410&awc=30347_1779124803_7459c6e7ac622fa0c4cea55b2037eda7",
+      "url": "https://shop.lululemon.com/p/mens-trousers/Mens-Daydrift-Relaxed-Fit-Pleated-Trouser-Tall/_/prod20009307?color=0001&cid=pdp_share_header_link_icon&cid=aff_con&sv1=affiliate&sv_campaign_id=1454410&awc=30347_1779707439_d697226f5efedafe3180c377757a16be",
       "store": "shop.lululemon.com",
       "status": "ok",
       "reason": null
@@ -327,12 +341,12 @@
       "name": "ASOS DESIGN pleated wide leg dress pants in charcoal wool bl...",
       "url": "https://www.asos.com/us/asos-design/asos-design-pleated-wide-leg-dress-pants-in-charcoal-wool-blend/prd/208811441?acquisitionsource=pasteboard",
       "store": "asos.com",
-      "status": "ok",
-      "reason": null
+      "status": "sold_out",
+      "reason": "out of stock"
     },
     {
       "name": "CARPENTER POCKET SHORTS",
-      "url": "https://www.zara.com/us/en/carpenter-pocket-shorts-p00108475.html?sv1=affiliate&sv_campaign_id=1454410&awc=21094_1779124809_88a460bca4a57c95fd8511e8b007cf37&utm_source=awin&utm_medium=affiliation&utm_campaign=1454410&utm_content=Giftful&utm_term=21094_1779124809_88a460bca4a57c95fd8511e8b007cf37",
+      "url": "https://www.zara.com/us/en/carpenter-pocket-shorts-p00108475.html?sv1=affiliate&sv_campaign_id=1454410&awc=21094_1779707444_2aceba33e024db719050fdc4655f0e52&utm_source=awin&utm_medium=affiliation&utm_campaign=1454410&utm_content=Giftful&utm_term=21094_1779707444_2aceba33e024db719050fdc4655f0e52",
       "store": "zara.com",
       "status": "ok",
       "reason": null
@@ -360,7 +374,7 @@
     },
     {
       "name": "100% LINEN RELAXED FIT SHORTS",
-      "url": "https://www.zara.com/us/en/100-linen-relaxed-fit-shorts-p05070903.html?v1=495680223&v2=2432164&sv1=affiliate&sv_campaign_id=1454410&awc=21094_1779124813_af35118a462eeabc7ccddb92fb4887dd&utm_source=awin&utm_medium=affiliation&utm_campaign=1454410&utm_content=Giftful&utm_term=21094_1779124813_af35118a462eeabc7ccddb92fb4887dd",
+      "url": "https://www.zara.com/us/en/100-linen-relaxed-fit-shorts-p05070903.html?v1=495680223&v2=2432164&sv1=affiliate&sv_campaign_id=1454410&awc=21094_1779707448_63be56c781909f07c1f8199ef6b47d1d&utm_source=awin&utm_medium=affiliation&utm_campaign=1454410&utm_content=Giftful&utm_term=21094_1779707448_63be56c781909f07c1f8199ef6b47d1d",
       "store": "zara.com",
       "status": "ok",
       "reason": null
@@ -390,8 +404,8 @@
       "name": "Jack & Jones alex baggy jeans in light blue wash",
       "url": "https://www.asos.com/us/jack-jones/jack-jones-alex-baggy-jeans-in-light-blue-wash/prd/206247100?acquisitionsource=pasteboard",
       "store": "asos.com",
-      "status": "sold_out",
-      "reason": "out of stock"
+      "status": "ok",
+      "reason": null
     },
     {
       "name": "Men's Birkenstock Essentials Arizona",
@@ -497,20 +511,6 @@
       "store": "higherculturela.com",
       "status": "sold_out",
       "reason": "out of stock"
-    },
-    {
-      "name": "REGULAR FIT WOOL BLEND COAT",
-      "url": "https://www.zara.com/us/en/regular-fit-wool-blend-coat-p05070100.html?sv1=affiliate&sv_campaign_id=1454410&awc=21094_1779124837_9db10e001a4d63cd641ff98fd1c78d35&utm_source=awin&utm_medium=affiliation&utm_campaign=1454410&utm_content=Giftful&utm_term=21094_1779124837_9db10e001a4d63cd641ff98fd1c78d35",
-      "store": "zara.com",
-      "status": "ok",
-      "reason": null
-    },
-    {
-      "name": "The North Face Full Zip Cabin Fleece in black",
-      "url": "https://www.asos.com/us/the-north-face/the-north-face-full-zip-cabin-fleece-in-black/prd/208018284?acquisitionsource=pasteboard",
-      "store": "asos.com",
-      "status": "ok",
-      "reason": null
     }
   ]
 }

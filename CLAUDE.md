@@ -8,18 +8,18 @@
 - Scraping: Playwright (JS-rendered content on Giftful.com and JS-heavy retailers)
 - Validation: patch-only (HTML signal extraction); LLM gate via `ANTHROPIC_API_KEY` env var, currently unused
 - Email: Resend HTTP API (secret: `RESEND_API_KEY`; no SMTP)
-- Testing: pytest with HTML fixture files (TDD style); 197 tests
-- CI/CD: GitHub Actions (`.github/workflows/run_deals.yml` — Monday 7 AM UTC + manual dispatch)
+- Testing: pytest with HTML fixture files (TDD style); 244 tests
+- CI/CD: GitHub Actions (`.github/workflows/run_deals.yml` — Monday + Thursday 7 AM UTC + manual dispatch)
 - Static site: GitHub Pages from `main:/docs` (`docs/index.html` built by `html_builder.py`, plus `docs/giftful_logo.png` static asset)
 - External services: Giftful.com (scraped), Resend (email delivery)
-- Dependencies (`scraper/requirements.txt`): playwright, requests, beautifulsoup4, lxml, resend, python-dateutil
+- Dependencies (`scraper/requirements.txt`): playwright, curl_cffi, requests, beautifulsoup4, lxml, resend, python-dateutil
 
 ## Conventions
 - Secrets via GitHub repo secrets and `.env` — never inline; reference by name only
 - Module responsibilities stay separated: one file per concern
   - `giftful.py` — Giftful.com profile + category + modal scrape; `Item`, `StoreLink`, `Category` dataclasses
-  - `price_checker.py` — retailer price fetch (requests then Playwright fallback); `extract_price` chain (jsonld → meta → amazon → css)
-  - `coupon_checker.py` — promo-code lookup
+  - `price_checker.py` — retailer price fetch (curl_cffi browser-fingerprint HTTP then Playwright fallback); `extract_price` chain (jsonld → meta → amazon → css)
+  - `coupon_checker.py` — onsite-first promo extraction. `extract_onsite_codes(html)` walks the DOM around trigger phrases ("use code X", "with code X") and picks the smallest ancestor container (≤1500 chars) whose own text contains the match; within that container, `_score_sentence` ranks candidates by offer signals (%, $, free, off, save). Continuation lines (with/in/for/to/by/at...) are merged across element boundaries. CouponFollow is the only external fallback; DealsPotr was removed. `_ONSITE_CODE_DENYLIST` filters generic words like CODE/PROMO.
   - `validator.py` — patch-only validators: `check_link_integrity`, `check_identity`, `check_sold_out` (`_CHALLENGE_PHRASES` is the bot-interstitial substring list)
   - `inventory.py` — committed JSON state at `state/inventory.json` (sold-out tracking + back-in-stock detection)
   - `filter.py` — `Deal`, `StoreEvaluation`, deal-type evaluation (`PRICE_DROP`, `PROMO`, `BACK_IN_STOCK`)
@@ -48,6 +48,9 @@
 - **Eastern Time timestamps** — `zoneinfo.ZoneInfo("America/New_York")`.
 - **Branded header** — centered `<a class="brand">` wrapping `docs/giftful_logo.png` (the real giftful wordmark) + `Today's deals` tagline. The wordmark image is the link to the Giftful list.
 - **Review-section anchors deep-link** to per-category Giftful page (`Item.category_url`) so the user can edit/remove the broken item in one click.
+- **Onsite extraction beats aggregators** — when a retailer page is reachable, its DOM-extracted offer text wins over CouponFollow / DealsPotr descriptions, which leak accessibility-popup junk. `extract_onsite_codes` runs first in `lookup()`.
+- **ASOS / Akamai gap is accepted** — Akamai 403s our infra at the TCP/HTTP layer (verified across `requests`, Playwright headless, and ASOS's catalogue API). No regex / wait-strategy can recover BLOOM-class codes for retailers behind it. ASOS items still appear with BACK_IN_STOCK badges; the promo chip is just absent. Rejected workarounds: Scrapfly (paid dep) and `state/promo_overrides.json` (silent staleness).
+- **Smallest-container + sentence-scoring** — naïvely taking the first sentence in a trigger-phrase container picked up side notes ("Expedited delivery available in checkout"). Two-stage selection — smallest ancestor whose own text holds the match, then highest-scoring sentence inside it — fixed BrilliantEarth FREEGIFT and Movado MOM20 on the live deals page.
 
 ## Stack Detection
 If ## Stack or ## Conventions contains [fill in] and I attempt to

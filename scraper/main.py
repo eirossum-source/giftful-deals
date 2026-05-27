@@ -125,7 +125,7 @@ def run(
     session=None,
     page=None,
 ) -> dict:
-    import requests
+    from curl_cffi import requests
 
     repo_root = Path(__file__).resolve().parents[1]
     output_path = Path(output_path or repo_root / "docs" / "index.html")
@@ -133,7 +133,7 @@ def run(
     state_path = Path(state_path or repo_root / "state" / "inventory.json")
     review_log_path = Path(review_log_path or repo_root / "state" / "review_log.json")
     now = now or datetime.now(timezone.utc).replace(tzinfo=None)
-    session = session or requests.Session()
+    session = session or requests.Session(impersonate="chrome")
 
     fetch_items = fetch_items or _default_fetch
     check_price = check_price or real_check_price
@@ -411,7 +411,7 @@ _PRICE_CHECK_USER_AGENT = (
 
 if __name__ == "__main__":
     import argparse
-    import requests as _requests
+    from curl_cffi import requests as _requests
 
     parser = argparse.ArgumentParser(description="Scrape wishlist deals and publish.")
     parser.add_argument(
@@ -424,7 +424,7 @@ if __name__ == "__main__":
     # giftful.fetch_list opens its own Playwright context and closes it.
     # sync_playwright contexts cannot nest, so we fetch first, then open a
     # fresh Playwright for the price-check fallback.
-    cli_session = _requests.Session()
+    cli_session = _requests.Session(impersonate="chrome")
     items = fetch_list(session=cli_session)
 
     from playwright.sync_api import sync_playwright

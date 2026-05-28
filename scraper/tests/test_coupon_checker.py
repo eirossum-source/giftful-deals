@@ -557,3 +557,71 @@ def test_onsite_asos_bloom_falls_back_to_prior_sentence():
     assert "BLOOM" not in desc.upper()
     assert "use code" not in desc.lower()
     assert "20% off spring essentials" in desc.lower()
+
+
+def test_lookup_filters_descriptionless_aggregator_codes(mocker):
+    """CouponFollow inline-JSON dumps hundreds of historical codes, many
+    without titles. Without filtering, the rendered page becomes a wall of
+    descriptionless chips like BLACKFRIDAY/TRICKORTREAT — the bug from
+    today's 2026-05-28 run. Aggregator codes must have a description with
+    a real offer signal (%, $, free/off/save/...) to survive."""
+    session = MagicMock()
+    cf_resp = MagicMock()
+    cf_resp.status_code = 200
+    cf_resp.text = """
+    <html><body>
+      <script type="application/json">
+        [{"code":"REAL20","title":"20% off your order"},
+         {"code":"BLACKFRIDAY"},
+         {"code":"TRICKORTREAT"},
+         {"code":"WELCOMEAPP","title":"App download"},
+         {"code":"FREE50","title":"Free shipping on $50+ orders"}]
+      </script>
+    </body></html>
+    """
+    session.get.side_effect = [cf_resp]
+    mocker.patch("coupon_checker.time.sleep")
+
+    codes = lookup(
+        "shop.example.com",
+        session=session,
+        error_log=MagicMock(),
+        today=FROZEN_TODAY,
+    )
+
+    code_set = {c.code for c in codes}
+    assert "REAL20" in code_set
+    assert "FREE50" in code_set
+    assert "BLACKFRIDAY" not in code_set
+    assert "TRICKORTREAT" not in code_set
+    assert "WELCOMEAPP" not in code_set
+
+
+def test_lookup_caps_aggregator_codes_at_three(mocker):
+    """Even when many aggregator codes pass the offer-signal filter, the
+    rendered list stays bounded — 3 is plenty for a single product chip."""
+    session = MagicMock()
+    cf_resp = MagicMock()
+    cf_resp.status_code = 200
+    cf_resp.text = """
+    <html><body>
+      <script type="application/json">
+        [{"code":"AGG01","title":"5% off everything"},
+         {"code":"AGG02","title":"10% off your first order"},
+         {"code":"AGG03","title":"Free shipping on orders over $25"},
+         {"code":"AGG04","title":"15% off select items"},
+         {"code":"AGG05","title":"20% off seasonal"}]
+      </script>
+    </body></html>
+    """
+    session.get.side_effect = [cf_resp]
+    mocker.patch("coupon_checker.time.sleep")
+
+    codes = lookup(
+        "shop.example.com",
+        session=session,
+        error_log=MagicMock(),
+        today=FROZEN_TODAY,
+    )
+
+    assert len(codes) == 3

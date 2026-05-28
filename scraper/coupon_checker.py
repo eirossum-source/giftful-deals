@@ -483,6 +483,32 @@ def _build_onsite_snippet(text: str, match: "re.Match[str]") -> str:
     return _clean_text(best_sentence, max_chars=80)
 
 
+# Aggregator pages (CouponFollow, DealsPotr, RetailMeNot) ship hundreds of
+# historical codes per store — many descriptionless, expired, or seasonal.
+# Without these caps the rendered chip list becomes unusable junk.
+_AGGREGATOR_MAX_CODES = 3
+
+
+def _filter_aggregator_codes(codes: List[PromoCode]) -> List[PromoCode]:
+    """Keep only aggregator codes with a concrete offer description.
+
+    Drops empties (descriptionless inline-JSON entries) and any description
+    that lacks an offer signal (%, $, free/off/save/...). Among survivors,
+    longer descriptions win — they're more likely to be the full headline
+    rather than a 2-word title — capped to ``_AGGREGATOR_MAX_CODES``.
+    """
+    scored: list[tuple[int, PromoCode]] = []
+    for c in codes:
+        desc = (c.description or "").strip()
+        if not desc:
+            continue
+        if not _OFFER_SIGNAL_RE.search(desc):
+            continue
+        scored.append((len(desc), c))
+    scored.sort(key=lambda pair: pair[0], reverse=True)
+    return [c for _, c in scored[:_AGGREGATOR_MAX_CODES]]
+
+
 def lookup(
     domain: str,
     session,
@@ -495,6 +521,8 @@ def lookup(
     Order: (1) extract from the retailer's own HTML if provided,
     (2) CouponFollow, (3) DealsPotr when CouponFollow turns up nothing,
     (4) RetailMeNot when both CouponFollow AND DealsPotr are empty.
+    Aggregator results are filtered/capped via ``_filter_aggregator_codes``;
+    onsite codes are kept as-is (they're DOM-anchored and already trustworthy).
     De-dupes across sources by code (case-insensitive).
     """
     today = today or date.today()
@@ -511,7 +539,7 @@ def lookup(
     cf_codes: List[PromoCode] = []
     if cf_html:
         cf_codes = parse_couponfollow(cf_html, today=today)
-        for code in cf_codes:
+        for code in _filter_aggregator_codes(cf_codes):
             found.setdefault(code.code.upper(), code)
 
     if not cf_codes:
@@ -520,14 +548,16 @@ def lookup(
         ds_codes: List[PromoCode] = []
         if ds_html:
             ds_codes = parse_dealspotr(ds_html, today=today)
-            for code in ds_codes:
+            for code in _filter_aggregator_codes(ds_codes):
                 found.setdefault(code.code.upper(), code)
 
         if not ds_codes:
             rmn_url = f"https://www.retailmenot.com/view/{slug}"
             rmn_html = _fetch(rmn_url, session, error_log)
             if rmn_html:
-                for code in parse_retailmenot(rmn_html, today=today):
+                for code in _filter_aggregator_codes(
+                    parse_retailmenot(rmn_html, today=today)
+                ):
                     found.setdefault(code.code.upper(), code)
 
     return list(found.values())

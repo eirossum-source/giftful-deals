@@ -155,7 +155,7 @@
       "identity_score": 0.0,
       "in_stock": true,
       "last_seen": "2026-05-28",
-      "listed_price": 40.0,
+      "listed_price": 32.0,
       "name": "Men's Premium Heavyweight 2.0 Tee | Men's | Abercrombie.com",
       "prev_in_stock": null,
       "sold_out_since": null
@@ -521,8 +521,8 @@
       "sold_out_since": null
     },
     "https://www.tommyjohn.com/products/second-skin-boxer-brief-8-3-pack-31?variant=33953202536493": {
-      "current_price": null,
-      "identity_score": 0.0,
+      "current_price": 108.0,
+      "identity_score": 1.0,
       "in_stock": true,
       "last_seen": "2026-05-28",
       "listed_price": 114.0,
@@ -541,14 +541,14 @@
       "sold_out_since": null
     },
     "https://www.uniqlo.com/us/en/products/E481177-000/00?colorDisplayCode=01&sizeDisplayCode=003&pldDisplayCode=000": {
-      "current_price": 29.9,
-      "identity_score": null,
-      "in_stock": false,
+      "current_price": null,
+      "identity_score": 0.0,
+      "in_stock": true,
       "last_seen": "2026-05-28",
       "listed_price": 29.9,
       "name": "Waffle T-Shirt | Long Sleeve",
       "prev_in_stock": null,
-      "sold_out_since": "2026-05-28"
+      "sold_out_since": null
     },
     "https://www.uniqlo.com/us/en/products/E482758-000/00?colorDisplayCode=31&sizeDisplayCode=005&pldDisplayCode=000": {
       "current_price": 39.9,

@@ -124,19 +124,24 @@ def parse_items(html: str, category_name: str = "", category_url: str = "") -> L
         return []
     soup = BeautifulSoup(html, "lxml")
     out: List[Item] = []
-    for btn in soup.find_all("button"):
-        if btn.find("img", alt="Feature Image") is None:
+    seen_cards: set = set()
+    for feat_img in soup.find_all("img", alt="Feature Image"):
+        card = feat_img.parent.parent  # img → image-wrapper div → card element
+        card_id = id(card)
+        if card_id in seen_cards:
             continue
-        if btn.find("img", alt="Claimed") is not None:
+        seen_cards.add(card_id)
+
+        if card.find("img", alt="Claimed") is not None:
             continue
 
-        name_el = btn.select_one(".leading-5")
+        name_el = card.select_one(".leading-5")
         name = name_el.get_text(strip=True) if name_el else ""
         if not name:
             continue
 
         price: Optional[float] = None
-        for div in btn.find_all("div"):
+        for div in card.find_all("div"):
             txt = div.get_text(strip=True)
             if txt.startswith("$"):
                 price = _parse_price(txt)
@@ -146,7 +151,7 @@ def parse_items(html: str, category_name: str = "", category_url: str = "") -> L
             continue
 
         thumb = ""
-        for im in btn.find_all("img", alt="Feature Image"):
+        for im in card.find_all("img", alt="Feature Image"):
             cls = set(im.get("class") or [])
             if "hidden" in cls and "dark:flex" in cls:
                 continue
@@ -269,7 +274,7 @@ def fetch_list(profile_url: str = GIFTFUL_URL, session=None) -> List[Item]:
             items = parse_items(
                 page.content(), category_name=cat.name, category_url=cat.url
             )
-            cards = page.locator('button:has(img[alt="Feature Image"]):not(:has(img[alt="Claimed"]))')
+            cards = page.locator('.break-inside-avoid:has(img[alt="Feature Image"]):not(:has(img[alt="Claimed"]))')
             n = min(cards.count(), len(items))
 
             for idx in range(n):

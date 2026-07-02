@@ -1,5 +1,5 @@
 {
-  "run_at": "2026-06-29T11:53:13.044826",
+  "run_at": "2026-07-02T09:51:37.170667",
   "items": [
     {
       "name": "Trezor Safe 7 - Crypto Hardware Wallet with Bluetooth, Color...",
@@ -52,7 +52,7 @@
     },
     {
       "name": "REGULAR FIT WOOL BLEND COAT",
-      "url": "https://www.zara.com/us/en/regular-fit-wool-blend-coat-p05070100.html?sv1=affiliate&sv_campaign_id=1454410&awc=21094_1782733905_55a117aad7015d43aa5d705c540be6a2&utm_source=awin&utm_medium=affiliation&utm_campaign=1454410&utm_content=Giftful&utm_term=21094_1782733905_55a117aad7015d43aa5d705c540be6a2",
+      "url": "https://www.zara.com/us/en/regular-fit-wool-blend-coat-p05070100.html?sv1=affiliate&sv_campaign_id=1454410&awc=21094_1782985819_e753b63d9ce1566ae3e8da0b7656a8d6&utm_source=awin&utm_medium=affiliation&utm_campaign=1454410&utm_content=Giftful&utm_term=21094_1782985819_e753b63d9ce1566ae3e8da0b7656a8d6",
       "store": "zara.com",
       "status": "ok",
       "reason": null
@@ -73,14 +73,14 @@
     },
     {
       "name": "Pace Breaker Linerless Short 9\"",
-      "url": "",
-      "store": "",
+      "url": "https://shop.lululemon.com/p/men-shorts/Pace-Breaker-Short-Linerless-Updated/_/prod11430005?color=33928&sz=L&skuId=153837590&cid=pdp_share_header_link_icon&cid=aff_con&sv1=affiliate&sv_campaign_id=1454410&awc=30347_1782985824_86c01856366a7b509b736f681becb4ef",
+      "store": "shop.lululemon.com",
       "status": "ok",
       "reason": null
     },
     {
       "name": "WASHED BALLOON FIT JOGGING PANTS",
-      "url": "https://www.zara.com/us/en/washed-balloon-fit-jogging-pants-p03443425.html?sv1=affiliate&sv_campaign_id=1454410&awc=21094_1782733920_444bf945dee5def79f9ebcc2f264fa39&utm_source=awin&utm_medium=affiliation&utm_campaign=1454410&utm_content=Giftful&utm_term=21094_1782733920_444bf945dee5def79f9ebcc2f264fa39",
+      "url": "https://www.zara.com/us/en/washed-balloon-fit-jogging-pants-p03443425.html?sv1=affiliate&sv_campaign_id=1454410&awc=21094_1782985826_e082b4a86a0b787b7f15fd7ab1a80ee3&utm_source=awin&utm_medium=affiliation&utm_campaign=1454410&utm_content=Giftful&utm_term=21094_1782985826_e082b4a86a0b787b7f15fd7ab1a80ee3",
       "store": "zara.com",
       "status": "ok",
       "reason": null
@@ -94,7 +94,7 @@
     },
     {
       "name": "Pace Breaker Linerless Short 9\"",
-      "url": "https://shop.lululemon.com/p/men-shorts/Pace-Breaker-Short-Linerless-Updated/_/prod11430005?color=19222&sz=L&skuId=158577303&cid=pdp_share_header_link_icon&cid=aff_con&sv1=affiliate&sv_campaign_id=1454410&awc=30347_1782733923_85538c55f8e7cffc31623adb26991156",
+      "url": "https://shop.lululemon.com/p/men-shorts/Pace-Breaker-Short-Linerless-Updated/_/prod11430005?color=19222&sz=L&skuId=158577303&cid=pdp_share_header_link_icon&cid=aff_con&sv1=affiliate&sv_campaign_id=1454410&awc=30347_1782985828_d02cdad206ede204070530e4dee1bb40",
       "store": "shop.lululemon.com",
       "status": "ok",
       "reason": null
@@ -108,7 +108,7 @@
     },
     {
       "name": "RELAXED FIT INTERLOCK JOGGER SHORTS",
-      "url": "https://www.zara.com/us/en/interlock-relaxed-fit-jogger-shorts-p00761491.html?sv1=affiliate&sv_campaign_id=1454410&awc=21094_1782733925_ee35368d1a8dff2fb642975e38d2624d&utm_source=awin&utm_medium=affiliation&utm_campaign=1454410&utm_content=Giftful&utm_term=21094_1782733925_ee35368d1a8dff2fb642975e38d2624d",
+      "url": "https://www.zara.com/us/en/interlock-relaxed-fit-jogger-shorts-p00761491.html?sv1=affiliate&sv_campaign_id=1454410&awc=21094_1782985831_12caa61061e47e8be40c11d8afe4406a&utm_source=awin&utm_medium=affiliation&utm_campaign=1454410&utm_content=Giftful&utm_term=21094_1782985831_12caa61061e47e8be40c11d8afe4406a",
       "store": "zara.com",
       "status": "ok",
       "reason": null
@@ -117,12 +117,12 @@
       "name": "Wide Sweat Shorts",
       "url": "https://www.uniqlo.com/us/en/products/E482758-000/00?colorDisplayCode=31&sizeDisplayCode=005&pldDisplayCode=000&utm_medium=social&utm_source=appshare",
       "store": "uniqlo.com",
-      "status": "ok",
-      "reason": null
+      "status": "sold_out",
+      "reason": "out of stock"
     },
     {
       "name": "Heavyweight Soft Jersey Short 8.5\"",
-      "url": "https://shop.lululemon.com/p/men-shorts/Heavy-Soft-Jersey-Short-8-5-MD/_/prod20007502?color=72761&sz=L&skuId=158101952&cid=pdp_share_header_link_icon&cid=aff_con&sv1=affiliate&sv_campaign_id=1454410&awc=30347_1782733928_0af2a5d8456d65fdf2ac26c9a315acfd",
+      "url": "https://shop.lululemon.com/p/men-shorts/Heavy-Soft-Jersey-Short-8-5-MD/_/prod20007502?color=72761&sz=L&skuId=158101952&cid=pdp_share_header_link_icon&cid=aff_con&sv1=affiliate&sv_campaign_id=1454410&awc=30347_1782985833_a5409b7410894e1b1eeb290d859502df",
       "store": "shop.lululemon.com",
       "status": "ok",
       "reason": null
@@ -248,7 +248,7 @@
     },
     {
       "name": "WAFFLE TEXTURED T-SHIRT",
-      "url": "https://www.zara.com/us/en/waffle-textured-t-shirt-p00526345.html?v1=480810139&sv1=affiliate&sv_campaign_id=1454410&awc=21094_1782733947_8051cfa25d2ae5a5a948b60d0464496e&utm_source=awin&utm_medium=affiliation&utm_campaign=1454410&utm_content=Giftful&utm_term=21094_1782733947_8051cfa25d2ae5a5a948b60d0464496e",
+      "url": "https://www.zara.com/us/en/waffle-textured-t-shirt-p00526345.html?v1=480810139&sv1=affiliate&sv_campaign_id=1454410&awc=21094_1782985853_46afcc88b92a472287e7ac22f35277be&utm_source=awin&utm_medium=affiliation&utm_campaign=1454410&utm_content=Giftful&utm_term=21094_1782985853_46afcc88b92a472287e7ac22f35277be",
       "store": "zara.com",
       "status": "ok",
       "reason": null
@@ -269,7 +269,7 @@
     },
     {
       "name": "RELAXED FIT INTERLOCK SWEATSHIRT",
-      "url": "https://www.zara.com/us/en/interlock-relaxed-fit-sweatshirt-p00761490.html?sv1=affiliate&sv_campaign_id=1454410&awc=21094_1782733951_62fbe815abb4ec90e4a2ddca19b0d858&utm_source=awin&utm_medium=affiliation&utm_campaign=1454410&utm_content=Giftful&utm_term=21094_1782733951_62fbe815abb4ec90e4a2ddca19b0d858",
+      "url": "https://www.zara.com/us/en/interlock-relaxed-fit-sweatshirt-p00761490.html?sv1=affiliate&sv_campaign_id=1454410&awc=21094_1782985856_14fa03552a56b85cffb433960b29bd87&utm_source=awin&utm_medium=affiliation&utm_campaign=1454410&utm_content=Giftful&utm_term=21094_1782985856_14fa03552a56b85cffb433960b29bd87",
       "store": "zara.com",
       "status": "ok",
       "reason": null
@@ -292,8 +292,8 @@
       "name": "\"MY FRIEND JESUS\" HOODIE (CAMO)",
       "url": "https://www.higherculturela.com/products/my-friend-jesus-hoodie-camo",
       "store": "higherculturela.com",
-      "status": "review",
-      "reason": "product name mismatch (score 0.00, saw: \"Higher Culture\")"
+      "status": "sold_out",
+      "reason": "out of stock"
     },
     {
       "name": "Relaxed-Fit T-Shirt",
@@ -311,7 +311,7 @@
     },
     {
       "name": "REGULAR FIT WAFFLE JUMPER",
-      "url": "https://www.zara.com/us/en/regular-fit-waffle-jumper-p03332301.html?v1=489339320&sv1=affiliate&sv_campaign_id=1454410&awc=21094_1782733957_7fad2fa05df550e0f61bd39290e62b5d&utm_source=awin&utm_medium=affiliation&utm_campaign=1454410&utm_content=Giftful&utm_term=21094_1782733957_7fad2fa05df550e0f61bd39290e62b5d",
+      "url": "https://www.zara.com/us/en/regular-fit-waffle-jumper-p03332301.html?v1=489339320&sv1=affiliate&sv_campaign_id=1454410&awc=21094_1782985863_9187f0eead0a24893bc13b68aea10b95&utm_source=awin&utm_medium=affiliation&utm_campaign=1454410&utm_content=Giftful&utm_term=21094_1782985863_9187f0eead0a24893bc13b68aea10b95",
       "store": "zara.com",
       "status": "ok",
       "reason": null
@@ -332,7 +332,7 @@
     },
     {
       "name": "Men's Daydrift Relaxed-Fit Pleated Trouser Tall",
-      "url": "https://shop.lululemon.com/p/mens-trousers/Mens-Daydrift-Relaxed-Fit-Pleated-Trouser-Tall/_/prod20009307?color=0001&cid=pdp_share_header_link_icon&cid=aff_con&sv1=affiliate&sv_campaign_id=1454410&awc=30347_1782733961_9e38b6ee6d37fc7edf06b13a59c08265",
+      "url": "https://shop.lululemon.com/p/mens-trousers/Mens-Daydrift-Relaxed-Fit-Pleated-Trouser-Tall/_/prod20009307?color=0001&cid=pdp_share_header_link_icon&cid=aff_con&sv1=affiliate&sv_campaign_id=1454410&awc=30347_1782985866_f6e10b363a5c85232c980eafb47a905d",
       "store": "shop.lululemon.com",
       "status": "ok",
       "reason": null
@@ -360,7 +360,7 @@
     },
     {
       "name": "CARPENTER POCKET SHORTS",
-      "url": "https://www.zara.com/us/en/relaxed-fit-carpenter-shorts-p00108475.html?sv1=affiliate&sv_campaign_id=1454410&awc=21094_1782733966_5f77be150bd57d037917918232f88f68&utm_source=awin&utm_medium=affiliation&utm_campaign=1454410&utm_content=Giftful&utm_term=21094_1782733966_5f77be150bd57d037917918232f88f68",
+      "url": "https://www.zara.com/us/en/relaxed-fit-carpenter-shorts-p00108475.html?sv1=affiliate&sv_campaign_id=1454410&awc=21094_1782985870_41083373605642974621b582f8781f85&utm_source=awin&utm_medium=affiliation&utm_campaign=1454410&utm_content=Giftful&utm_term=21094_1782985870_41083373605642974621b582f8781f85",
       "store": "zara.com",
       "status": "ok",
       "reason": null
@@ -388,7 +388,7 @@
     },
     {
       "name": "100% LINEN RELAXED FIT SHORTS",
-      "url": "https://www.zara.com/us/en/100-linen-relaxed-fit-shorts-p05070903.html?v1=495680223&v2=2432164&sv1=affiliate&sv_campaign_id=1454410&awc=21094_1782733970_c284e4587cc76fa0e572283cbcc8a38f&utm_source=awin&utm_medium=affiliation&utm_campaign=1454410&utm_content=Giftful&utm_term=21094_1782733970_c284e4587cc76fa0e572283cbcc8a38f",
+      "url": "https://www.zara.com/us/en/100-linen-relaxed-fit-shorts-p05070903.html?v1=495680223&v2=2432164&sv1=affiliate&sv_campaign_id=1454410&awc=21094_1782985875_751683494d5cf9230b43ee217fb43ea8&utm_source=awin&utm_medium=affiliation&utm_campaign=1454410&utm_content=Giftful&utm_term=21094_1782985875_751683494d5cf9230b43ee217fb43ea8",
       "store": "zara.com",
       "status": "ok",
       "reason": null

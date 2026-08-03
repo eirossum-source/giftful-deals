@@ -1,6 +1,27 @@
 {
-  "run_at": "2026-07-30T09:26:24.100749",
+  "run_at": "2026-08-03T10:33:34.091258",
   "items": [
+    {
+      "name": "Analog Cases Take 5 / TEO-5 Case - Padded Sustain Case with ...",
+      "url": "https://www.amazon.com/dp/B08J2DPS5G?tag=giftful04-20&linkCode=ogi&th=1&psc=1",
+      "store": "amazon.com",
+      "status": "ok",
+      "reason": null
+    },
+    {
+      "name": "Trezor Safe 7 - Crypto Hardware Wallet with Bluetooth, Color...",
+      "url": "https://www.amazon.com/dp/B0G2LX4TFC?tag=giftful04-20&linkCode=ogi&th=1&psc=1",
+      "store": "amazon.com",
+      "status": "ok",
+      "reason": null
+    },
+    {
+      "name": "Beats Powerbeats Pro 2 - Wireless Noise Cancelling Workout E...",
+      "url": "https://www.amazon.com/dp/B0DT2344N3?tag=giftful04-20&linkCode=ogi&th=1&psc=1",
+      "store": "amazon.com",
+      "status": "ok",
+      "reason": null
+    },
     {
       "name": "Mac Studio M4 Max",
       "url": "https://www.apple.com/shop/buy-mac/mac-studio/m4-max-chip-16-core-cpu-40-core-gpu-64gb-memory-1tb-storage",
@@ -51,20 +72,6 @@
       "reason": null
     },
     {
-      "name": "Trezor Safe 7 - Crypto Hardware Wallet with Bluetooth, Color...",
-      "url": "https://www.amazon.com/dp/B0G2LX4TFC?tag=giftful04-20&linkCode=ogi&th=1&psc=1",
-      "store": "amazon.com",
-      "status": "ok",
-      "reason": null
-    },
-    {
-      "name": "Beats Powerbeats Pro 2 - Wireless Noise Cancelling Workout E...",
-      "url": "https://www.amazon.com/dp/B0DT2344N3?tag=giftful04-20&linkCode=ogi&th=1&psc=1",
-      "store": "amazon.com",
-      "status": "ok",
-      "reason": null
-    },
-    {
       "name": "\"JESUS IS COMING\" TEE",
       "url": "https://getgodinyou.com/products/jesus-is-coming-tee",
       "store": "getgodinyou.com",
@@ -87,7 +94,7 @@
     },
     {
       "name": "REGULAR FIT WAFFLE JUMPER",
-      "url": "https://www.zara.com/us/en/regular-fit-waffle-jumper-p03332301.html?v1=489339320&sv1=affiliate&sv_campaign_id=1454410&awc=21094_1785403463_47ea866a7ffa44c844b00883755a213c&utm_source=awin&utm_medium=affiliation&utm_campaign=1454410&utm_content=Giftful&utm_term=21094_1785403463_47ea866a7ffa44c844b00883755a213c",
+      "url": "https://www.zara.com/us/en/regular-fit-waffle-jumper-p03332301.html?v1=489339320&sv1=affiliate&sv_campaign_id=1454410&awc=21094_1785753055_ab6cb8e402b99fffd7b33d6b4d4085e5&utm_source=awin&utm_medium=affiliation&utm_campaign=1454410&utm_content=Giftful&utm_term=21094_1785753055_ab6cb8e402b99fffd7b33d6b4d4085e5",
       "store": "zara.com",
       "status": "ok",
       "reason": null
@@ -115,15 +122,15 @@
     },
     {
       "name": "Relaxed-Fit Cotton-Blend Shirt",
-      "url": "https://www2.hm.com/en_us/productpage.1311268002.html",
-      "store": "www2.hm.com",
+      "url": "",
+      "store": "",
       "status": "ok",
       "reason": null
     },
     {
       "name": "ASOS DESIGN oversized boxy fit fisherman rib knit sweater in...",
-      "url": "",
-      "store": "",
+      "url": "https://www.asos.com/us/asos-design/asos-design-oversized-boxy-fit-fisherman-rib-knit-sweater-in-heathered-stone/prd/208014846",
+      "store": "asos.com",
       "status": "ok",
       "reason": null
     },
@@ -157,7 +164,7 @@
     },
     {
       "name": "WAFFLE TEXTURED T-SHIRT",
-      "url": "https://www.zara.com/us/en/waffle-textured-t-shirt-p00526345.html?v1=480810139&sv1=affiliate&sv_campaign_id=1454410&awc=21094_1785403487_167c2b6c912ff2eb4eca1f5e08b4f619&utm_source=awin&utm_medium=affiliation&utm_campaign=1454410&utm_content=Giftful&utm_term=21094_1785403487_167c2b6c912ff2eb4eca1f5e08b4f619",
+      "url": "https://www.zara.com/us/en/waffle-textured-t-shirt-p00526345.html?v1=480810139&sv1=affiliate&sv_campaign_id=1454410&awc=21094_1785753082_2584483ece0217dd37f33993b58ce4b3&utm_source=awin&utm_medium=affiliation&utm_campaign=1454410&utm_content=Giftful&utm_term=21094_1785753082_2584483ece0217dd37f33993b58ce4b3",
       "store": "zara.com",
       "status": "ok",
       "reason": null
@@ -178,15 +185,15 @@
     },
     {
       "name": "RELAXED FIT INTERLOCK SWEATSHIRT",
-      "url": "https://www.zara.com/us/en/interlock-relaxed-fit-sweatshirt-p00761490.html?sv1=affiliate&sv_campaign_id=1454410&awc=21094_1785403492_2f5a07248ab207269899e42fc8f413d3&utm_source=awin&utm_medium=affiliation&utm_campaign=1454410&utm_content=Giftful&utm_term=21094_1785403492_2f5a07248ab207269899e42fc8f413d3",
+      "url": "https://www.zara.com/us/en/interlock-relaxed-fit-sweatshirt-p00761490.html?sv1=affiliate&sv_campaign_id=1454410&awc=21094_1785753087_c60cf2bd5c3948e0922ff239bb5b8ccb&utm_source=awin&utm_medium=affiliation&utm_campaign=1454410&utm_content=Giftful&utm_term=21094_1785753087_c60cf2bd5c3948e0922ff239bb5b8ccb",
       "store": "zara.com",
       "status": "ok",
       "reason": null
     },
     {
       "name": "Regular Fit Jersey Shirt",
-      "url": "https://www2.hm.com/en_us/productpage.1029317042.html",
-      "store": "www2.hm.com",
+      "url": "",
+      "store": "",
       "status": "ok",
       "reason": null
     },
@@ -201,8 +208,8 @@
       "name": "\"MY FRIEND JESUS\" HOODIE (CAMO)",
       "url": "https://www.higherculturela.com/products/my-friend-jesus-hoodie-camo",
       "store": "higherculturela.com",
-      "status": "ok",
-      "reason": null
+      "status": "sold_out",
+      "reason": "out of stock"
     },
     {
       "name": "Relaxed-Fit Pants",
@@ -213,7 +220,7 @@
     },
     {
       "name": "Men's Daydrift Relaxed-Fit Pleated Trouser Tall",
-      "url": "https://shop.lululemon.com/p/mens-trousers/Mens-Daydrift-Relaxed-Fit-Pleated-Trouser-Tall/_/prod20009307?color=0001&cid=pdp_share_header_link_icon&cid=aff_con&sv1=affiliate&sv_campaign_id=1454410&awc=30347_1785403500_0255ebbf2f208f4183254d5b90a77cdb",
+      "url": "https://shop.lululemon.com/p/mens-trousers/Mens-Daydrift-Relaxed-Fit-Pleated-Trouser-Tall/_/prod20009307?color=0001&cid=pdp_share_header_link_icon&cid=aff_con&sv1=affiliate&sv_campaign_id=1454410&awc=30347_1785753103_3bee63664f4b2c1371891a9d94e78bb2",
       "store": "shop.lululemon.com",
       "status": "ok",
       "reason": null
@@ -234,14 +241,14 @@
     },
     {
       "name": "ASOS DESIGN pleated wide leg dress pants in charcoal wool bl...",
-      "url": "https://www.asos.com/us/asos-design/asos-design-pleated-wide-leg-dress-pants-in-charcoal-wool-blend/prd/208811441?acquisitionsource=pasteboard",
-      "store": "asos.com",
+      "url": "",
+      "store": "",
       "status": "ok",
       "reason": null
     },
     {
       "name": "CARPENTER POCKET SHORTS",
-      "url": "https://www.zara.com/us/en/relaxed-fit-carpenter-shorts-p00108475.html?sv1=affiliate&sv_campaign_id=1454410&awc=21094_1785403506_d1267d7e2a6a065acbb351595bc68ccf&utm_source=awin&utm_medium=affiliation&utm_campaign=1454410&utm_content=Giftful&utm_term=21094_1785403506_d1267d7e2a6a065acbb351595bc68ccf",
+      "url": "https://www.zara.com/us/en/relaxed-fit-carpenter-shorts-p00108475.html?sv1=affiliate&sv_campaign_id=1454410&awc=21094_1785753117_86e43e73659378d153e2e8768d3dadda&utm_source=awin&utm_medium=affiliation&utm_campaign=1454410&utm_content=Giftful&utm_term=21094_1785753117_86e43e73659378d153e2e8768d3dadda",
       "store": "zara.com",
       "status": "ok",
       "reason": null
@@ -269,7 +276,7 @@
     },
     {
       "name": "100% LINEN RELAXED FIT SHORTS",
-      "url": "https://www.zara.com/us/en/100-linen-relaxed-fit-shorts-p05070903.html?v1=495680223&v2=2432164&sv1=affiliate&sv_campaign_id=1454410&awc=21094_1785403512_fa76cb257d745af9a41b61d592b7eacf&utm_source=awin&utm_medium=affiliation&utm_campaign=1454410&utm_content=Giftful&utm_term=21094_1785403512_fa76cb257d745af9a41b61d592b7eacf",
+      "url": "https://www.zara.com/us/en/100-linen-relaxed-fit-shorts-p05070903.html?v1=495680223&v2=2432164&sv1=affiliate&sv_campaign_id=1454410&awc=21094_1785753137_13a6c0ae5647dfae7027e85ab785bcd5&utm_source=awin&utm_medium=affiliation&utm_campaign=1454410&utm_content=Giftful&utm_term=21094_1785753137_13a6c0ae5647dfae7027e85ab785bcd5",
       "store": "zara.com",
       "status": "ok",
       "reason": null
@@ -306,8 +313,8 @@
       "name": "God First Hoodie - Black on Black",
       "url": "https://redletterclo.com/products/god-first-hoodie-black-on-black-1",
       "store": "redletterclo.com",
-      "status": "ok",
-      "reason": null
+      "status": "sold_out",
+      "reason": "out of stock"
     },
     {
       "name": "4505 Icon quick dry mesh training T-shirt in black",
@@ -367,8 +374,8 @@
     },
     {
       "name": "4505 Icon heavyweight cotton oversized long sleeve T-shirt w...",
-      "url": "https://www.asos.com/us/4505/4505-icon-heavyweight-cotton-oversized-long-sleeve-t-shirt-with-quick-dry-finish-in-off-white/prd/209570706?acquisitionsource=pasteboard",
-      "store": "asos.com",
+      "url": "",
+      "store": "",
       "status": "ok",
       "reason": null
     },
@@ -381,14 +388,14 @@
     },
     {
       "name": "Pace Breaker Linerless Short 9\"",
-      "url": "https://shop.lululemon.com/p/men-shorts/Pace-Breaker-Short-Linerless-Updated/_/prod11430005?color=33928&sz=L&skuId=153837590&cid=pdp_share_header_link_icon&cid=aff_con&sv1=affiliate&sv_campaign_id=1454410&awc=30347_1785403542_53d7c25f0b79808edbea785c99af9f1f",
+      "url": "https://shop.lululemon.com/p/men-shorts/Pace-Breaker-Short-Linerless-Updated/_/prod11430005?color=33928&sz=L&skuId=153837590&cid=pdp_share_header_link_icon&cid=aff_con&sv1=affiliate&sv_campaign_id=1454410&awc=30347_1785753172_a56f083043b3cfe4bbf857c5e29ff9e1",
       "store": "shop.lululemon.com",
       "status": "ok",
       "reason": null
     },
     {
       "name": "WASHED BALLOON FIT JOGGING PANTS",
-      "url": "https://www.zara.com/us/en/washed-balloon-fit-jogging-pants-p03443425.html?sv1=affiliate&sv_campaign_id=1454410&awc=21094_1785403544_eaca0acd1a265866663cd8c1fb1db2a6&utm_source=awin&utm_medium=affiliation&utm_campaign=1454410&utm_content=Giftful&utm_term=21094_1785403544_eaca0acd1a265866663cd8c1fb1db2a6",
+      "url": "https://www.zara.com/us/en/washed-balloon-fit-jogging-pants-p03443425.html?sv1=affiliate&sv_campaign_id=1454410&awc=21094_1785753174_5bb3c64c99fca86daa023be87eeda614&utm_source=awin&utm_medium=affiliation&utm_campaign=1454410&utm_content=Giftful&utm_term=21094_1785753174_5bb3c64c99fca86daa023be87eeda614",
       "store": "zara.com",
       "status": "ok",
       "reason": null
@@ -402,7 +409,7 @@
     },
     {
       "name": "Pace Breaker Linerless Short 9\"",
-      "url": "https://shop.lululemon.com/p/men-shorts/Pace-Breaker-Short-Linerless-Updated/_/prod11430005?color=19222&sz=L&skuId=158577303&cid=pdp_share_header_link_icon&cid=aff_con&sv1=affiliate&sv_campaign_id=1454410&awc=30347_1785403547_09ce62277472eb23e5066ba3588c0c08",
+      "url": "https://shop.lululemon.com/p/men-shorts/Pace-Breaker-Short-Linerless-Updated/_/prod11430005?color=19222&sz=L&skuId=158577303&cid=pdp_share_header_link_icon&cid=aff_con&sv1=affiliate&sv_campaign_id=1454410&awc=30347_1785753177_eadd66c18e81307fc1e4dbb7fa3ca165",
       "store": "shop.lululemon.com",
       "status": "ok",
       "reason": null
@@ -416,7 +423,7 @@
     },
     {
       "name": "RELAXED FIT INTERLOCK JOGGER SHORTS",
-      "url": "https://www.zara.com/us/en/relaxed-fit-interlock-sweatshorts-p00761491.html?sv1=affiliate&sv_campaign_id=1454410&awc=21094_1785403549_b91538f1f85da54125ea9ed9e2bd3ffd&utm_source=awin&utm_medium=affiliation&utm_campaign=1454410&utm_content=Giftful&utm_term=21094_1785403549_b91538f1f85da54125ea9ed9e2bd3ffd",
+      "url": "https://www.zara.com/us/en/relaxed-fit-interlock-sweatshorts-p00761491.html?sv1=affiliate&sv_campaign_id=1454410&awc=21094_1785753180_2facff8621a78e8e827471311b238ae2&utm_source=awin&utm_medium=affiliation&utm_campaign=1454410&utm_content=Giftful&utm_term=21094_1785753180_2facff8621a78e8e827471311b238ae2",
       "store": "zara.com",
       "status": "ok",
       "reason": null
@@ -430,14 +437,14 @@
     },
     {
       "name": "Heavyweight Soft Jersey Short 8.5\"",
-      "url": "https://shop.lululemon.com/p/men-shorts/Heavy-Soft-Jersey-Short-8-5-MD/_/prod20007502?color=72761&sz=L&skuId=158101952&cid=pdp_share_header_link_icon&cid=aff_con&sv1=affiliate&sv_campaign_id=1454410&awc=30347_1785403553_ad02c1976162bc644393079e9c964f7e",
+      "url": "https://shop.lululemon.com/p/men-shorts/Heavy-Soft-Jersey-Short-8-5-MD/_/prod20007502?color=72761&sz=L&skuId=158101952&cid=pdp_share_header_link_icon&cid=aff_con&sv1=affiliate&sv_campaign_id=1454410&awc=30347_1785753183_bab9becabea144594ada8ecf99edc7aa",
       "store": "shop.lululemon.com",
       "status": "ok",
       "reason": null
     },
     {
       "name": "REGULAR FIT WOOL BLEND COAT",
-      "url": "https://www.zara.com/us/en/regular-fit-wool-blend-coat-p05070100.html?sv1=affiliate&sv_campaign_id=1454410&awc=21094_1785403557_31b2e371ab5e2caa42822866a8d707f5&utm_source=awin&utm_medium=affiliation&utm_campaign=1454410&utm_content=Giftful&utm_term=21094_1785403557_31b2e371ab5e2caa42822866a8d707f5",
+      "url": "https://www.zara.com/us/en/regular-fit-wool-blend-coat-p05070100.html?sv1=affiliate&sv_campaign_id=1454410&awc=21094_1785753187_11369e85533c7c2e9303bf12bc0eb281&utm_source=awin&utm_medium=affiliation&utm_campaign=1454410&utm_content=Giftful&utm_term=21094_1785753187_11369e85533c7c2e9303bf12bc0eb281",
       "store": "zara.com",
       "status": "ok",
       "reason": null
@@ -509,8 +516,8 @@
       "name": "\u2018SERVANT\u2019 Premium SnapBack - Cream/Black",
       "url": "https://malta-apparel.com/products/servant-premium-snapback-cream-black",
       "store": "malta-apparel.com",
-      "status": "ok",
-      "reason": null
+      "status": "sold_out",
+      "reason": "out of stock"
     },
     {
       "name": "Bailey 7.5 in. Rope Chain Bracelet (3.3mm)",

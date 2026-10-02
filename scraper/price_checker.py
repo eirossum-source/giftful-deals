@@ -256,13 +256,41 @@ def extract_list_price(html: str) -> Optional[float]:
         '[class*="strike"]',
     ]
     for sel in selectors:
-        el = soup.select_one(sel)
-        if el is None:
-            continue
-        price = _to_float(el.get_text(" ", strip=True))
-        if price is not None:
-            return price
+        for el in soup.select(sel):
+            if _in_other_product_block(el):
+                continue
+            price = _to_float(el.get_text(" ", strip=True))
+            if price is not None:
+                return price
     return None
+
+
+# Containers that hold *other* products (bundles, sponsored carousels,
+# "you may also like" cards). A strikethrough inside one of these is not
+# the list price of the product the page is about.
+_OTHER_PRODUCT_MARKERS = (
+    "carousel",
+    "bundle",
+    "product-card",
+    "resource-list",
+    "sp_offer",
+    "sp_detail",
+    "p13n",
+    "recommend",
+    "related",
+    "upsell",
+    "cross-sell",
+)
+
+
+def _in_other_product_block(el) -> bool:
+    for parent in el.parents:
+        ident = " ".join(
+            [parent.name or "", parent.get("id") or "", *(parent.get("class") or [])]
+        ).lower()
+        if any(marker in ident for marker in _OTHER_PRODUCT_MARKERS):
+            return True
+    return False
 
 
 def _is_amazon_soft_block(page) -> bool:

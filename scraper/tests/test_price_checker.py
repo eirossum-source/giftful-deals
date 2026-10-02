@@ -34,6 +34,80 @@ def test_extract_list_price_returns_none_when_no_strikethrough():
     assert extract_list_price(html) is None
 
 
+def test_extract_list_price_ignores_amazon_bundle_card_strikethrough():
+    # Trezor Safe 7: no sale on the product itself, but a "buy as a bundle"
+    # card further down the page shows a crossed-out $348.00 bundle price.
+    html = """
+    <html><body>
+      <div id="corePrice_feature_div">
+        <span class="a-price"><span class="a-offscreen">$249.00</span></span>
+      </div>
+      <ol class="a-carousel">
+        <li class="a-carousel-card bundle">
+          <div id="bundle-card-B0H3NZ2665" class="a-box bundle-card">
+            <div class="bundle-price-line"><span class="bundle-strike-pct">-5%</span></div>
+            <div class="bundle-savings-line"><span class="a-text-strike">$348.00</span></div>
+          </div>
+        </li>
+      </ol>
+    </body></html>
+    """
+    assert extract_list_price(html) is None
+
+
+def test_extract_list_price_ignores_amazon_sponsored_carousel_strikethrough():
+    html = """
+    <html><body>
+      <div id="corePrice_feature_div">
+        <span class="a-price"><span class="a-offscreen">$129.00</span></span>
+      </div>
+      <ol class="a-carousel">
+        <li class="a-carousel-card">
+          <div id="sp_detail2_B0CFHPQLZN" class="a-section sp_offerVertical p13n-asin">
+            <span class="a-price a-text-price" data-a-strike="true">
+              <span class="a-offscreen">$79.00</span>
+            </span>
+          </div>
+        </li>
+      </ol>
+    </body></html>
+    """
+    assert extract_list_price(html) is None
+
+
+def test_extract_list_price_ignores_other_products_compare_at_price():
+    # Shopify store: the product is full price, but "you may also like"
+    # cards for other products show a crossed-out compare-at price.
+    html = """
+    <html><body>
+      <div class="product-information"><span class="price">$59.99</span></div>
+      <div class="resource-list__item">
+        <product-card class="product-card">
+          <product-price><span class="compare-at-price">$64.99 USD</span></product-price>
+        </product-card>
+      </div>
+    </body></html>
+    """
+    assert extract_list_price(html) is None
+
+
+def test_extract_list_price_keeps_main_strikethrough_when_carousel_has_one_too():
+    html = """
+    <html><body>
+      <ol class="a-carousel">
+        <li class="a-carousel-card">
+          <span class="a-text-price" data-a-strike="true"><span class="a-offscreen">$20.00</span></span>
+        </li>
+      </ol>
+      <div id="corePrice_feature_div">
+        <span class="a-price"><span class="a-offscreen">$59.99</span></span>
+        <span class="a-text-price" data-a-strike="true"><span class="a-offscreen">$99.99</span></span>
+      </div>
+    </body></html>
+    """
+    assert extract_list_price(html) == 99.99
+
+
 def test_extract_list_price_jsonld_higher_price_specification():
     # Schema.org PriceSpecification with priceType MSRP / SRP / ListPrice.
     html = """

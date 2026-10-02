@@ -1,7 +1,7 @@
 # Project: giftful-deals
 
 ## Project Root
-/Users/isaacrossum/claude/claude_code/projects/giftful-deals
+/Users/isaacrossum/claude/projects/giftful-deals
 
 ## Stack
 - Language: Python 3 (project venv at `.venv/`; system has no `python` alias — use `.venv/bin/python`)

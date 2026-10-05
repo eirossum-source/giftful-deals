@@ -1,6 +1,41 @@
 {
-  "run_at": "2026-10-02T04:12:34.863321",
+  "run_at": "2026-10-05T15:23:41.040834",
   "items": [
+    {
+      "name": "The Men's Clog - ReVelvet\u2122 Bistro",
+      "url": "https://rothys.com/products/mens-clog-revelvet-bistro",
+      "store": "rothys.com",
+      "status": "sold_out",
+      "reason": "out of stock"
+    },
+    {
+      "name": "UGG\u00ae Men's Classic Ultra Mini Weather Hybrid Suede Classic B...",
+      "url": "https://www.ugg.com/men-boots/cl-ultra-mini-weather-hybrid/1174196.html",
+      "store": "ugg.com",
+      "status": "ok",
+      "reason": null
+    },
+    {
+      "name": "Men's Birkenstock Essentials Arizona",
+      "url": "https://www.finishline.com/pdp/mens-birkenstock-essentials-arizona-eva-sandals/prod22090008/129421/001",
+      "store": "finishline.com",
+      "status": "ok",
+      "reason": null
+    },
+    {
+      "name": "Crocs Salehe Bembury x Realtree x Pollex Clog 'Edge Camo'",
+      "url": "https://www.goat.com/sneakers/salehe-bembury-x-realtree-x-pollex-clog-edge-camo-207393-camo",
+      "store": "goat.com",
+      "status": "ok",
+      "reason": null
+    },
+    {
+      "name": "Nike Dunk Low SB 'White Gum'",
+      "url": "https://www.goat.com/sneakers/dunk-low-sb-white-gum-cd2563-101",
+      "store": "goat.com",
+      "status": "ok",
+      "reason": null
+    },
     {
       "name": "IK Multimedia iLoud Micro Monitor Travel Bag",
       "url": "https://www.bhphotovideo.com/c/product/1633238-REG/ik_multimedia_bag_iloudmm_001_iloud_micro_monitor_travel.html",
@@ -73,7 +108,7 @@
     },
     {
       "name": "REGULAR FIT WAFFLE JUMPER",
-      "url": "https://www.zara.com/us/en/regular-fit-waffle-jumper-p03332301.html?v1=489339320&sv1=affiliate&sv_campaign_id=1454410&awc=21094_1790914238_63f50786ee58136380cd8656643cafa1&utm_source=awin&utm_medium=affiliation&utm_campaign=1454410&utm_content=Giftful&utm_term=21094_1790914238_63f50786ee58136380cd8656643cafa1",
+      "url": "https://www.zara.com/us/en/regular-fit-waffle-jumper-p03332301.html?v1=489339320&sv1=affiliate&sv_campaign_id=1454410&awc=21094_1791213689_169be40c94b340f1409a8eb21dadf3ee&utm_source=awin&utm_medium=affiliation&utm_campaign=1454410&utm_content=Giftful&utm_term=21094_1791213689_169be40c94b340f1409a8eb21dadf3ee",
       "store": "zara.com",
       "status": "ok",
       "reason": null
@@ -94,8 +129,8 @@
     },
     {
       "name": "Oversized-Fit T-Shirt",
-      "url": "https://www2.hm.com/en_us/productpage.1328819002.html",
-      "store": "www2.hm.com",
+      "url": "",
+      "store": "",
       "status": "ok",
       "reason": null
     },
@@ -143,7 +178,7 @@
     },
     {
       "name": "WAFFLE TEXTURED T-SHIRT",
-      "url": "https://www.zara.com/us/en/waffle-textured-t-shirt-p00526345.html?v1=480810139&sv1=affiliate&sv_campaign_id=1454410&awc=21094_1790914255_754009a6649bf62e915886ca43e2f961&utm_source=awin&utm_medium=affiliation&utm_campaign=1454410&utm_content=Giftful&utm_term=21094_1790914255_754009a6649bf62e915886ca43e2f961",
+      "url": "https://www.zara.com/us/en/waffle-textured-t-shirt-p00526345.html?v1=480810139&sv1=affiliate&sv_campaign_id=1454410&awc=21094_1791213714_90b0f4db3458baff8b216eed72ad2ee3&utm_source=awin&utm_medium=affiliation&utm_campaign=1454410&utm_content=Giftful&utm_term=21094_1791213714_90b0f4db3458baff8b216eed72ad2ee3",
       "store": "zara.com",
       "status": "ok",
       "reason": null
@@ -164,7 +199,7 @@
     },
     {
       "name": "RELAXED FIT INTERLOCK SWEATSHIRT",
-      "url": "https://www.zara.com/us/en/interlock-relaxed-fit-sweatshirt-p00761490.html?sv1=affiliate&sv_campaign_id=1454410&awc=21094_1790914260_b80ff202732a35e84a30be956071b43d&utm_source=awin&utm_medium=affiliation&utm_campaign=1454410&utm_content=Giftful&utm_term=21094_1790914260_b80ff202732a35e84a30be956071b43d",
+      "url": "https://www.zara.com/us/en/interlock-relaxed-fit-sweatshirt-p00761490.html?sv1=affiliate&sv_campaign_id=1454410&awc=21094_1791213719_b497ba73d828337280bf5e053674138d&utm_source=awin&utm_medium=affiliation&utm_campaign=1454410&utm_content=Giftful&utm_term=21094_1791213719_b497ba73d828337280bf5e053674138d",
       "store": "zara.com",
       "status": "ok",
       "reason": null
@@ -199,7 +234,7 @@
     },
     {
       "name": "Men's Daydrift Relaxed-Fit Pleated Trouser Tall",
-      "url": "https://shop.lululemon.com/p/mens-daydrift-relaxed-fit-pleated-trouser-tall/cri5v3r1qp?awc=30347_1790914268_dafdbea59eb17e061c60151f63bf51e7&cid=pdp_share_header_link_icon&cid=aff_con&color=0001&sv1=affiliate&sv_campaign_id=1454410",
+      "url": "https://shop.lululemon.com/p/mens-daydrift-relaxed-fit-pleated-trouser-tall/cri5v3r1qp?awc=30347_1791213727_a634435885a8207389dd9fdf01339c9b&cid=pdp_share_header_link_icon&cid=aff_con&color=0001&sv1=affiliate&sv_campaign_id=1454410",
       "store": "shop.lululemon.com",
       "status": "ok",
       "reason": null
@@ -213,8 +248,8 @@
     },
     {
       "name": "Baggy Jean",
-      "url": "https://cottonon.com/US/baggy-jean/3611774-123.html?dwvar_3611774-123_color=3611774-123&cgid=co&originalPid=3611774-123#q=Baggy&start=14&sz=60&newWindow=true",
-      "store": "cottonon.com",
+      "url": "",
+      "store": "",
       "status": "ok",
       "reason": null
     },
@@ -227,7 +262,7 @@
     },
     {
       "name": "CARPENTER POCKET SHORTS",
-      "url": "https://www.zara.com/us/en/carpenter-pocket-shorts-p00108475.html?sv1=affiliate&sv_campaign_id=1454410&awc=21094_1790914276_54628a9f831835f3d5f25e018138359c&utm_source=awin&utm_medium=affiliation&utm_campaign=1454410&utm_content=Giftful&utm_term=21094_1790914276_54628a9f831835f3d5f25e018138359c",
+      "url": "https://www.zara.com/us/en/carpenter-pocket-shorts-p00108475.html?sv1=affiliate&sv_campaign_id=1454410&awc=21094_1791213742_db36d758084e9a132530b8d744de68a6&utm_source=awin&utm_medium=affiliation&utm_campaign=1454410&utm_content=Giftful&utm_term=21094_1791213742_db36d758084e9a132530b8d744de68a6",
       "store": "zara.com",
       "status": "ok",
       "reason": null
@@ -241,8 +276,8 @@
     },
     {
       "name": "578\u2122 Baggy Men's Jeans",
-      "url": "https://www.levi.com/US/en_US/clothing/men/jeans/loose/578TM-baggy-mens-jeans/p/A47500022",
-      "store": "levi.com",
+      "url": "",
+      "store": "",
       "status": "ok",
       "reason": null
     },
@@ -255,7 +290,7 @@
     },
     {
       "name": "100% LINEN RELAXED FIT SHORTS",
-      "url": "https://www.zara.com/us/en/100-linen-relaxed-fit-shorts-p05070903.html?v1=495680223&v2=2432164&sv1=affiliate&sv_campaign_id=1454410&awc=21094_1790914281_4ade5d7bceac31d3b0750c7dc717e2d5&utm_source=awin&utm_medium=affiliation&utm_campaign=1454410&utm_content=Giftful&utm_term=21094_1790914281_4ade5d7bceac31d3b0750c7dc717e2d5",
+      "url": "https://www.zara.com/us/en/100-linen-relaxed-fit-shorts-p05070903.html?v1=495680223&v2=2432164&sv1=affiliate&sv_campaign_id=1454410&awc=21094_1791213756_55d3cc66d50cb4ffb75111aacd73fb54&utm_source=awin&utm_medium=affiliation&utm_campaign=1454410&utm_content=Giftful&utm_term=21094_1791213756_55d3cc66d50cb4ffb75111aacd73fb54",
       "store": "zara.com",
       "status": "ok",
       "reason": null
@@ -367,14 +402,14 @@
     },
     {
       "name": "Pace Breaker Linerless Short 9\"",
-      "url": "https://shop.lululemon.com/p/pace-breaker-short-linerless-updated/qwxpgxg9s3?awc=30347_1790914309_a9bc8f77a652c5d114d6859a1a3ba397&cid=pdp_share_header_link_icon&cid=aff_con&color=33928&skuId=153837590&sv1=affiliate&sv_campaign_id=1454410&sz=L",
+      "url": "https://shop.lululemon.com/p/pace-breaker-short-linerless-updated/qwxpgxg9s3?awc=30347_1791213784_e416d75cad7d037de53e0984571d3177&cid=pdp_share_header_link_icon&cid=aff_con&color=33928&skuId=153837590&sv1=affiliate&sv_campaign_id=1454410&sz=L",
       "store": "shop.lululemon.com",
       "status": "ok",
       "reason": null
     },
     {
       "name": "WASHED BALLOON FIT JOGGING PANTS",
-      "url": "https://www.zara.com/us/en/washed-balloon-fit-jogging-pants-p03443425.html?sv1=affiliate&sv_campaign_id=1454410&awc=21094_1790914312_3da4f0417f9f38a4fa6bef37122c0784&utm_source=awin&utm_medium=affiliation&utm_campaign=1454410&utm_content=Giftful&utm_term=21094_1790914312_3da4f0417f9f38a4fa6bef37122c0784",
+      "url": "https://www.zara.com/us/en/washed-balloon-fit-jogging-pants-p03443425.html?sv1=affiliate&sv_campaign_id=1454410&awc=21094_1791213787_12b74a35f9c3f810424b72fc28aef543&utm_source=awin&utm_medium=affiliation&utm_campaign=1454410&utm_content=Giftful&utm_term=21094_1791213787_12b74a35f9c3f810424b72fc28aef543",
       "store": "zara.com",
       "status": "ok",
       "reason": null
@@ -388,7 +423,7 @@
     },
     {
       "name": "Pace Breaker Linerless Short 9\"",
-      "url": "https://shop.lululemon.com/p/pace-breaker-short-linerless-updated/qwxpgxg9s3?awc=30347_1790914314_6a5484feb2e34463ade783dfb00d8476&cid=pdp_share_header_link_icon&cid=aff_con&color=19222&skuId=158577303&sv1=affiliate&sv_campaign_id=1454410&sz=L",
+      "url": "https://shop.lululemon.com/p/pace-breaker-short-linerless-updated/qwxpgxg9s3?awc=30347_1791213790_4bbc973c9349bd3337e193af3e7c0ce2&cid=pdp_share_header_link_icon&cid=aff_con&color=19222&skuId=158577303&sv1=affiliate&sv_campaign_id=1454410&sz=L",
       "store": "shop.lululemon.com",
       "status": "ok",
       "reason": null
@@ -402,7 +437,7 @@
     },
     {
       "name": "RELAXED FIT INTERLOCK JOGGER SHORTS",
-      "url": "https://www.zara.com/us/en/relaxed-fit-interlock-sweat-shorts-p00761491.html?sv1=affiliate&sv_campaign_id=1454410&awc=21094_1790914318_7bd91415b1bddb0ff1c409bd0b9bd27f&utm_source=awin&utm_medium=affiliation&utm_campaign=1454410&utm_content=Giftful&utm_term=21094_1790914318_7bd91415b1bddb0ff1c409bd0b9bd27f",
+      "url": "https://www.zara.com/us/en/relaxed-fit-interlock-sweat-shorts-p00761491.html?sv1=affiliate&sv_campaign_id=1454410&awc=21094_1791213793_ca0d9cfad4cddc48e8e70cb9de8a5885&utm_source=awin&utm_medium=affiliation&utm_campaign=1454410&utm_content=Giftful&utm_term=21094_1791213793_ca0d9cfad4cddc48e8e70cb9de8a5885",
       "store": "zara.com",
       "status": "ok",
       "reason": null
@@ -416,14 +451,14 @@
     },
     {
       "name": "Heavyweight Soft Jersey Short 8.5\"",
-      "url": "https://shop.lululemon.com/p/heavy-soft-jersey-short-8-5/djsb6i5kl1?awc=30347_1790914321_c04b7c997e38618af4dceb72269d431d&cid=pdp_share_header_link_icon&cid=aff_con&color=72761&skuId=158101952&sv1=affiliate&sv_campaign_id=1454410&sz=L",
+      "url": "https://shop.lululemon.com/p/heavy-soft-jersey-short-8-5/djsb6i5kl1?awc=30347_1791213796_a0f9861e6894cfcd1f9d63d1229ffd22&cid=pdp_share_header_link_icon&cid=aff_con&color=72761&skuId=158101952&sv1=affiliate&sv_campaign_id=1454410&sz=L",
       "store": "shop.lululemon.com",
       "status": "ok",
       "reason": null
     },
     {
       "name": "REGULAR FIT WOOL BLEND COAT",
-      "url": "https://www.zara.com/us/en/regular-fit-wool-blend-coat-p05070100.html?sv1=affiliate&sv_campaign_id=1454410&awc=21094_1790914325_4793b8a81bfc07c3ff0c91f3667b54cb&utm_source=awin&utm_medium=affiliation&utm_campaign=1454410&utm_content=Giftful&utm_term=21094_1790914325_4793b8a81bfc07c3ff0c91f3667b54cb",
+      "url": "https://www.zara.com/us/en/regular-fit-wool-blend-coat-p05070100.html?sv1=affiliate&sv_campaign_id=1454410&awc=21094_1791213801_a339aa4ac16816b2e1cecfff19291271&utm_source=awin&utm_medium=affiliation&utm_campaign=1454410&utm_content=Giftful&utm_term=21094_1791213801_a339aa4ac16816b2e1cecfff19291271",
       "store": "zara.com",
       "status": "ok",
       "reason": null
@@ -432,34 +467,6 @@
       "name": "The North Face Full Zip Cabin Fleece in black",
       "url": "https://www.asos.com/us/the-north-face/the-north-face-full-zip-cabin-fleece-in-black/prd/208018284?acquisitionsource=pasteboard",
       "store": "asos.com",
-      "status": "ok",
-      "reason": null
-    },
-    {
-      "name": "Men's Birkenstock Essentials Arizona",
-      "url": "https://www.finishline.com/pdp/mens-birkenstock-essentials-arizona-eva-sandals/prod22090008/129421/001",
-      "store": "finishline.com",
-      "status": "ok",
-      "reason": null
-    },
-    {
-      "name": "Crocs Salehe Bembury x Realtree x Pollex Clog 'Edge Camo'",
-      "url": "https://www.goat.com/sneakers/salehe-bembury-x-realtree-x-pollex-clog-edge-camo-207393-camo",
-      "store": "goat.com",
-      "status": "ok",
-      "reason": null
-    },
-    {
-      "name": "Nike Dunk Low SB 'White Gum'",
-      "url": "https://www.goat.com/sneakers/dunk-low-sb-white-gum-cd2563-101",
-      "store": "goat.com",
-      "status": "ok",
-      "reason": null
-    },
-    {
-      "name": "UGG\u00ae Men's Classic Ultra Mini Weather Hybrid Suede Classic B...",
-      "url": "https://www.ugg.com/men-boots/cl-ultra-mini-weather-hybrid/1174196.html",
-      "store": "ugg.com",
       "status": "ok",
       "reason": null
     },

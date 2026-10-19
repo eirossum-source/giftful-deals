@@ -1,6 +1,90 @@
 {
-  "run_at": "2026-10-15T12:13:47.985562",
+  "run_at": "2026-10-19T14:08:29.017601",
   "items": [
+    {
+      "name": "WIWU Keyboard Case for iPad",
+      "url": "https://www.amazon.com/dp/B0FK5871F1?lv=shuf&rsd=Di7jdGfNUG34J7%2Fq2iIy%2BEbe0rHjr5KgdE6e82CFdRKM9T0WaOU67NWQQEqaQHM7MgBeYrz1IEh3hVhoq%2B2aHvQmSGb9hKs5FiXX%2BYC%2BPGdd6bc5&edk=AQIDAHi1lw%2FM8UbbSMD9ScOOFEmBMHMthHeEhqDaQYPJUAX3jQHpM%2F1tWE0rklNCCd3S2asBAAAAfjB8BgkqhkiG9w0BBwagbzBtAgEAMGgGCSqGSIb3DQEHATAeBglghkgBZQMEAS4wEQQM8QmnDox2JSHWvEK8AgEQgDtfbwDQXayHY1Xv04fmiiIJwxbYwJ18QMKiKIB7IPj9zrhp7lxv1r%2B4%2Ffwpzi3LeLa54Hzab8pYbglPWw%3D%3D&social_share=cm_sw_r_apin_dp_5NGMS5XBE3MEZBXH79WN&channelId=704&ref_=cm_sw_r_apin_dp_5NGMS5XBE3MEZBXH79WN&plpRedirect=mhFallback&tag=giftful04-20&linkCode=ogi&th=1&psc=1",
+      "store": "amazon.com",
+      "status": "ok",
+      "reason": null
+    },
+    {
+      "name": "FabFilter Pro-Q 4",
+      "url": "https://www.sweetwater.com/store/detail/FFProQ4--fabfilter-pro-q-4-eq-and-filter-plug-in",
+      "store": "sweetwater.com",
+      "status": "review",
+      "reason": "product name mismatch (score 0.00, saw: \"Access to this page has been denied\")"
+    },
+    {
+      "name": "Trezor Safe 5 - Crypto Hardware Wallet",
+      "url": "https://www.amazon.com/dp/B0D8FH3W7C?tag=giftful04-20&linkCode=ogi&th=1&psc=1",
+      "store": "amazon.com",
+      "status": "ok",
+      "reason": null
+    },
+    {
+      "name": "Anker MagSafe Charger",
+      "url": "https://www.amazon.com/dp/B0D8PN1GBP?tag=giftful04-20&linkCode=ogi&th=1&psc=1",
+      "store": "amazon.com",
+      "status": "ok",
+      "reason": null
+    },
+    {
+      "name": "IK Multimedia iLoud Micro Monitor Travel Bag",
+      "url": "https://www.bhphotovideo.com/c/product/1633238-REG/ik_multimedia_bag_iloudmm_001_iloud_micro_monitor_travel.html",
+      "store": "bhphotovideo.com",
+      "status": "ok",
+      "reason": null
+    },
+    {
+      "name": "Norelco Philips All-in-One 7000 Series 23-Piece Trimmer - El...",
+      "url": "https://www.amazon.com/dp/B0D68XZY2S?tag=giftful04-20&linkCode=ogi&th=1&psc=1",
+      "store": "amazon.com",
+      "status": "ok",
+      "reason": null
+    },
+    {
+      "name": "Xfer Serum 2",
+      "url": "https://www.adsrsounds.com/product/software/serum/",
+      "store": "adsrsounds.com",
+      "status": "ok",
+      "reason": null
+    },
+    {
+      "name": "Trezor Safe 7 - Crypto Hardware Wallet with Bluetooth, Color...",
+      "url": "https://www.amazon.com/dp/B0G2LX4TFC?tag=giftful04-20&linkCode=ogi&th=1&psc=1",
+      "store": "amazon.com",
+      "status": "ok",
+      "reason": null
+    },
+    {
+      "name": "Beats Powerbeats Pro 2 - Wireless Noise Cancelling Workout E...",
+      "url": "https://www.amazon.com/dp/B0DT2344N3?tag=giftful04-20&linkCode=ogi&th=1&psc=1",
+      "store": "amazon.com",
+      "status": "ok",
+      "reason": null
+    },
+    {
+      "name": "Ozone 12 Standard",
+      "url": "https://www.izotope.com/products/ozone-standard",
+      "store": "izotope.com",
+      "status": "ok",
+      "reason": null
+    },
+    {
+      "name": "Supernote Nomad",
+      "url": "https://supernote.com/pages/supernote-nomad",
+      "store": "supernote.com",
+      "status": "ok",
+      "reason": null
+    },
+    {
+      "name": "AirPods Pro 3",
+      "url": "https://www.apple.com/shop/buy-airpods/airpods-pro-3",
+      "store": "apple.com",
+      "status": "ok",
+      "reason": null
+    },
     {
       "name": "The Men's Clog - ReVelvet\u2122 Bistro",
       "url": "https://rothys.com/products/mens-clog-revelvet-bistro",
@@ -37,55 +121,6 @@
       "reason": null
     },
     {
-      "name": "IK Multimedia iLoud Micro Monitor Travel Bag",
-      "url": "https://www.bhphotovideo.com/c/product/1633238-REG/ik_multimedia_bag_iloudmm_001_iloud_micro_monitor_travel.html",
-      "store": "bhphotovideo.com",
-      "status": "ok",
-      "reason": null
-    },
-    {
-      "name": "Norelco Philips All-in-One 7000 Series 23-Piece Trimmer - El...",
-      "url": "https://www.amazon.com/dp/B0D68XZY2S?tag=giftful04-20&linkCode=ogi&th=1&psc=1",
-      "store": "amazon.com",
-      "status": "ok",
-      "reason": null
-    },
-    {
-      "name": "Trezor Safe 7 - Crypto Hardware Wallet with Bluetooth, Color...",
-      "url": "https://www.amazon.com/dp/B0G2LX4TFC?tag=giftful04-20&linkCode=ogi&th=1&psc=1",
-      "store": "amazon.com",
-      "status": "ok",
-      "reason": null
-    },
-    {
-      "name": "Beats Powerbeats Pro 2 - Wireless Noise Cancelling Workout E...",
-      "url": "https://www.amazon.com/dp/B0DT2344N3?tag=giftful04-20&linkCode=ogi&th=1&psc=1",
-      "store": "amazon.com",
-      "status": "ok",
-      "reason": null
-    },
-    {
-      "name": "Supernote Nomad",
-      "url": "https://supernote.com/pages/supernote-nomad",
-      "store": "supernote.com",
-      "status": "ok",
-      "reason": null
-    },
-    {
-      "name": "AirPods Pro 3",
-      "url": "https://www.apple.com/shop/buy-airpods/airpods-pro-3",
-      "store": "apple.com",
-      "status": "ok",
-      "reason": null
-    },
-    {
-      "name": "Trezor Safe 5 - Crypto Hardware Wallet",
-      "url": "https://www.amazon.com/dp/B0D8FH3W7C?tag=giftful04-20&linkCode=ogi&th=1&psc=1",
-      "store": "amazon.com",
-      "status": "ok",
-      "reason": null
-    },
-    {
       "name": "Not Luck Just God Waffle Longsleeve Loose Fit Tee Beige | Ho...",
       "url": "https://thehouseofpeace.us/products/not-luck-just-god-waffle-longsleeve-loose-fit-tee-beige-house-of-peace%c2%ae",
       "store": "thehouseofpeace.us",
@@ -108,7 +143,7 @@
     },
     {
       "name": "REGULAR FIT WAFFLE JUMPER",
-      "url": "https://www.zara.com/us/en/regular-fit-waffle-jumper-p03332301.html?v1=489339320&sv1=affiliate&sv_campaign_id=1454410&awc=21094_1792066320_096ba658f96e10e843390e8ab72ea1f5&utm_source=awin&utm_medium=affiliation&utm_campaign=1454410&utm_content=Giftful&utm_term=21094_1792066320_096ba658f96e10e843390e8ab72ea1f5",
+      "url": "https://www.zara.com/us/en/regular-fit-waffle-jumper-p03332301.html?v1=489339320&sv1=affiliate&sv_campaign_id=1454410&awc=21094_1792418797_7e776dc3dbd5dbaf88b1ebe81add62ba&utm_source=awin&utm_medium=affiliation&utm_campaign=1454410&utm_content=Giftful&utm_term=21094_1792418797_7e776dc3dbd5dbaf88b1ebe81add62ba",
       "store": "zara.com",
       "status": "ok",
       "reason": null
@@ -178,7 +213,7 @@
     },
     {
       "name": "WAFFLE TEXTURED T-SHIRT",
-      "url": "https://www.zara.com/us/en/waffle-textured-t-shirt-p00526345.html?v1=480810139&sv1=affiliate&sv_campaign_id=1454410&awc=21094_1792066338_f10299cc25e2b5845227ee7d8cc70790&utm_source=awin&utm_medium=affiliation&utm_campaign=1454410&utm_content=Giftful&utm_term=21094_1792066338_f10299cc25e2b5845227ee7d8cc70790",
+      "url": "https://www.zara.com/us/en/waffle-textured-t-shirt-p00526345.html?v1=480810139&sv1=affiliate&sv_campaign_id=1454410&awc=21094_1792418815_8c821189389e124f17d13a24519ab1ab&utm_source=awin&utm_medium=affiliation&utm_campaign=1454410&utm_content=Giftful&utm_term=21094_1792418815_8c821189389e124f17d13a24519ab1ab",
       "store": "zara.com",
       "status": "ok",
       "reason": null
@@ -199,7 +234,7 @@
     },
     {
       "name": "RELAXED FIT INTERLOCK SWEATSHIRT",
-      "url": "https://www.zara.com/us/en/interlock-relaxed-fit-sweatshirt-p00761490.html?sv1=affiliate&sv_campaign_id=1454410&awc=21094_1792066343_f798b2c84150cf61e56a02d38d5cceb0&utm_source=awin&utm_medium=affiliation&utm_campaign=1454410&utm_content=Giftful&utm_term=21094_1792066343_f798b2c84150cf61e56a02d38d5cceb0",
+      "url": "https://www.zara.com/us/en/interlock-relaxed-fit-sweatshirt-p00761490.html?sv1=affiliate&sv_campaign_id=1454410&awc=21094_1792418820_401cea60ce2c70d543986f284d203ecd&utm_source=awin&utm_medium=affiliation&utm_campaign=1454410&utm_content=Giftful&utm_term=21094_1792418820_401cea60ce2c70d543986f284d203ecd",
       "store": "zara.com",
       "status": "ok",
       "reason": null
@@ -234,7 +269,7 @@
     },
     {
       "name": "Men's Daydrift Relaxed-Fit Pleated Trouser Tall",
-      "url": "https://shop.lululemon.com/p/mens-daydrift-relaxed-fit-pleated-trouser-tall/cri5v3r1qp?awc=30347_1792066350_396db8109d0878dd3b285a757b547061&cid=pdp_share_header_link_icon&cid=aff_con&color=0001&sv1=affiliate&sv_campaign_id=1454410",
+      "url": "https://shop.lululemon.com/p/mens-daydrift-relaxed-fit-pleated-trouser-tall/cri5v3r1qp?awc=30347_1792418828_0581d7281e2ff1441e15df3ee4cd79c6&cid=pdp_share_header_link_icon&cid=aff_con&color=0001&sv1=affiliate&sv_campaign_id=1454410",
       "store": "shop.lululemon.com",
       "status": "ok",
       "reason": null
@@ -262,7 +297,7 @@
     },
     {
       "name": "CARPENTER POCKET SHORTS",
-      "url": "https://www.zara.com/us/en/carpenter-pocket-shorts-p00108475.html?sv1=affiliate&sv_campaign_id=1454410&awc=21094_1792066357_dee5c226fa3987b4557724f51c022bf1&utm_source=awin&utm_medium=affiliation&utm_campaign=1454410&utm_content=Giftful&utm_term=21094_1792066357_dee5c226fa3987b4557724f51c022bf1",
+      "url": "https://www.zara.com/us/en/carpenter-pocket-shorts-p00108475.html?sv1=affiliate&sv_campaign_id=1454410&awc=21094_1792418835_28be384534563e3ac99868211cd3206e&utm_source=awin&utm_medium=affiliation&utm_campaign=1454410&utm_content=Giftful&utm_term=21094_1792418835_28be384534563e3ac99868211cd3206e",
       "store": "zara.com",
       "status": "ok",
       "reason": null
@@ -290,7 +325,7 @@
     },
     {
       "name": "100% LINEN RELAXED FIT SHORTS",
-      "url": "https://www.zara.com/us/en/100-linen-relaxed-fit-shorts-p05070903.html?v1=495680223&v2=2432164&sv1=affiliate&sv_campaign_id=1454410&awc=21094_1792066363_b12628f33e87b7f7d079e1a964595e0a&utm_source=awin&utm_medium=affiliation&utm_campaign=1454410&utm_content=Giftful&utm_term=21094_1792066363_b12628f33e87b7f7d079e1a964595e0a",
+      "url": "https://www.zara.com/us/en/100-linen-relaxed-fit-shorts-p05070903.html?v1=495680223&v2=2432164&sv1=affiliate&sv_campaign_id=1454410&awc=21094_1792418845_f68d72e0ac7fd1102dc440d5b40ab560&utm_source=awin&utm_medium=affiliation&utm_campaign=1454410&utm_content=Giftful&utm_term=21094_1792418845_f68d72e0ac7fd1102dc440d5b40ab560",
       "store": "zara.com",
       "status": "ok",
       "reason": null
@@ -402,14 +437,14 @@
     },
     {
       "name": "Pace Breaker Linerless Short 9\"",
-      "url": "https://shop.lululemon.com/p/pace-breaker-short-linerless-updated/qwxpgxg9s3?awc=30347_1792066392_2c47e6094540af1153ba2d511952662e&cid=pdp_share_header_link_icon&cid=aff_con&color=33928&skuId=153837590&sv1=affiliate&sv_campaign_id=1454410&sz=L",
+      "url": "https://shop.lululemon.com/p/pace-breaker-short-linerless-updated/qwxpgxg9s3?awc=30347_1792418872_cc922a98de60c266de60595b2c215139&cid=pdp_share_header_link_icon&cid=aff_con&color=33928&skuId=153837590&sv1=affiliate&sv_campaign_id=1454410&sz=L",
       "store": "shop.lululemon.com",
       "status": "ok",
       "reason": null
     },
     {
       "name": "WASHED BALLOON FIT JOGGING PANTS",
-      "url": "https://www.zara.com/us/en/washed-balloon-fit-jogging-pants-p03443425.html?sv1=affiliate&sv_campaign_id=1454410&awc=21094_1792066394_da6f9a6f4b644603a8d237497cae1620&utm_source=awin&utm_medium=affiliation&utm_campaign=1454410&utm_content=Giftful&utm_term=21094_1792066394_da6f9a6f4b644603a8d237497cae1620",
+      "url": "https://www.zara.com/us/en/washed-balloon-fit-jogging-pants-p03443425.html?sv1=affiliate&sv_campaign_id=1454410&awc=21094_1792418874_fb81e0dfdf5b996c82a63c93900a2434&utm_source=awin&utm_medium=affiliation&utm_campaign=1454410&utm_content=Giftful&utm_term=21094_1792418874_fb81e0dfdf5b996c82a63c93900a2434",
       "store": "zara.com",
       "status": "ok",
       "reason": null
@@ -423,7 +458,7 @@
     },
     {
       "name": "Pace Breaker Linerless Short 9\"",
-      "url": "https://shop.lululemon.com/p/pace-breaker-short-linerless-updated/qwxpgxg9s3?awc=30347_1792066397_d75f202a63febddbf307936a2feb778d&cid=pdp_share_header_link_icon&cid=aff_con&color=19222&skuId=158577303&sv1=affiliate&sv_campaign_id=1454410&sz=L",
+      "url": "https://shop.lululemon.com/p/pace-breaker-short-linerless-updated/qwxpgxg9s3?awc=30347_1792418878_0c6b738251a7446e41e8bf4b2680e123&cid=pdp_share_header_link_icon&cid=aff_con&color=19222&skuId=158577303&sv1=affiliate&sv_campaign_id=1454410&sz=L",
       "store": "shop.lululemon.com",
       "status": "ok",
       "reason": null
@@ -437,7 +472,7 @@
     },
     {
       "name": "RELAXED FIT INTERLOCK JOGGER SHORTS",
-      "url": "https://www.zara.com/us/en/relaxed-fit-interlock-sweat-shorts-p00761491.html?sv1=affiliate&sv_campaign_id=1454410&awc=21094_1792066401_daa071d211c6541436c72144132718dc&utm_source=awin&utm_medium=affiliation&utm_campaign=1454410&utm_content=Giftful&utm_term=21094_1792066401_daa071d211c6541436c72144132718dc",
+      "url": "https://www.zara.com/us/en/relaxed-fit-interlock-sweat-shorts-p00761491.html?sv1=affiliate&sv_campaign_id=1454410&awc=21094_1792418881_4078f1e1f4acfffdf6afe1a9ad6e97c4&utm_source=awin&utm_medium=affiliation&utm_campaign=1454410&utm_content=Giftful&utm_term=21094_1792418881_4078f1e1f4acfffdf6afe1a9ad6e97c4",
       "store": "zara.com",
       "status": "ok",
       "reason": null
@@ -451,14 +486,14 @@
     },
     {
       "name": "Heavyweight Soft Jersey Short 8.5\"",
-      "url": "https://shop.lululemon.com/p/heavy-soft-jersey-short-8-5/djsb6i5kl1?awc=30347_1792066404_d1cb4bdd995f5836875c1c6b2379a103&cid=pdp_share_header_link_icon&cid=aff_con&color=72761&skuId=158101952&sv1=affiliate&sv_campaign_id=1454410&sz=L",
+      "url": "https://shop.lululemon.com/p/heavy-soft-jersey-short-8-5/djsb6i5kl1?awc=30347_1792418884_f652eeeab15e5025856b02803d81088e&cid=pdp_share_header_link_icon&cid=aff_con&color=72761&skuId=158101952&sv1=affiliate&sv_campaign_id=1454410&sz=L",
       "store": "shop.lululemon.com",
       "status": "ok",
       "reason": null
     },
     {
       "name": "REGULAR FIT WOOL BLEND COAT",
-      "url": "https://www.zara.com/us/en/regular-fit-wool-blend-coat-p05070100.html?sv1=affiliate&sv_campaign_id=1454410&awc=21094_1792066407_1f9b45687b94f935fd75b10fceb5b0e8&utm_source=awin&utm_medium=affiliation&utm_campaign=1454410&utm_content=Giftful&utm_term=21094_1792066407_1f9b45687b94f935fd75b10fceb5b0e8",
+      "url": "https://www.zara.com/us/en/regular-fit-wool-blend-coat-p05070100.html?sv1=affiliate&sv_campaign_id=1454410&awc=21094_1792418888_297214eb91b2b2d894c1b474abae68bc&utm_source=awin&utm_medium=affiliation&utm_campaign=1454410&utm_content=Giftful&utm_term=21094_1792418888_297214eb91b2b2d894c1b474abae68bc",
       "store": "zara.com",
       "status": "ok",
       "reason": null
@@ -479,7 +514,7 @@
     },
     {
       "name": "Movado Men's Signature Yellow Gold Black Dial Leather Band S...",
-      "url": "https://www.walmart.com/ip/Movado-Men-s-Signature-Yellow-Gold-Black-Dial-Leather-Band-Swiss-Watch/15934473050?wmlspartner=wlpa&selectedSellerId=101422885&selectedOfferId=0819F4F494B23B58BA0CA8C1CC9CBFF5&conditionGroupCode=1&sourceid=dsn_gdn_2005b0c9-e4c7-4f46-8aaa-443883a5e447&veh=dsn&wmlspartner=dsn_gdn_2005b0c9-e4c7-4f46-8aaa-443883a5e447&cn=00c3_fy27_mp_mp_lo_int_dis_pmax-main&wl9=pla&wl11=online&gad_source=1&gad_campaignid=23143211640&gbraid=0AAAAADmfBIohpf2ikgaQNnYHhG6HMuJP1&gclid=CjwKCAjw7vzOBhBxEiwAc7WNr_e_5eCbeaQFHjf9FYP6np1lhL1D3rrbzKpQ3zPagmG5R_R9NJbqShoCDR8QAvD_BwE",
+      "url": "https://www.walmart.com/blocked?url=L2lwL01vdmFkby1NZW4tcy1TaWduYXR1cmUtWWVsbG93LUdvbGQtQmxhY2stRGlhbC1MZWF0aGVyLUJhbmQtU3dpc3MtV2F0Y2gvMTU5MzQ0NzMwNTA/d21sc3BhcnRuZXI9d2xwYSZzZWxlY3RlZFNlbGxlcklkPTEwMTQyMjg4NSZzZWxlY3RlZE9mZmVySWQ9MDgxOUY0RjQ5NEIyM0I1OEJBMENBOEMxQ0M5Q0JGRjUmY29uZGl0aW9uR3JvdXBDb2RlPTEmc291cmNlaWQ9ZHNuX2dkbl8yMDA1YjBjOS1lNGM3LTRmNDYtOGFhYS00NDM4ODNhNWU0NDcmdmVoPWRzbiZ3bWxzcGFydG5lcj1kc25fZ2RuXzIwMDViMGM5LWU0YzctNGY0Ni04YWFhLTQ0Mzg4M2E1ZTQ0NyZjbj0wMGMzX2Z5MjdfbXBfbXBfbG9faW50X2Rpc19wbWF4LW1haW4md2w5PXBsYSZ3bDExPW9ubGluZSZnYWRfc291cmNlPTEmZ2FkX2NhbXBhaWduaWQ9MjMxNDMyMTE2NDAmZ2JyYWlkPTBBQUFBQURtZkJJb2hwZjJpa2dhUU5uWUhoRzZITXVKUDEmZ2NsaWQ9Q2p3S0NBanc3dnpPQmhCeEVpd0FjN1dOcl9lXzVlQ2JlYVFGSGpmOUZZUDZucDFsaEwxRDNycmJ6S3BRM3pQYWdtRzVSX1I5TkpicVNob0NEUjhRQXZEX0J3RQ==&uuid=864a41ff-cbc6-11f1-9f99-f2b22038fa86&vid=&g=b",
       "store": "walmart.com",
       "status": "ok",
       "reason": null

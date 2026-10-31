@@ -201,3 +201,66 @@ def test_multi_store_text_mixed_with_legacy():
     assert "Multi Item" in text
     assert "Shop Example" in text
     assert "shop.example.com" in text
+
+
+def test_html_strikes_retailer_list_price_when_above_giftful_baseline():
+    # Anker: Giftful baseline $33.99, Amazon list $39.99, live $35.99.
+    item = Item(
+        name="Anker MagSafe Charger",
+        url="https://www.amazon.com/dp/B0D8PN1GBP",
+        listed_price=33.99,
+        image_url="",
+    )
+    deal = Deal(
+        item=item,
+        price_result=PriceResult(current_price=35.99, list_price=39.99),
+        promos=[],
+        deal_types=[DealType.PRICE_DROP],
+    )
+    html = build_html([deal])
+    assert "line-through" in html and "$39.99" in html
+
+
+def test_multi_store_html_strikes_retailer_list_price():
+    store = StoreLink(
+        url="https://www.amazon.com/dp/B0D8PN1GBP",
+        display_name="Amazon",
+        listed_price=33.99,
+    )
+    ev = StoreEvaluation(
+        store=store,
+        price_result=PriceResult(current_price=35.99, list_price=39.99),
+        promos=[],
+        deal_types=[DealType.PRICE_DROP],
+    )
+    item = Item(
+        name="Anker MagSafe Charger",
+        url=store.url,
+        listed_price=33.99,
+        image_url="",
+    )
+    deal = Deal(
+        item=item,
+        price_result=ev.price_result,
+        promos=[],
+        deal_types=[DealType.PRICE_DROP],
+        store_evaluations=[ev],
+    )
+    html = build_html([deal])
+    assert "line-through" in html and "$39.99" in html
+
+
+def test_plain_text_shows_retailer_list_price():
+    item = Item(
+        name="Anker MagSafe Charger",
+        url="https://www.amazon.com/dp/B0D8PN1GBP",
+        listed_price=33.99,
+        image_url="",
+    )
+    deal = Deal(
+        item=item,
+        price_result=PriceResult(current_price=35.99, list_price=39.99),
+        promos=[],
+        deal_types=[DealType.PRICE_DROP],
+    )
+    assert "$39.99 -> $35.99" in build_text([deal])

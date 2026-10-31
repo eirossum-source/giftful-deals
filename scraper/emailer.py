@@ -7,7 +7,7 @@ from typing import List
 
 import resend
 
-from filter import Deal, DealType
+from filter import Deal, DealType, _effective_reference_price
 
 
 PAGE_URL = "https://eirossum-source.github.io/giftful-deals"
@@ -77,7 +77,8 @@ def _multi_card_html(deal: Deal) -> str:
     winner_name = html_mod.escape(winner.store.display_name)
 
     price_html = _price_parts_html(
-        winner.price_result.current_price, winner.store.listed_price
+        winner.price_result.current_price,
+        _effective_reference_price(winner.store.listed_price, winner.price_result),
     )
     badges = _badges_html(winner.deal_types)
     promos = _promos_html(winner.promos)
@@ -136,7 +137,9 @@ def _card_html(deal: Deal) -> str:
 
     item = deal.item
     price = deal.price_result
-    price_html = _price_parts_html(price.current_price, item.listed_price)
+    price_html = _price_parts_html(
+        price.current_price, _effective_reference_price(item.listed_price, price)
+    )
     badges = _badges_html(deal.deal_types)
     promos = _promos_html(deal.promos)
 
@@ -234,7 +237,8 @@ def _text_price_str(current_price, reference_price: float) -> str:
 def _text_multi_deal(d: Deal, lines: List[str]) -> None:
     winner = d.winner
     lines.append(f"- {d.item.name} ({winner.store.display_name})")
-    lines.append(f"  {_text_price_str(winner.price_result.current_price, winner.store.listed_price)}")
+    reference = _effective_reference_price(winner.store.listed_price, winner.price_result)
+    lines.append(f"  {_text_price_str(winner.price_result.current_price, reference)}")
     for promo in winner.promos:
         lines.append(f"  Code: {promo.code} — {promo.description}")
     lines.append(f"  {winner.store.url}")
@@ -256,7 +260,8 @@ def _text_legacy_deal(d: Deal, lines: List[str]) -> None:
     item = d.item
     price = d.price_result
     lines.append(f"- {item.name} ({item.domain})")
-    lines.append(f"  {_text_price_str(price.current_price, item.listed_price)}")
+    reference = _effective_reference_price(item.listed_price, price)
+    lines.append(f"  {_text_price_str(price.current_price, reference)}")
     for promo in d.promos:
         lines.append(f"  Code: {promo.code} — {promo.description}")
     lines.append(f"  {item.url}")

@@ -584,3 +584,24 @@ def test_check_price_playwright_returns_html_for_validator(mocker):
     assert result.current_price == 42.50
     assert result.html is not None
     assert "a-offscreen" in result.html
+
+
+def test_extract_price_prefers_product_group_over_injected_product_block():
+    # iZotope (Shopify): once rendered, a script adds a Product block at the
+    # top of the page holding the cheapest variant (EDU, $109.50). The store's
+    # own ProductGroup lists the default variant first ($219).
+    html = """
+    <html><head>
+      <script type="application/ld+json">
+      {"@type": "Product", "name": "Ozone 12 Standard",
+       "offers": {"@type": "Offer", "price": "109.5", "priceCurrency": "EUR"}}
+      </script>
+      <script type="application/ld+json">
+      {"@type": "ProductGroup", "hasVariant": [
+        {"@type": "Product", "offers": {"@type": "Offer", "price": "219.00"}},
+        {"@type": "Product", "offers": {"@type": "Offer", "price": "109.50"}}
+      ]}
+      </script>
+    </head><body><span class="price">$219.00</span></body></html>
+    """
+    assert extract_price(html) == 219.0

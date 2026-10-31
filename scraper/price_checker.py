@@ -68,17 +68,45 @@ def _to_float(text: str) -> Optional[float]:
 
 
 def _extract_jsonld(soup: BeautifulSoup) -> Optional[float]:
+    blocks = []
     for script in soup.find_all("script", type="application/ld+json"):
         raw = script.string or script.get_text() or ""
         if not raw.strip():
             continue
         try:
-            data = json.loads(raw)
+            blocks.append(json.loads(raw))
         except json.JSONDecodeError:
             continue
-        price = _find_product_price(data)
-        if price is not None:
-            return price
+    # A store's ProductGroup lists the default variant first. Plain Product
+    # blocks can be injected by third-party scripts with another variant's
+    # price, so the group wins wherever it appears on the page.
+    for finder in (_find_product_group_price, _find_product_price):
+        for data in blocks:
+            price = finder(data)
+            if price is not None:
+                return price
+    return None
+
+
+def _find_product_group_price(node) -> Optional[float]:
+    if isinstance(node, list):
+        for item in node:
+            price = _find_product_group_price(item)
+            if price is not None:
+                return price
+        return None
+    if not isinstance(node, dict):
+        return None
+    type_val = node.get("@type")
+    types = type_val if isinstance(type_val, list) else [type_val]
+    if "ProductGroup" in types:
+        return _find_product_price(node.get("hasVariant"))
+    # Search nested graphs like @graph
+    for value in node.values():
+        if isinstance(value, (dict, list)):
+            price = _find_product_group_price(value)
+            if price is not None:
+                return price
     return None
 
 

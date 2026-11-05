@@ -3,8 +3,16 @@
 ## Project Root
 /Users/isaacrossum/claude/projects/giftful-deals
 
+## Primary Plan — READ BEFORE SUGGESTING NEXT STEPS
+Read `docs/ROADMAP.md` at the start of every session before confirming next steps or planning
+work. Check `## Status:` — if `IN PROGRESS`, use the checklist to guide next steps; if `COMPLETE`,
+skip it. When the last checkbox is checked, set `## Status:` to `COMPLETE`. Milestones are run one
+at a time with `/next-slice` (`.claude/skills/next-slice/`); the recipe and model table are in
+the ROADMAP.
+
 ## Stack
-- Language: Python 3 (project venv at `.venv/`; system has no `python` alias — use `.venv/bin/python`)
+- Language: Python 3 (project venv at `.venv/`; system has no `python` alias — use `.venv/bin/python`). Local venv is Apple Python 3.9 (Homebrew removed); CI runs 3.11 — new code must run on both (no `match`, no `X | Y` type unions at runtime)
+- Revamp in progress: personal shopper — see `docs/ROADMAP.md`
 - Scraping: Playwright (JS-rendered content on Giftful.com and JS-heavy retailers)
 - Validation: patch-only (HTML signal extraction); LLM gate via `ANTHROPIC_API_KEY` env var, currently unused
 - Email: Resend HTTP API (secret: `RESEND_API_KEY`; no SMTP)
@@ -31,7 +39,7 @@
 - Run tests from project root: `.venv/bin/python -m pytest scraper/tests/ -q`
 - Direct script runs of scraper modules need `PYTHONPATH=scraper` (modules import each other unqualified)
 - TDD: write tests before implementation code
-- No git commands without explicit request
+- No git commands without explicit request (exception: `/next-slice` Ship & Verify, below)
 
 ## State Files (committed)
 - `state/inventory.json` — per-URL: `name`, `last_seen`, `in_stock`, `prev_in_stock`, `current_price`, `listed_price`, `sold_out_since`. `prev_in_stock` is the previous run's `in_stock` value (used for 2-run BACK_IN_STOCK persistence).
@@ -70,6 +78,15 @@ Never read .env contents aloud or print them in output.
 ## Git
 Do not run git commands unless explicitly asked.
 When asked, state what the command will do before running it.
+
+## Ship & Verify (used by `/next-slice`)
+Running `/next-slice` is the explicit request for the git steps below. When a slice is complete:
+1. Full suite passes: `.venv/bin/python -m pytest scraper/tests/ -q`.
+2. Tick the milestone's checkbox in `docs/ROADMAP.md` as its own small final commit.
+3. Commit to `main` and push (solo project; no PR). Do not run git outside this flow unless asked.
+4. Verify in the real output: rebuilt `docs/index.html`, the preview email, or the GitHub Actions
+   run, whichever the slice touched. If the check fails, stop and report it as a blocking issue in
+   the session summary; fix in a follow-up commit.
 
 ## Init
 If ## Stack or ## Conventions was just written by /init-project,

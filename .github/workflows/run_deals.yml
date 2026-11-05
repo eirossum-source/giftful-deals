@@ -53,6 +53,10 @@ jobs:
             git add state/review_log.json
             changed="${changed} state/review_log.json"
           fi
+          if [ -n "$(git status --porcelain state/taste.json)" ]; then
+            git add state/taste.json
+            changed="${changed} state/taste.json"
+          fi
           if [ -n "$changed" ]; then
             git commit -m "chore: update deals page, inventory, review log"
             git pull --rebase origin main

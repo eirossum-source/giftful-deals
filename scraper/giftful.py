@@ -172,6 +172,64 @@ def parse_items(html: str, category_name: str = "", category_url: str = "") -> L
     return out
 
 
+def parse_claimed_items(
+    html: str, category_name: str = "", category_url: str = ""
+) -> List[Item]:
+    """Checked-off (claimed) items on a list page — the opposite of parse_items.
+
+    Used only for taste data; never fed into deal tracking. A claimed card with
+    no visible price is kept (price 0.0) because taste only needs the name.
+    """
+    if not html:
+        return []
+    soup = BeautifulSoup(html, "lxml")
+    out: List[Item] = []
+    seen_cards: set = set()
+    for feat_img in soup.find_all("img", alt="Feature Image"):
+        card = feat_img.parent.parent
+        if id(card) in seen_cards:
+            continue
+        seen_cards.add(id(card))
+
+        if card.find("img", alt="Claimed") is None:
+            continue
+
+        name_el = card.select_one(".leading-5")
+        name = name_el.get_text(strip=True) if name_el else ""
+        if not name:
+            continue
+
+        price = 0.0
+        for div in card.find_all("div"):
+            txt = div.get_text(strip=True)
+            if txt.startswith("$"):
+                parsed = _parse_price(txt)
+                if parsed is not None:
+                    price = parsed
+                    break
+
+        thumb = ""
+        for im in card.find_all("img", alt="Feature Image"):
+            cls = set(im.get("class") or [])
+            if "hidden" in cls and "dark:flex" in cls:
+                continue
+            src = im.get("src") or ""
+            if src:
+                thumb = src
+                break
+
+        out.append(
+            Item(
+                name=name,
+                listed_price=price,
+                image_url=thumb,
+                category=category_name,
+                category_url=category_url,
+            )
+        )
+    return out
+
+
 def parse_modal(
     html: str,
 ) -> Tuple[Optional[str], Optional[float], Optional[str]]:
@@ -318,3 +376,38 @@ def fetch_list(profile_url: str = GIFTFUL_URL, session=None) -> List[Item]:
     if not all_items:
         raise GiftfulEmptyListError("No items found across all categories.")
     return all_items
+
+
+def fetch_claimed(profile_url: str = GIFTFUL_URL) -> List[Item]:
+    """Live fetch of checked-off items from every list on the profile.
+
+    Light Playwright walk (profile -> each list -> page HTML); no item modals
+    are opened because taste data needs only name, price and list. Manually
+    integration-tested; parse_claimed_items is unit-tested.
+    """
+    from playwright.sync_api import sync_playwright
+
+    claimed: List[Item] = []
+    with sync_playwright() as pw:
+        browser = pw.chromium.launch(headless=True)
+        try:
+            ctx = browser.new_context(
+                user_agent=_USER_AGENT, viewport={"width": 1280, "height": 900}
+            )
+            page = ctx.new_page()
+            page.goto(profile_url, wait_until="networkidle", timeout=60_000)
+            categories = parse_categories(page.content(), base_url=profile_url)
+            if not categories:
+                raise GiftfulEmptyListError(
+                    "No categories discovered on profile page."
+                )
+            for cat in categories:
+                page.goto(cat.url, wait_until="networkidle", timeout=60_000)
+                claimed.extend(
+                    parse_claimed_items(
+                        page.content(), category_name=cat.name, category_url=cat.url
+                    )
+                )
+        finally:
+            browser.close()
+    return claimed

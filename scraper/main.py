@@ -6,7 +6,7 @@ from typing import Callable, Optional
 
 from error_log import ErrorLog
 from filter import Deal, StoreEvaluation, evaluate_store, is_deal
-from giftful import StoreLink, fetch_list
+from giftful import StoreLink, fetch_claimed, fetch_list
 from html_builder import render
 from price_checker import check_price as real_check_price
 from coupon_checker import (
@@ -30,6 +30,7 @@ from validator import (
     identity_diagnostic_snippet,
 )
 from price_checker import recheck_via_playwright
+from taste import refresh_taste
 
 
 _UNSET = object()
@@ -426,6 +427,12 @@ if __name__ == "__main__":
     # fresh Playwright for the price-check fallback.
     cli_session = _requests.Session(impersonate="chrome")
     items = fetch_list(session=cli_session)
+
+    # Checked-off items feed taste data only; kept out of deal tracking.
+    refresh_taste(
+        fetch_claimed,
+        Path(__file__).resolve().parents[1] / "state" / "taste.json",
+    )
 
     from playwright.sync_api import sync_playwright
 

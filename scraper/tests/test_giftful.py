@@ -9,6 +9,7 @@ from giftful import (
     StoreLink,
     extract_destination_url,
     parse_categories,
+    parse_claimed_items,
     parse_items,
     parse_modal,
     resolve_redirect,
@@ -345,3 +346,41 @@ def test_resolve_redirect_skips_http_for_viglink():
 def test_giftful_empty_list_error_can_be_raised():
     with pytest.raises(GiftfulEmptyListError, match="no items"):
         raise GiftfulEmptyListError("no items")
+
+
+# ---------- parse_claimed_items ----------
+
+
+def test_parse_claimed_items_returns_only_claimed(read_fixture):
+    html = read_fixture("giftful_category_claimed.html")
+    items = parse_claimed_items(
+        html, category_name="Athleisure", category_url="https://giftful.com/wishlists/a"
+    )
+
+    assert [i.name for i in items] == ["Nike Tech Fleece Hoodie"]
+    assert items[0].listed_price == 130.0
+    assert items[0].category == "Athleisure"
+    assert items[0].category_url == "https://giftful.com/wishlists/a"
+    assert items[0].image_url == "https://cdn.example.test/items/hoodie-light.jpg"
+
+
+def test_parse_claimed_items_empty_when_nothing_claimed(read_fixture):
+    assert parse_claimed_items(read_fixture("giftful_category.html")) == []
+
+
+def test_parse_claimed_items_empty_html():
+    assert parse_claimed_items("") == []
+
+
+def test_parse_claimed_items_keeps_claimed_card_without_price():
+    html = """
+    <div><button type="button"><div>
+      <img alt="Feature Image" src="x.jpg" />
+      <div><img alt="Claimed" src="/images/claimed.jpg" /></div>
+    </div>
+    <div class="ml-1 mt-2"><div class="leading-5 text-sm">Gift Card</div></div>
+    </button></div>
+    """
+    items = parse_claimed_items(html)
+    assert [i.name for i in items] == ["Gift Card"]
+    assert items[0].listed_price == 0.0

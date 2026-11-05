@@ -61,7 +61,7 @@ owner approves the first measured Claude-job usage; S5a if the quality test is p
 - [x] **S1a — Repair local Python** — Homebrew Python was gone; rebuilt on Apple Python 3.9, all 254 tests pass
 - [x] **S1b — Pull latest and log corrections**
 - [x] **S1c — Roadmap and hub tracking**
-- [ ] **S1d — PRODUCT.md** — design context via Impeccable
+- [x] **S1d — PRODUCT.md** — design context via Impeccable
 
 ### Stage 2 — Taste data
 - [ ] **S2a — Read checked-off items** — claimed items from all six lists, de-duplicated, saved to `state/taste.json`, kept out of deal tracking

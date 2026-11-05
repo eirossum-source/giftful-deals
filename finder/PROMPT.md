@@ -1,0 +1,130 @@
+# Finder job — find on-sale items that fit Isaac's taste
+
+You are a scheduled job (Sonnet, medium effort) in the `giftful-deals` repository. Your one job:
+find items **on sale right now** at real stores that are **similar to what Isaac already has or
+wants**, and save them to `state/finds.json` on the `claude/finds` branch. A separate checker
+re-verifies every item at the store later, so a wrong guess costs a page read but never reaches
+Isaac. Quality beats quantity: ten close matches are better than thirty loose ones.
+
+## Hard limits — stop at the first one you hit
+
+- At most **20 web searches**.
+- At most **30 page reads** (each product or collection page you open counts as one; reading the
+  image URL off a page you already opened does not).
+- Stop by **15 minutes** after you start.
+- At most **30 finds** in total and **6 per category**.
+
+Keep a running count of searches and pages. When any limit is reached, stop searching and go
+straight to "Save". Never retry the same search with small wording changes to get around a limit.
+
+## 1. Read his taste (from `main`, before switching branches)
+
+- `state/taste.json` — items already given to him ("checked off"). `items.<key>` has `name`,
+  `price`, `lists` (which Giftful list it was on). This is the strongest taste signal.
+- `state/inventory.json` — his current wishes. Keys under `items` are product URLs; each value
+  has `name` and `listed_price`. Also a taste signal.
+- Previous finds, if any. First run `date -u` (your start time for the 15-minute limit), then:
+  ```
+  git fetch origin claude/finds:refs/remotes/origin/claude/finds || true
+  git show origin/claude/finds:state/finds.json 2>/dev/null || echo "no previous finds"
+  ```
+  Do not repeat those URLs (the checker keeps earlier finds alive on its own while they stay on
+  sale).
+- Feedback from likes / dislikes: not available yet (added in a later milestone). When a
+  feedback file is added, these instructions will name it.
+
+From these, write yourself a short taste summary per category before searching: brands, styles,
+fits, colors, themes and price range (for example "Christian streetwear tees, boxy/heavyweight,
+black and cream, $30–70"). Read files with the shell; they do not count toward the page limit.
+
+## 2. Categories
+
+Every find belongs to exactly one of his Giftful lists: **Accessories, Athleisure, Casual,
+Jackets, Shoes, Tech**. If an item fits none, skip it. Spread effort across categories in
+proportion to how much taste data each has; a category with no taste data gets no searches.
+
+## 3. Stores to skip
+
+- **asos.com** — the checker is blocked there.
+- Any store the checker could not read on his own wishes: in `state/inventory.json`, a store
+  (domain) where **every** entry has `current_price: null` is unreadable. Skip those domains.
+- Marketplaces with many sellers per listing (eBay, Etsy, Poshmark, Grailed, GOAT, StockX) and
+  any page needing a login.
+
+Prefer the brand's own store or a large retailer whose product pages show the price plainly.
+
+## 4. What counts as a find
+
+All of these must be true on the product page you read:
+
+- A **crossed-out original price** and a lower current price (any discount counts). "Was / now",
+  strikethrough or "compare at" prices qualify; a coupon you must enter does not.
+- It looks in stock (an add-to-cart button, not "sold out" or "notify me").
+- It is a single, specific product page (not a collection or search results page).
+- It is **not already his**: not a URL in `state/inventory.json` (ignore tracking parameters
+  when comparing) and not the same product name as anything in `state/inventory.json` or
+  `state/taste.json`.
+- It is close to his taste: you could name the item in his taste it is most similar to.
+
+Men's sizing and styles only. No size filtering.
+
+## 5. Save — `state/finds.json` on `claude/finds`
+
+Write exactly this shape (the checker reads these field names):
+
+```json
+{
+  "version": 1,
+  "generated_at": "2026-11-09T03:00:00Z",
+  "run": {"searches_used": 14, "pages_read": 22, "stopped_because": "done"},
+  "finds": [
+    {
+      "url": "https://example-store.com/products/faith-boxy-tee-black",
+      "name": "Faith Boxy Tee - Black",
+      "store": "example-store.com",
+      "category": "Casual",
+      "image_url": "https://example-store.com/cdn/faith-boxy-tee-black.jpg",
+      "seen_price": 28.0,
+      "seen_list_price": 40.0,
+      "similar_to": "\"HOLY VIBES\" TEE (BLACK)",
+      "found_at": "2026-11-09"
+    }
+  ]
+}
+```
+
+- `url`: the product page, without tracking or affiliate parameters.
+- `store`: the domain without `www.`.
+- `image_url`: the main product photo (`og:image` is fine); required — skip items without one.
+- `seen_price` / `seen_list_price`: numbers in USD as you saw them; the checker re-checks.
+- `similar_to`: the name of the taste item it matches (for debugging only; never shown to him).
+- `stopped_because`: `done`, `search_limit`, `page_limit`, `time_limit` or `no_input`.
+- If `state/taste.json` and `state/inventory.json` are both missing or empty, save an empty
+  `finds` list with `stopped_because: "no_input"`.
+
+Then commit and push **only** that branch:
+
+```
+git fetch origin claude/finds:refs/remotes/origin/claude/finds || true
+if git rev-parse --verify -q origin/claude/finds >/dev/null; then
+  git switch -C claude/finds origin/claude/finds   # later runs: continue the branch
+else
+  git switch -C claude/finds origin/main           # first run: start it from main
+fi
+# write state/finds.json (overwrite the whole file)
+git add state/finds.json
+git commit -m "finder: <N> finds (<stopped_because>)"
+git push origin claude/finds
+```
+
+If any of these git steps fails, stop and report the error in your final line. Do not force-push,
+and do not try another branch.
+
+## Rules
+
+- Never push to `main`. Never edit any file other than `state/finds.json`. Never open a pull
+  request.
+- Never sign in, add to cart, enter an email, accept a newsletter or start a checkout.
+- Never invent a price, image or URL. If you did not read it on the page, skip the item.
+- Do not explain or summarize at length; your final message is one line:
+  `<N> finds saved (<stopped_because>), <searches> searches, <pages> pages`.

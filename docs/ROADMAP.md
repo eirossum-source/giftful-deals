@@ -65,7 +65,7 @@ owner approves the first measured Claude-job usage; S5a if the quality test is p
 - [x] **S1d — PRODUCT.md** — design context via Impeccable
 
 ### Stage 2 — Taste data
-- [ ] **S2a — Read checked-off items** — claimed items from all six lists, de-duplicated, saved to `state/taste.json`, kept out of deal tracking
+- [x] **S2a — Read checked-off items** — claimed items from all six lists, de-duplicated, saved to `state/taste.json`, kept out of deal tracking
 
 ### Stage 3 — New finds
 - [ ] **S3a — Finder job instructions** — `finder/PROMPT.md` with limits; results to `state/finds.json` on the `claude/finds` branch

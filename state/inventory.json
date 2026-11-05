@@ -1,5 +1,15 @@
 {
   "items": {
+    "": {
+      "current_price": null,
+      "identity_score": 0.0,
+      "in_stock": true,
+      "last_seen": "2026-11-05",
+      "listed_price": 34.99,
+      "name": "ASOS DESIGN heavyweight relaxed long sleeve T-shirt in dark ...",
+      "prev_in_stock": null,
+      "sold_out_since": null
+    },
     "https://artofhomage.com/products/help-comes-from-the-lord-boxy-tee-black": {
       "current_price": 32.0,
       "identity_score": 1.0,
@@ -315,7 +325,7 @@
       "identity_score": 1.0,
       "in_stock": true,
       "last_seen": "2026-11-05",
-      "listed_price": 65.99,
+      "listed_price": 1.0,
       "name": "WIWU Keyboard Case for iPad",
       "prev_in_stock": null,
       "sold_out_since": null
@@ -407,16 +417,6 @@
       "last_seen": "2026-11-05",
       "listed_price": 47.99,
       "name": "ASOS DESIGN baggy jeans in light wash blue",
-      "prev_in_stock": null,
-      "sold_out_since": null
-    },
-    "https://www.asos.com/us/asos-design/asos-design-heavyweight-relaxed-long-sleeve-t-shirt-in-dark-brown-waffle/prd/209020360": {
-      "current_price": null,
-      "identity_score": 0.0,
-      "in_stock": true,
-      "last_seen": "2026-11-05",
-      "listed_price": 34.99,
-      "name": "ASOS DESIGN heavyweight relaxed long sleeve T-shirt in dark ...",
       "prev_in_stock": null,
       "sold_out_since": null
     },
@@ -621,8 +621,8 @@
       "sold_out_since": null
     },
     "https://www.movado.com/us/en/shop-watches/museum-classic-0607200.html": {
-      "current_price": 1095.0,
-      "identity_score": 1.0,
+      "current_price": null,
+      "identity_score": 0.0,
       "in_stock": true,
       "last_seen": "2026-11-05",
       "listed_price": 1095.0,
@@ -645,7 +645,7 @@
       "identity_score": 1.0,
       "in_stock": true,
       "last_seen": "2026-11-05",
-      "listed_price": 68.97,
+      "listed_price": 51.97,
       "name": "Nike Tech Men's Dri-FIT Shori Knit Shorts",
       "prev_in_stock": null,
       "sold_out_since": null
@@ -720,7 +720,7 @@
       "prev_in_stock": null,
       "sold_out_since": "2026-11-05"
     },
-    "https://www.walmart.com/blocked?url=L2lwL01vdmFkby1NZW4tcy1TaWduYXR1cmUtWWVsbG93LUdvbGQtQmxhY2stRGlhbC1MZWF0aGVyLUJhbmQtU3dpc3MtV2F0Y2gvMTU5MzQ0NzMwNTA%2Fd21sc3BhcnRuZXI9d2xwYSZzZWxlY3RlZFNlbGxlcklkPTEwMTQyMjg4NSZzZWxlY3RlZE9mZmVySWQ9MDgxOUY0RjQ5NEIyM0I1OEJBMENBOEMxQ0M5Q0JGRjUmY29uZGl0aW9uR3JvdXBDb2RlPTEmc291cmNlaWQ9ZHNuX2dkbl8yMDA1YjBjOS1lNGM3LTRmNDYtOGFhYS00NDM4ODNhNWU0NDcmdmVoPWRzbiZ3bWxzcGFydG5lcj1kc25fZ2RuXzIwMDViMGM5LWU0YzctNGY0Ni04YWFhLTQ0Mzg4M2E1ZTQ0NyZjbj0wMGMzX2Z5MjdfbXBfbXBfbG9faW50X2Rpc19wbWF4LW1haW4md2w5PXBsYSZ3bDExPW9ubGluZSZnYWRfc291cmNlPTEmZ2FkX2NhbXBhaWduaWQ9MjMxNDMyMTE2NDAmZ2JyYWlkPTBBQUFBQURtZkJJb2hwZjJpa2dhUU5uWUhoRzZITXVKUDEmZ2NsaWQ9Q2p3S0NBanc3dnpPQmhCeEVpd0FjN1dOcl9lXzVlQ2JlYVFGSGpmOUZZUDZucDFsaEwxRDNycmJ6S3BRM3pQYWdtRzVSX1I5TkpicVNob0NEUjhRQXZEX0J3RQ%3D%3D&uuid=d4a019be-d929-11f1-b44d-eb7b10235408&g=b": {
+    "https://www.walmart.com/ip/Movado-Men-s-Signature-Yellow-Gold-Black-Dial-Leather-Band-Swiss-Watch/15934473050?wmlspartner=wlpa&selectedSellerId=101422885&selectedOfferId=0819F4F494B23B58BA0CA8C1CC9CBFF5&conditionGroupCode=1&sourceid=dsn_gdn_2005b0c9-e4c7-4f46-8aaa-443883a5e447&veh=dsn&wmlspartner=dsn_gdn_2005b0c9-e4c7-4f46-8aaa-443883a5e447&cn=00c3_fy27_mp_mp_lo_int_dis_pmax-main&wl9=pla&wl11=online&gad_source=1&gad_campaignid=23143211640&gbraid=0AAAAADmfBIohpf2ikgaQNnYHhG6HMuJP1": {
       "current_price": null,
       "identity_score": 0.0,
       "in_stock": true,

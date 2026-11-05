@@ -46,6 +46,7 @@ owner approves the first measured Claude-job usage; S5a if the quality test is p
 | S3c Schedule and measure | Sonnet 5 / medium | Sonnet 5 | workflow edit plus a measurement; owner reviews usage |
 | S4a Photo-grid email | Opus 5 / medium | Sonnet 5 / high | patterned email layout; image-heavy rendering to check |
 | S4b Page by category | Sonnet 5 / high | Sonnet 5 | same data as S4a in html_builder.py |
+| S4c Like / dislike | Opus 5 / medium | Sonnet 5 / high | storage choice for a static page and email; feedback must reach the finder |
 | S5a Quality test | Sonnet 5 / medium | Sonnet 5 | about 10 searches and a go/no-go write-up |
 | S5b Search service | Opus 5 / high | Opus 5 | passcode, search counter and fallback must not fail open |
 | S5c Search box | Sonnet 5 / high | Sonnet 5 | small front-end addition |
@@ -74,6 +75,7 @@ owner approves the first measured Claude-job usage; S5a if the quality test is p
 ### Stage 4 — Email and page
 - [ ] **S4a — Photo-grid email by category** — 2–4 items per category, "Your list" tag, about 16 items
 - [ ] **S4b — Page by category** — everything on sale, same tags
+- [ ] **S4c — Like / dislike on new finds** — buttons on suggested items in the email and page; likes teach the finder, dislikes drop the item and steer future finds away; storage decided in the slice
 
 ### Stage 5 — Live search
 - [ ] **S5a — Quality test** — about 10 Google Shopping searches incl. "swim trunks" and "christian tees"; read Gemini daily limit; stop if poor

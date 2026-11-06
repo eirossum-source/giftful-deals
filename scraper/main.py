@@ -30,7 +30,8 @@ from validator import (
     identity_diagnostic_snippet,
 )
 from price_checker import recheck_via_playwright
-from taste import refresh_taste
+from taste import load_taste, refresh_taste
+from finds import check_finds, load_incoming, load_ledger, owned_keys, save_ledger
 
 
 _UNSET = object()
@@ -125,6 +126,9 @@ def run(
     now: Optional[datetime] = None,
     session=None,
     page=None,
+    finds_incoming_path: Optional[Path] = None,
+    finds_ledger_path: Optional[Path] = None,
+    taste_path: Optional[Path] = None,
 ) -> dict:
     from curl_cffi import requests
 
@@ -350,6 +354,16 @@ def run(
             except Exception as exc:
                 log.error(f"{item.name} ({item.url}): {exc}")
 
+    finds_ledger = None
+    if finds_ledger_path is not None:
+        try:
+            finds_ledger = _check_finds(
+                items, prev_state, finds_incoming_path, finds_ledger_path, taste_path,
+                check_price, session, page, log, today,
+            )
+        except Exception as exc:  # finds are extra; never block the deals email
+            log.error(f"finds check failed: {exc}")
+
     html = render(deals, generated_at=now, review_items=review_items)
     output_path.parent.mkdir(parents=True, exist_ok=True)
     output_path.write_text(html, encoding="utf-8")
@@ -386,6 +400,15 @@ def run(
         f"{summary['errors']} errors — see errors.log"
     )
 
+    if finds_ledger is not None:
+        on_sale = sum(1 for e in finds_ledger["items"].values() if e.get("on_sale"))
+        summary["finds_on_sale"] = on_sale
+        print(
+            f"{on_sale} finds on sale | "
+            f"{len(finds_ledger['items'])} tracked | "
+            f"{len(finds_ledger['dropped'])} dropped — see state/tracked_finds.json"
+        )
+
     if not deals and price_samples:
         print(f"0 deals from {len(items)} items — price samples:")
         for name, listed, current in price_samples[:5]:
@@ -393,6 +416,28 @@ def run(
             print(f"  {name}: listed ${listed:.2f}, current {cur}")
 
     return summary
+
+
+def _check_finds(
+    items, prev_state, incoming_path, ledger_path, taste_path,
+    check_price, session, page, log, today,
+) -> dict:
+    """Re-check the finder's finds and tracked finds; write and return the ledger."""
+    taste_state = load_taste(taste_path) if taste_path is not None else {"items": {}}
+    owned_urls, owned_names = owned_keys(items, prev_state, taste_state)
+    ledger = check_finds(
+        load_ledger(ledger_path),
+        load_incoming(incoming_path),
+        check=lambda url: check_price(url, session=session, error_log=log, page=page),
+        resolve=lambda name, url, result: _resolve_identity(
+            name, url, result, page, log, {}
+        ),
+        owned_urls=owned_urls,
+        owned_names=owned_names,
+        today=today,
+    )
+    save_ledger(ledger_path, ledger)
+    return ledger
 
 
 def _accepts_session(fn) -> bool:
@@ -412,6 +457,7 @@ _PRICE_CHECK_USER_AGENT = (
 
 if __name__ == "__main__":
     import argparse
+    import os
     from curl_cffi import requests as _requests
 
     parser = argparse.ArgumentParser(description="Scrape wishlist deals and publish.")
@@ -443,12 +489,18 @@ if __name__ == "__main__":
             viewport={"width": 1280, "height": 900},
         )
         page = ctx.new_page()
+        repo_root = Path(__file__).resolve().parents[1]
+        # The workflow copies state/finds.json from the claude/finds branch here.
+        incoming = os.environ.get("FINDS_INCOMING")
         try:
             run(
                 fetch_items=lambda **_: items,
                 send_email=None if args.no_email else real_send,
                 session=cli_session,
                 page=page,
+                finds_incoming_path=Path(incoming) if incoming else None,
+                finds_ledger_path=repo_root / "state" / "tracked_finds.json",
+                taste_path=repo_root / "state" / "taste.json",
             )
         finally:
             browser.close()

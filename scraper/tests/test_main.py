@@ -970,3 +970,138 @@ def test_onsite_description_wins_over_aggregator_for_shared_code(tmp_path):
     assert "Popup" not in mom20.description
     assert "Accessibility" not in mom20.description
     assert "20% off" in mom20.description.lower()
+
+
+# --- S3b: finds are re-checked on each run ------------------------------------------
+
+def _finds_file(tmp_path, finds, generated_at="2026-11-09T03:00:00Z"):
+    import json as _json
+    p = tmp_path / "incoming_finds.json"
+    p.write_text(_json.dumps({"version": 1, "generated_at": generated_at, "finds": finds}))
+    return p
+
+
+def _a_find(url, name, category="Casual"):
+    return {
+        "url": url, "name": name, "store": "shop.example.com", "category": category,
+        "image_url": "https://shop.example.com/img.jpg", "seen_price": 20.0,
+        "seen_list_price": 30.0, "similar_to": "x", "found_at": "2026-11-09",
+    }
+
+
+def test_run_checks_finds_and_writes_ledger(tmp_path, capsys):
+    import json as _json
+
+    wish = Item(name="Headphones", url="https://shop.example.com/x", listed_price=199.0)
+    incoming = _finds_file(tmp_path, [
+        _a_find("https://shop.example.com/products/on-sale-tee", "On Sale Tee"),
+        _a_find("https://shop.example.com/products/full-price-hat", "Full Price Hat", "Accessories"),
+        _a_find("https://shop.example.com/x?utm_source=finder", "Headphones Clone", "Tech"),
+    ])
+    def page(title):
+        return f"<html><head><title>{title}</title></head><body><h1>{title}</h1></body></html>"
+
+    prices = {
+        "https://shop.example.com/x": PriceResult(current_price=199.0),
+        "https://shop.example.com/products/on-sale-tee": PriceResult(
+            current_price=20.0, list_price=30.0, html=page("On Sale Tee")),
+        "https://shop.example.com/products/full-price-hat": PriceResult(
+            current_price=30.0, html=page("Full Price Hat")),
+    }
+    check = MagicMock(side_effect=lambda url, **_: prices[url])
+    ledger_path = tmp_path / "tracked_finds.json"
+
+    summary = run(
+        fetch_items=MagicMock(return_value=[wish]),
+        check_price=check,
+        lookup_coupons=MagicMock(return_value=[]),
+        send_email=None,
+        output_path=tmp_path / "index.html",
+        log_path=tmp_path / "errors.log",
+        state_path=tmp_path / "state.json",
+        review_log_path=tmp_path / "review_log.json",
+        now=datetime(2026, 11, 9, 7, 0, 0),
+        finds_incoming_path=incoming,
+        finds_ledger_path=ledger_path,
+    )
+
+    ledger = _json.loads(ledger_path.read_text())
+    names = [e["name"] for e in ledger["items"].values()]
+    assert names == ["On Sale Tee"]
+    assert ledger["items"][next(iter(ledger["items"]))]["on_sale"] is True
+    reasons = {d["name"]: d["reason"] for d in ledger["dropped"]}
+    assert "no longer on sale" in reasons["Full Price Hat"]
+    assert "already his" in reasons["Headphones Clone"]
+    assert summary["finds_on_sale"] == 1
+    # The wish was checked once; the owned find was never fetched.
+    checked = [c.args[0] for c in check.call_args_list]
+    assert checked.count("https://shop.example.com/x") == 1
+    assert "finds on sale" in capsys.readouterr().out
+
+
+def test_run_drops_finds_already_given_to_him(tmp_path):
+    import json as _json
+
+    taste = tmp_path / "taste.json"
+    taste.write_text(_json.dumps({"items": {"holy vibes tee": {"name": "Holy Vibes Tee"}}}))
+    incoming = _finds_file(tmp_path, [_a_find("https://shop.example.com/p/hv", "HOLY VIBES TEE")])
+    ledger_path = tmp_path / "tracked_finds.json"
+    check = MagicMock(return_value=PriceResult(current_price=20.0, list_price=30.0))
+
+    run(
+        fetch_items=MagicMock(return_value=[]),
+        check_price=check,
+        lookup_coupons=MagicMock(return_value=[]),
+        send_email=None,
+        output_path=tmp_path / "index.html",
+        log_path=tmp_path / "errors.log",
+        state_path=tmp_path / "state.json",
+        review_log_path=tmp_path / "review_log.json",
+        now=datetime(2026, 11, 9, 7, 0, 0),
+        finds_incoming_path=incoming,
+        finds_ledger_path=ledger_path,
+        taste_path=taste,
+    )
+
+    assert _json.loads(ledger_path.read_text())["items"] == {}
+    check.assert_not_called()
+
+
+def test_run_without_ledger_path_skips_finds(tmp_path):
+    summary = run(
+        fetch_items=MagicMock(return_value=[]),
+        check_price=MagicMock(),
+        lookup_coupons=MagicMock(return_value=[]),
+        send_email=None,
+        output_path=tmp_path / "index.html",
+        log_path=tmp_path / "errors.log",
+        state_path=tmp_path / "state.json",
+        review_log_path=tmp_path / "review_log.json",
+        now=datetime(2026, 11, 9, 7, 0, 0),
+    )
+    assert "finds_on_sale" not in summary
+
+
+def test_finds_failure_does_not_block_email(tmp_path, monkeypatch):
+    import main as main_mod
+
+    def boom(*a, **k):
+        raise RuntimeError("ledger exploded")
+
+    monkeypatch.setattr(main_mod, "check_finds", boom)
+    sender = MagicMock()
+    summary = run(
+        fetch_items=MagicMock(return_value=[]),
+        check_price=MagicMock(),
+        lookup_coupons=MagicMock(return_value=[]),
+        send_email=sender,
+        output_path=tmp_path / "index.html",
+        log_path=tmp_path / "errors.log",
+        state_path=tmp_path / "state.json",
+        review_log_path=tmp_path / "review_log.json",
+        now=datetime(2026, 11, 9, 7, 0, 0),
+        finds_ledger_path=tmp_path / "tracked_finds.json",
+    )
+    sender.assert_called_once()
+    assert summary["errors"] == 1
+    assert "ledger exploded" in (tmp_path / "errors.log").read_text()

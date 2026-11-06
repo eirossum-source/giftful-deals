@@ -33,6 +33,7 @@ the ROADMAP.
   - `filter.py` — `Deal`, `StoreEvaluation`, deal-type evaluation (`PRICE_DROP`, `PROMO`, `BACK_IN_STOCK`)
   - `html_builder.py` — render `docs/index.html` (dark theme, category sections, dropdown filters, ET timestamps, branded centered header)
   - `emailer.py` — Resend HTTP delivery
+  - `finds.py` — re-checks the finder's finds at the store each run; ledger `state/tracked_finds.json` keeps on-sale finds until off sale (S3b)
   - `main.py` — orchestrator
   - `error_log.py` — diagnostic log
 - Tests live in `scraper/tests/` with HTML fixtures in `scraper/tests/fixtures/`
@@ -43,6 +44,7 @@ the ROADMAP.
 
 ## State Files (committed)
 - `state/inventory.json` — per-URL: `name`, `last_seen`, `in_stock`, `prev_in_stock`, `current_price`, `listed_price`, `sold_out_since`. `prev_in_stock` is the previous run's `in_stock` value (used for 2-run BACK_IN_STOCK persistence).
+- `state/tracked_finds.json` — per-find (keyed by URL without scheme/www/tracking): category, image, `current_price`, `list_price`, `on_sale` (shown only when this run confirmed it), `misses`; `dropped` lists this run's removals with a reason. Input is `state/finds.json` on `claude/finds`, read by the workflow into `$RUNNER_TEMP/finds.json` (`FINDS_INCOMING`).
 - `state/review_log.json` — per-run diagnostic: each item with `status` (`ok` / `review` / `sold_out`) and `reason`. Inspect with `jq` to triage false positives.
 
 ## Architecture Decisions (non-obvious)

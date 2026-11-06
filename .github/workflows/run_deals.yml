@@ -30,10 +30,23 @@ jobs:
       - name: Install Playwright Chromium
         run: python -m playwright install --with-deps chromium
 
+      - name: Read latest finds from claude/finds
+        run: |
+          # The finder job pushes state/finds.json to claude/finds. A missing branch or
+          # file is normal until the finder has run; the scraper then re-checks old finds only.
+          if git fetch --depth=1 origin +claude/finds:refs/remotes/origin/claude/finds \
+             && git show origin/claude/finds:state/finds.json > "$RUNNER_TEMP/finds.json"; then
+            echo "Read finds from claude/finds."
+          else
+            rm -f "$RUNNER_TEMP/finds.json"
+            echo "No finds to read yet."
+          fi
+
       - name: Run deal scraper
         env:
           RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
           TO_EMAIL: ${{ secrets.TO_EMAIL }}
+          FINDS_INCOMING: ${{ runner.temp }}/finds.json
         run: python scraper/main.py
 
       - name: Commit updated deals page, inventory, and review log
@@ -56,6 +69,10 @@ jobs:
           if [ -n "$(git status --porcelain state/taste.json)" ]; then
             git add state/taste.json
             changed="${changed} state/taste.json"
+          fi
+          if [ -n "$(git status --porcelain state/tracked_finds.json)" ]; then
+            git add state/tracked_finds.json
+            changed="${changed} state/tracked_finds.json"
           fi
           if [ -n "$changed" ]; then
             git commit -m "chore: update deals page, inventory, review log"

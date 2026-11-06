@@ -73,7 +73,7 @@ owner approves the first measured Claude-job usage; S5a if the quality test is p
 - [ ] **S3c — Schedule and measure** — job runs before each email; first run measured and reported (target under 3% of weekly allowance)
 
 ### Stage 4 — Email and page
-- [ ] **S4a — Photo-grid email by category** — 2–4 items per category, "Your list" tag, about 16 items
+- [ ] **S4a — Photo-grid email by category** — 2–4 items per category, "Your list" tag, about 16 items; show only finds with `on_sale: true` from a `state/tracked_finds.json` whose `checked_at` is this run's date (a crashed finds check leaves last run's flags behind)
 - [ ] **S4b — Page by category** — everything on sale, same tags
 - [ ] **S4c — Like / dislike on new finds** — buttons on suggested items in the email and page; likes teach the finder, dislikes drop the item and steer future finds away; storage decided in the slice
 

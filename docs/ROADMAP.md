@@ -69,7 +69,7 @@ owner approves the first measured Claude-job usage; S5a if the quality test is p
 
 ### Stage 3 — New finds
 - [x] **S3a — Finder job instructions** — `finder/PROMPT.md` with limits; results to `state/finds.json` on the `claude/finds` branch (plan: `docs/superpowers/plans/2026-11-05-S3a-finder-prompt.md`)
-- [ ] **S3b — Check every find** — `scraper/finds.py`: store price check, any discount (crossed-out price), in stock, not already on the list; repeats until no longer on sale
+- [x] **S3b — Check every find** — `scraper/finds.py`: store price check, any discount (crossed-out price), in stock, not already on the list; repeats until no longer on sale (plan: `docs/superpowers/plans/2026-11-06-S3b-check-finds.md`)
 - [ ] **S3c — Schedule and measure** — job runs before each email; first run measured and reported (target under 3% of weekly allowance)
 
 ### Stage 4 — Email and page

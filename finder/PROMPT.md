@@ -4,7 +4,10 @@ You are a scheduled job (Sonnet, medium effort) in the `giftful-deals` repositor
 find items **on sale right now** at real stores that are **similar to what Isaac already has or
 wants**, and save them to `state/finds.json` on the `claude/finds` branch. A separate checker
 re-verifies every item at the store later, so a wrong guess costs a page read but never reaches
-Isaac. Quality beats quantity: ten close matches are better than thirty loose ones.
+Isaac. Your goal is to **capture every real sale that fits his taste** within the limits below.
+Never pad: if few items are on sale, a short list is the right answer and ten close matches beat
+thirty loose ones. But never stop early either: an empty or short list is only correct after you
+have actually looked everywhere in "Coverage".
 
 ## Hard limits — stop at the first one you hit
 
@@ -43,6 +46,21 @@ Every find belongs to exactly one of his Giftful lists: **Accessories, Athleisur
 Jackets, Shoes, Tech**. If an item fits none, skip it. Spread effort across categories in
 proportion to how much taste data each has; a category with no taste data gets no searches.
 
+## 2b. Coverage — where to look, and when you may say "done"
+
+- Start from the **brands and stores already in his taste** (the store of each item in
+  `state/inventory.json`, the brand named in each `state/taste.json` item). For each, search
+  "<brand> men's sale" or "<brand> outlet / sale" so the store's own sale pages show up.
+- A **sale listing page** (a store's sale or outlet collection) shows many discounted items for
+  one page read. Open the most relevant ones, then take every item on it that fits his taste.
+- Cover **every category that has taste data** with **at least 2 searches** each (different
+  brands or stores, not reworded repeats) before you may use `done`. List the categories you
+  searched in `run.categories_searched`.
+- Use `done` only when each such category has met that bar and the promising candidates have
+  been read. If a limit stops you first, use that limit's name instead.
+- If most page reads fail (store down, network or bot block), stop and use `blocked`; do not
+  call that run `done`.
+
 ## 3. Stores to skip
 
 - **asos.com** — the checker is blocked there.
@@ -55,12 +73,14 @@ Prefer the brand's own store or a large retailer whose product pages show the pr
 
 ## 4. What counts as a find
 
-All of these must be true on the product page you read:
+All of these must be true on the page you read (a product page, or a sale listing page that
+shows the item's own link, name, photo and both prices):
 
 - A **crossed-out original price** and a lower current price (any discount counts). "Was / now",
   strikethrough or "compare at" prices qualify; a coupon you must enter does not.
-- It looks in stock (an add-to-cart button, not "sold out" or "notify me").
-- It is a single, specific product page (not a collection or search results page).
+- It looks in stock (an add-to-cart button, not "sold out" or "notify me"). On a listing page,
+  skip items marked sold out; the checker confirms stock later.
+- `url` is that one product's own page (never a collection or search results page).
 - It is **not already his**: not a URL in `state/inventory.json` (ignore tracking parameters
   when comparing) and not the same product name as anything in `state/inventory.json` or
   `state/taste.json`.
@@ -76,7 +96,8 @@ Write exactly this shape (the checker reads these field names):
 {
   "version": 1,
   "generated_at": "2026-11-09T03:00:00Z",
-  "run": {"searches_used": 14, "pages_read": 22, "stopped_because": "done"},
+  "run": {"searches_used": 14, "pages_read": 22, "stopped_because": "done",
+          "categories_searched": ["Casual", "Shoes", "Tech"]},
   "finds": [
     {
       "url": "https://example-store.com/products/faith-boxy-tee-black",
@@ -98,7 +119,9 @@ Write exactly this shape (the checker reads these field names):
 - `image_url`: the main product photo (`og:image` is fine); required — skip items without one.
 - `seen_price` / `seen_list_price`: numbers in USD as you saw them; the checker re-checks.
 - `similar_to`: the name of the taste item it matches (for debugging only; never shown to him).
-- `stopped_because`: `done`, `search_limit`, `page_limit`, `time_limit` or `no_input`.
+- `generated_at`: the real time. Right before you write the file run
+  `date -u +%Y-%m-%dT%H:%M:%SZ` and copy its output. Never estimate or round it.
+- `stopped_because`: `done`, `search_limit`, `page_limit`, `time_limit`, `blocked` or `no_input`.
 - If `state/taste.json` and `state/inventory.json` are both missing or empty, save an empty
   `finds` list with `stopped_because: "no_input"`.
 

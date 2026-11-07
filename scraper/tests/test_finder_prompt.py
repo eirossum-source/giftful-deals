@@ -51,10 +51,25 @@ def test_prompt_excludes_unreadable_stores_and_list_items():
     assert "state/taste.json" in text
 
 
+def test_prompt_demands_coverage_but_never_padding():
+    text = _text()
+    assert "at least 2 searches" in text      # coverage floor before it may say "done"
+    assert "Never pad" in text                # scarce sales mean fewer finds, not loose ones
+    assert "sale listing page" in text        # one page read can surface several sales
+
+
+def test_prompt_takes_timestamp_from_clock_and_reports_blocked():
+    text = _text()
+    assert "date -u +%Y-%m-%dT%H:%M:%SZ" in text   # generated_at must be read, not guessed
+    assert "`blocked`" in text                     # a network/store block must not read as "done"
+
+
 def test_example_parses_with_all_fields():
     data = _example()
     assert data["version"] == 1
-    assert set(data["run"]) == {"searches_used", "pages_read", "stopped_because"}
+    assert set(data["run"]) == {"searches_used", "pages_read", "stopped_because",
+                                "categories_searched"}
+    assert set(data["run"]["categories_searched"]) <= CATEGORIES
     assert data["finds"], "example should show at least one find"
     for find in data["finds"]:
         assert set(find) == FIND_FIELDS

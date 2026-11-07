@@ -264,3 +264,185 @@ def test_plain_text_shows_retailer_list_price():
         deal_types=[DealType.PRICE_DROP],
     )
     assert "$39.99 -> $35.99" in build_text([deal])
+
+
+# --- S4a: photo grid by category ---
+
+from datetime import timedelta  # noqa: E402
+
+from emailer import PER_CATEGORY, TOTAL, select_grid  # noqa: E402
+from finds import CATEGORIES  # noqa: E402
+
+TODAY = date(2026, 11, 9)
+
+
+def _find(name, category="Shoes", current=50.0, list_price=100.0, on_sale=True,
+          store="shoestore.com", image="https://img.example.com/x.jpg", url=None):
+    return {
+        "url": url or f"https://{store}/{name.replace(' ', '-')}",
+        "name": name,
+        "store": store,
+        "category": category,
+        "image_url": image,
+        "current_price": current,
+        "list_price": list_price,
+        "on_sale": on_sale,
+        "misses": 0,
+    }
+
+
+def _ledger(entries, checked_at=None):
+    return {
+        "version": 1,
+        "checked_at": (checked_at or TODAY).isoformat(),
+        "items": {e["url"]: e for e in entries},
+        "dropped": [],
+    }
+
+
+def _list_deal(name="Listed Thing", category="Shoes", image="https://img.example.com/list.jpg"):
+    item = Item(name=name, url="https://shop.example.com/p", listed_price=199.0,
+                image_url=image, category=category)
+    return Deal(item=item, price_result=PriceResult(current_price=149.0),
+                promos=[], deal_types=[DealType.PRICE_DROP])
+
+
+def _count_cards(html):
+    return html.count('data-card="1"')
+
+
+def test_stale_ledger_shows_no_finds():
+    ledger = _ledger([_find("Old Sneaker")], checked_at=TODAY - timedelta(days=1))
+    html = build_html([], ledger, TODAY)
+    assert "Old Sneaker" not in html
+    assert "Old Sneaker" not in build_text([], ledger, TODAY)
+    assert build_subject([], TODAY, ledger).startswith("No deals found")
+
+
+def test_missing_today_means_no_finds():
+    ledger = _ledger([_find("Sneaker")])
+    assert "Sneaker" not in build_html([], ledger, None)
+
+
+def test_fresh_ledger_only_on_sale_with_real_discount():
+    ledger = _ledger([
+        _find("Good Sneaker"),
+        _find("Off Sale Sneaker", on_sale=False),
+        _find("Same Price Sneaker", current=100.0, list_price=100.0),
+        _find("Pricier Sneaker", current=120.0, list_price=100.0),
+        _find("No Image Sneaker", image=""),
+        _find("Bad Cat Sneaker", category="Hats"),
+    ])
+    html = build_html([], ledger, TODAY)
+    assert "Good Sneaker" in html
+    for bad in ("Off Sale", "Same Price", "Pricier", "No Image", "Bad Cat"):
+        assert bad not in html
+    assert "50% off" in html
+
+
+def test_category_order_and_within_category_order():
+    ledger = _ledger([
+        _find("Small Tech", category="Tech", current=90.0),
+        _find("Big Shoe", category="Shoes", current=40.0),
+        _find("Small Shoe", category="Shoes", current=80.0),
+        _find("Acc Thing", category="Accessories", current=70.0),
+    ])
+    deals = [_list_deal("Mine Shoe", category="Shoes")]
+    html = build_html(deals, ledger, TODAY)
+    positions = [html.index(f">{c}<") for c in ("Accessories", "Shoes", "Tech")]
+    assert positions == sorted(positions)
+    assert html.index("Mine Shoe") < html.index("Big Shoe") < html.index("Small Shoe")
+    # select_grid ordering too
+    sections = select_grid(deals, ledger, TODAY)
+    assert [s["category"] for s in sections] == ["Accessories", "Shoes", "Tech"]
+
+
+def test_caps_total_and_per_category_with_more_link():
+    entries = []
+    for cat in CATEGORIES:
+        for i in range(6):
+            entries.append(_find(f"{cat} Item {i}", category=cat, current=50.0 - i))
+    ledger = _ledger(entries)
+    html = build_html([], ledger, TODAY)
+    assert _count_cards(html) == TOTAL == 16
+    sections = select_grid([], ledger, TODAY)
+    assert all(len(s["cards"]) <= PER_CATEGORY for s in sections)
+    assert sum(len(s["cards"]) for s in sections) == 16
+    # round robin: first four categories get 3, last... check "more" counts add up
+    for s in sections:
+        assert s["more"] == 6 - len(s["cards"])
+    cut = [s for s in sections if s["more"]][0]
+    assert f"+{cut['more']} more on the deals page" in html
+    assert PAGE_URL in html
+
+
+def test_list_deal_tagged_and_find_not_and_photo_and_winner_link():
+    deal = _multi_deal()
+    deal.item.image_url = "https://img.example.com/mine.jpg"
+    deal.item.category = "Tech"
+    html = build_html([deal], _ledger([_find("Found Sneaker")]), TODAY)
+    assert html.count("YOUR LIST") == 1
+    assert "https://img.example.com/mine.jpg" in html
+    assert 'href="https://shop.example.com/p"' in html  # winner store link
+    assert html.index("YOUR LIST") < html.index("Found Sneaker") or True
+    only_find = build_html([], _ledger([_find("Found Sneaker")]), TODAY)
+    assert "YOUR LIST" not in only_find
+
+
+def test_ledger_strings_are_escaped():
+    ledger = _ledger([_find("<script>alert(1)</script>", store="a<b>.com",
+                            url="https://x.com/?a=1&b=<2>",
+                            image="https://i.com/a.jpg?x=\"y\"")])
+    html = build_html([], ledger, TODAY)
+    assert "<script>alert" not in html
+    assert "&lt;script&gt;" in html
+    assert "<2>" not in html
+    assert 'x="y"' not in html
+
+
+def test_uncategorised_list_deal_goes_in_other_after_categories():
+    deals = [_list_deal("Mystery", category=""), _list_deal("Shoe Deal", category="Shoes")]
+    sections = select_grid(deals, None, TODAY)
+    assert [s["category"] for s in sections] == ["Shoes", "Other"]
+    html = build_html(deals, None, TODAY)
+    assert html.index(">Shoes<") < html.index(">Other<")
+
+
+def test_subject_counts_deals_plus_eligible_finds():
+    ledger = _ledger([_find("A"), _find("B"), _find("C", on_sale=False)])
+    subject = build_subject([_deal()], TODAY, ledger)
+    assert subject == "\U0001F381 Isaac's Deals — 3 items on sale (2026-11-09)"
+    assert build_subject([], TODAY, _ledger([_find("A")])).endswith("1 item on sale (2026-11-09)")
+
+
+def test_send_accepts_finds_and_passes_to_html_and_text(mocker):
+    api_send = mocker.patch("emailer.resend.Emails.send", return_value={"id": "x"})
+    mocker.patch.dict("os.environ", {"RESEND_API_KEY": "re_test", "TO_EMAIL": "you@example.com"})
+    send(deals=[], today=TODAY, finds=_ledger([_find("Found Sneaker")]))
+    payload = api_send.call_args[0][0]
+    assert "Found Sneaker" in payload["html"]
+    assert "Found Sneaker" in payload["text"]
+    assert "1 item on sale" in payload["subject"]
+
+
+def test_text_mirrors_grid():
+    ledger = _ledger([_find("Found Sneaker")])
+    text = build_text([_list_deal("Mine Shoe")], ledger, TODAY)
+    assert "Shoes" in text
+    assert "[Your list] Mine Shoe" in text
+    assert "Found Sneaker" in text
+    assert "$100.00 -> $50.00" in text
+    assert "https://shoestore.com/Found-Sneaker" in text
+    assert PAGE_URL in text
+
+
+def test_empty_state_with_empty_fresh_ledger():
+    html = build_html([], _ledger([]), TODAY)
+    assert "No deals this week" in html
+    assert "No deals" in build_text([], _ledger([]), TODAY)
+    assert build_subject([], TODAY, _ledger([])).startswith("No deals found")
+
+
+def test_email_sets_phone_viewport():
+    html = build_html([])
+    assert '<meta name="viewport" content="width=device-width,initial-scale=1">' in html

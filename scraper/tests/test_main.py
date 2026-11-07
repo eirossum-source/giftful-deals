@@ -1105,3 +1105,44 @@ def test_finds_failure_does_not_block_email(tmp_path, monkeypatch):
     sender.assert_called_once()
     assert summary["errors"] == 1
     assert "ledger exploded" in (tmp_path / "errors.log").read_text()
+
+
+# --- S4a: the email receives this run's finds ledger --------------------------------
+
+def test_run_passes_this_runs_finds_ledger_to_email(tmp_path):
+    incoming = _finds_file(tmp_path, [_a_find("https://shop.example.com/p/tee", "Sale Tee")])
+    page = "<html><head><title>Sale Tee</title></head><body><h1>Sale Tee</h1></body></html>"
+    check = MagicMock(return_value=PriceResult(current_price=20.0, list_price=30.0, html=page))
+    sender = MagicMock()
+    run(
+        fetch_items=MagicMock(return_value=[]),
+        check_price=check,
+        lookup_coupons=MagicMock(return_value=[]),
+        send_email=sender,
+        output_path=tmp_path / "index.html",
+        log_path=tmp_path / "errors.log",
+        state_path=tmp_path / "state.json",
+        review_log_path=tmp_path / "review_log.json",
+        now=datetime(2026, 11, 9, 7, 0, 0),
+        finds_incoming_path=incoming,
+        finds_ledger_path=tmp_path / "tracked_finds.json",
+    )
+    finds = sender.call_args.kwargs["finds"]
+    assert finds["checked_at"] == "2026-11-09"
+    assert [e["name"] for e in finds["items"].values()] == ["Sale Tee"]
+
+
+def test_run_without_ledger_path_sends_no_finds(tmp_path):
+    sender = MagicMock()
+    run(
+        fetch_items=MagicMock(return_value=[]),
+        check_price=MagicMock(),
+        lookup_coupons=MagicMock(return_value=[]),
+        send_email=sender,
+        output_path=tmp_path / "index.html",
+        log_path=tmp_path / "errors.log",
+        state_path=tmp_path / "state.json",
+        review_log_path=tmp_path / "review_log.json",
+        now=datetime(2026, 11, 9, 7, 0, 0),
+    )
+    assert sender.call_args.kwargs["finds"] is None

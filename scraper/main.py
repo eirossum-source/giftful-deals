@@ -385,7 +385,7 @@ def run(
     )
 
     if send_email is not None:
-        send_email(deals=deals, today=now.date())
+        send_email(deals=deals, today=now.date(), finds=finds_ledger)
 
     summary = {
         "checked": len(items),

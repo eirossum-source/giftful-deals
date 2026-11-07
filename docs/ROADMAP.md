@@ -73,7 +73,7 @@ owner approves the first measured Claude-job usage; S5a if the quality test is p
 - [x] **S3c — Schedule and measure** — job runs Mon/Thu 03:00 UTC (4 hours before the email) as a Claude routine; measured at well under 1% of weekly allowance per run (plan: `docs/superpowers/plans/2026-11-06-S3c-schedule-and-measure.md`)
 
 ### Stage 4 — Email and page
-- [ ] **S4a — Photo-grid email by category** — 2–4 items per category, "Your list" tag, about 16 items; show only finds with `on_sale: true` from a `state/tracked_finds.json` whose `checked_at` is this run's date (a crashed finds check leaves last run's flags behind)
+- [ ] **S4a — Photo-grid email by category** — 2–4 items per category, "Your list" tag, about 16 items; show only finds with `on_sale: true` from a `state/tracked_finds.json` whose `checked_at` is this run's date (a crashed finds check leaves last run's flags behind) (plan: `docs/superpowers/plans/2026-11-06-S4a-photo-grid-email.md`)
 - [ ] **S4b — Page by category** — everything on sale, same tags
 - [ ] **S4c — Like / dislike on new finds** — buttons on suggested items in the email and page; likes teach the finder, dislikes drop the item and steer future finds away; storage decided in the slice
 

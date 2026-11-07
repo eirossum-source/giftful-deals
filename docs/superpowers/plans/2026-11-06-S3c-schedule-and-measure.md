@@ -29,3 +29,19 @@ owner approves the measured usage before the routine is switched on and the box 
 
 Target: under 3% of the weekly allowance per run (two runs a week, so about 6%). Over that: shrink
 the job (fewer searches/pages) before enabling. After approval: enable the routine, tick S3c.
+
+## Measurement log (2026-11-07, five by-hand runs)
+
+| Run | Change | Result | Time |
+|---|---|---|---|
+| 1 | Default environment, limited network | 0 finds; store pages blocked | 32 s |
+| 2 | Owner enabled full internet | 2 finds (Cotton On only); stopped at 6 searches | 56 s |
+| 3 | Prompt: coverage floor, listing pages, real clock | 13 finds, all Nike; Casual skipped | 126 s |
+| 4 | Prompt: store page per category | 0 finds, `blocked` after 3 skip-list stores failed | 38 s |
+| 5 | Prompt: skip list by script, `blocked` needs 4 stores | 21 finds, all 6 categories, 11 searches, 14 pages, `done` | ~180 s |
+
+Usage: weekly allowance read 6% at the start and 8% after all five runs plus this whole
+working session (about 200k tokens), so each run is well under 1% (target: under 3%). A run
+at full limits (20 searches, 30 pages) is untested but at most about twice run 5.
+Run 5 checks: all 21 image URLs and product pages load (two product pages returned 429 from
+rapid checking, not from the finder). Prompt commits: 6afdd6a, affcca6, 28eee76.

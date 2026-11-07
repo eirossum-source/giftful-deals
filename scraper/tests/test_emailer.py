@@ -354,7 +354,7 @@ def test_category_order_and_within_category_order():
     assert html.index("Mine Shoe") < html.index("Big Shoe") < html.index("Small Shoe")
     # select_grid ordering too
     sections = select_grid(deals, ledger, TODAY)
-    assert [s["category"] for s in sections] == ["Accessories", "Shoes", "Tech"]
+    assert [s["category"] for s in sections] == ["Your list", "Accessories", "Shoes", "Tech"]
 
 
 def test_caps_total_and_per_category_with_more_link():
@@ -381,12 +381,12 @@ def test_list_deal_tagged_and_find_not_and_photo_and_winner_link():
     deal.item.image_url = "https://img.example.com/mine.jpg"
     deal.item.category = "Tech"
     html = build_html([deal], _ledger([_find("Found Sneaker")]), TODAY)
-    assert html.count("YOUR LIST") == 1
+    assert ">Your list<" in html
     assert "https://img.example.com/mine.jpg" in html
     assert 'href="https://shop.example.com/p"' in html  # winner store link
-    assert html.index("YOUR LIST") < html.index("Found Sneaker") or True
+    assert html.index(">Your list<") < html.index("Headphones") < html.index("Found Sneaker")
     only_find = build_html([], _ledger([_find("Found Sneaker")]), TODAY)
-    assert "YOUR LIST" not in only_find
+    assert ">Your list<" not in only_find
 
 
 def test_ledger_strings_are_escaped():
@@ -400,12 +400,32 @@ def test_ledger_strings_are_escaped():
     assert 'x="y"' not in html
 
 
-def test_uncategorised_list_deal_goes_in_other_after_categories():
-    deals = [_list_deal("Mystery", category=""), _list_deal("Shoe Deal", category="Shoes")]
+def test_list_deals_sorted_by_category_with_uncategorised_last():
+    deals = [_list_deal("Mystery", category=""), _list_deal("Shoe Deal", category="Shoes"),
+             _list_deal("Acc Deal", category="Accessories")]
     sections = select_grid(deals, None, TODAY)
-    assert [s["category"] for s in sections] == ["Shoes", "Other"]
-    html = build_html(deals, None, TODAY)
-    assert html.index(">Shoes<") < html.index(">Other<")
+    assert [s["category"] for s in sections] == ["Your list"]
+    assert [c["name"] for c in sections[0]["cards"]] == ["Acc Deal", "Shoe Deal", "Mystery"]
+
+
+def test_your_list_comes_first_uncapped_then_suggestions():
+    deals = [_list_deal(f"Mine {i}", category=CATEGORIES[i % 6]) for i in range(20)]
+    entries = [_find(f"{cat} Find {i}", category=cat) for cat in CATEGORIES for i in range(6)]
+    sections = select_grid(deals, _ledger(entries), TODAY)
+    assert sections[0]["category"] == "Your list"
+    assert len(sections[0]["cards"]) == 20 and sections[0]["more"] == 0
+    assert sum(len(s["cards"]) for s in sections[1:]) == TOTAL
+    html = build_html(deals, _ledger(entries), TODAY)
+    assert _count_cards(html) == 20 + TOTAL
+    assert html.index(">Your list<") < html.index(">Suggestions for you<")
+    assert html.index("Mine 19") < html.index("Suggestions for you")
+    text = build_text(deals, _ledger(entries), TODAY)
+    assert text.index("== Your list ==") < text.index("Suggestions for you")
+
+
+def test_no_suggestions_heading_without_finds():
+    html = build_html([_list_deal("Mine")], None, TODAY)
+    assert "Suggestions for you" not in html
 
 
 def test_subject_counts_deals_plus_eligible_finds():
@@ -429,7 +449,7 @@ def test_text_mirrors_grid():
     ledger = _ledger([_find("Found Sneaker")])
     text = build_text([_list_deal("Mine Shoe")], ledger, TODAY)
     assert "Shoes" in text
-    assert "[Your list] Mine Shoe" in text
+    assert text.index("== Your list ==") < text.index("Mine Shoe") < text.index("Found Sneaker")
     assert "Found Sneaker" in text
     assert "$100.00 -> $50.00" in text
     assert "https://shoestore.com/Found-Sneaker" in text

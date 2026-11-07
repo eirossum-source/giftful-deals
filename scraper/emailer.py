@@ -17,7 +17,7 @@ SENDER = "onboarding@resend.dev"
 ACCENT = "#0f7a4a"
 PER_CATEGORY = 4
 TOTAL = 16
-OTHER = "Other"
+YOUR_LIST = "Your list"
 
 
 def build_subject(deals: List[Deal], today: date, finds_ledger: Optional[dict] = None) -> str:
@@ -155,23 +155,25 @@ def _find_card(entry: dict) -> dict:
 
 
 def select_grid(deals: List[Deal], finds_ledger: Optional[dict], today: Optional[date]) -> List[dict]:
-    """Group list deals and fresh finds by category and apply the caps.
+    """His list's deals first (all of them), then fresh finds by category with the caps.
 
-    Returns [{"category", "cards", "more"}] in display order.
+    Returns [{"category", "cards", "more", "part"}] in display order; part is
+    "list" for the single "Your list" section and "finds" for suggestions.
     """
-    pools: Dict[str, List[dict]] = {c: [] for c in CATEGORIES}
-    pools[OTHER] = []
-    for d in deals:
-        cat = d.item.category if d.item.category in CATEGORIES else OTHER
-        pools[cat].append(_deal_card(d))
-    found: Dict[str, List[dict]] = {c: [] for c in CATEGORIES}
-    for entry in _eligible_finds(finds_ledger, today):
-        found[entry["category"]].append(_find_card(entry))
-    for cat, cards in found.items():
-        cards.sort(key=lambda c: -c["discount"])
-        pools[cat].extend(cards)
+    rank = {c: i for i, c in enumerate(CATEGORIES)}
+    mine = sorted(deals, key=lambda d: rank.get(d.item.category, len(CATEGORIES)))
+    sections: List[dict] = []
+    if mine:
+        sections.append({"category": YOUR_LIST, "cards": [_deal_card(d) for d in mine],
+                         "more": 0, "part": "list"})
 
-    order = list(CATEGORIES) + [OTHER]
+    pools: Dict[str, List[dict]] = {c: [] for c in CATEGORIES}
+    for entry in _eligible_finds(finds_ledger, today):
+        pools[entry["category"]].append(_find_card(entry))
+    for cards in pools.values():
+        cards.sort(key=lambda c: -c["discount"])
+
+    order = list(CATEGORIES)
     shown: Dict[str, List[dict]] = {c: [] for c in order}
     total = 0
     progressed = True
@@ -184,8 +186,8 @@ def select_grid(deals: List[Deal], finds_ledger: Optional[dict], today: Optional
                 shown[cat].append(pools[cat][len(shown[cat])])
                 total += 1
                 progressed = True
-    return [
-        {"category": c, "cards": shown[c], "more": len(pools[c]) - len(shown[c])}
+    return sections + [
+        {"category": c, "cards": shown[c], "more": len(pools[c]) - len(shown[c]), "part": "finds"}
         for c in order
         if shown[c]
     ]
@@ -209,14 +211,6 @@ def _card_html(card: dict) -> str:
             'border-radius:8px 8px 0 0"></div>'
         )
 
-    tag = ""
-    if card["your_list"]:
-        tag = (
-            '<div style="margin-bottom:4px"><span style="background:#1a1d1b;color:#fff;'
-            'font-size:10px;font-weight:700;letter-spacing:.04em;padding:2px 8px;'
-            'border-radius:999px">YOUR LIST</span></div>'
-        )
-
     pct = ""
     if cur is not None and cur < ref:
         pct = (
@@ -237,7 +231,6 @@ def _card_html(card: dict) -> str:
         'style="background:#fff;border:1px solid #e7ebe9;border-radius:10px">'
         f"<tr><td>{photo}</td></tr>"
         '<tr><td style="padding:10px 12px 12px">'
-        f"{tag}"
         f'<div style="font-size:11px;color:#888;text-transform:uppercase">{store}</div>'
         f'<a href="{url}" style="text-decoration:none;color:#1a1d1b">'
         f'<div style="font-size:14px;font-weight:600;margin-top:2px">{name}</div></a>'
@@ -313,7 +306,19 @@ def build_html(deals: List[Deal], finds_ledger: Optional[dict] = None,
             f"<strong>{n} {noun_deal}</strong> found across "
             f"<strong>{n_stores} {noun_store}</strong>.</p>"
         )
-        cards = "".join(_section_html(s) for s in select_grid(deals, finds_ledger, today))
+        parts = []
+        heading_done = False
+        for sec in select_grid(deals, finds_ledger, today):
+            if sec["part"] == "finds" and not heading_done:
+                parts.append(
+                    '<div style="font-size:22px;font-weight:700;margin:32px 6px 0;'
+                    'padding-top:20px;border-top:1px solid #e7ebe9">Suggestions for you</div>'
+                    '<div style="font-size:13px;color:#888;margin:2px 6px 0">'
+                    "On sale now, picked to match your taste.</div>"
+                )
+                heading_done = True
+            parts.append(_section_html(sec))
+        cards = "".join(parts)
 
     return (
         '<!doctype html><html><head><meta charset="utf-8">'
@@ -350,8 +355,7 @@ def _text_price_str(current_price, reference_price: float) -> str:
 
 
 def _text_card(card: dict, lines: List[str]) -> None:
-    marker = "[Your list] " if card["your_list"] else ""
-    lines.append(f"- {marker}{card['name']} ({card['store']})")
+    lines.append(f"- {card['name']} ({card['store']})")
     lines.append(f"  {_text_price_str(card['current'], card['reference'])}")
     for promo in card["promos"]:
         lines.append(f"  Code: {promo.code} — {promo.description}")
@@ -372,7 +376,12 @@ def build_text(deals: List[Deal], finds_ledger: Optional[dict] = None,
     else:
         lines.append(f"{n} deals found across {n_stores} stores.")
         lines.append("")
+        heading_done = False
         for section in select_grid(deals, finds_ledger, today):
+            if section["part"] == "finds" and not heading_done:
+                lines.append("--- Suggestions for you ---")
+                lines.append("")
+                heading_done = True
             lines.append(f"== {section['category']} ==")
             for card in section["cards"]:
                 _text_card(card, lines)

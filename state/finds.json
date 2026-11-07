@@ -1,6 +1,29 @@
 {
   "version": 1,
-  "generated_at": "2026-11-07T00:12:00Z",
-  "run": {"searches_used": 2, "pages_read": 0, "stopped_because": "done"},
-  "finds": []
+  "generated_at": "2026-11-07T00:25:00Z",
+  "run": {"searches_used": 6, "pages_read": 5, "stopped_because": "done"},
+  "finds": [
+    {
+      "url": "https://cottonon.com/US/box-fit-t-shirt/3611849-163.html",
+      "name": "Box Fit T-Shirt - Oat / Bitter Brown Stripe",
+      "store": "cottonon.com",
+      "category": "Casual",
+      "image_url": "https://cottonon.com/dw/image/v2/BBDS_PRD/on/demandware.static/-/Sites-catalog-master-men/default/dw85c65a58/3611849/3611849-163-2.jpg?sw=640&sh=960&sm=fit",
+      "seen_price": 20.0,
+      "seen_list_price": 34.99,
+      "similar_to": "COLLUSION Boxy T-shirt in red",
+      "found_at": "2026-11-07"
+    },
+    {
+      "url": "https://cottonon.com/US/super-baggy-jean/3612684-172.html",
+      "name": "Super Baggy Jean - Pinstripe Blue",
+      "store": "cottonon.com",
+      "category": "Casual",
+      "image_url": "https://cottonon.com/dw/image/v2/BBDS_PRD/on/demandware.static/-/Sites-catalog-master-men/default/dwb6ee4c59/3612684/3612684-172-2.jpg?sw=640&sh=960&sm=fit",
+      "seen_price": 50.0,
+      "seen_list_price": 79.99,
+      "similar_to": "BAGGY FIT JEANS",
+      "found_at": "2026-11-07"
+    }
+  ]
 }

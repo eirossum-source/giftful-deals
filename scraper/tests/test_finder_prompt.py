@@ -60,6 +60,13 @@ def test_prompt_demands_coverage_but_never_padding():
     assert "unused searches or page reads" in text  # no early "done" with budget left
 
 
+def test_prompt_computes_skip_list_with_a_script_and_limits_blocked():
+    text = _text()
+    assert "SKIP:" in text and "READABLE:" in text   # script prints both lists; skip is checkable
+    assert "Never fetch a SKIP store" in text
+    assert "at least 4 different readable stores" in text   # `blocked` needs real evidence
+
+
 def test_prompt_takes_timestamp_from_clock_and_reports_blocked():
     text = _text()
     assert "date -u +%Y-%m-%dT%H:%M:%SZ" in text   # generated_at must be read, not guessed

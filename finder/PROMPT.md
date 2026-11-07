@@ -62,14 +62,30 @@ proportion to how much taste data each has; a category with no taste data gets n
 - Use `done` only when each such category has met that bar and the promising candidates have
   been read. Finishing with lots of unused searches or page reads while a category is still
   uncovered is a mistake. If a limit stops you first, use that limit's name instead.
-- If most page reads fail (store down, network or bot block), stop and use `blocked`; do not
-  call that run `done`.
+- Use `blocked` only if you have tried pages from **at least 4 different readable stores** (see
+  section 3) and none loaded (bot block, store down, network). One or two failing stores is
+  normal: move to the next readable store and keep going. Never call a blocked run `done`.
 
 ## 3. Stores to skip
 
 - **asos.com** — the checker is blocked there.
 - Any store the checker could not read on his own wishes: in `state/inventory.json`, a store
   (domain) where **every** entry has `current_price: null` is unreadable. Skip those domains.
+  Do not work this out by eye. Run this once, at the start, and keep its output in front of you:
+  ```
+  python3 - <<'E'
+  import json, collections
+  from urllib.parse import urlparse
+  items = json.load(open('state/inventory.json'))['items']
+  prices = collections.defaultdict(list)
+  for url, v in items.items():
+      prices[urlparse(url).netloc.replace('www.', '', 1)].append(v.get('current_price'))
+  print('SKIP:', sorted(d for d, p in prices.items() if all(x is None for x in p)))
+  print('READABLE:', sorted(d for d, p in prices.items() if any(x is not None for x in p)))
+  E
+  ```
+  Never fetch a SKIP store, and do not search for items there. Add `asos.com` to SKIP. The
+  READABLE stores, plus large retailers not in either list, are where you look first.
 - Marketplaces with many sellers per listing (eBay, Etsy, Poshmark, Grailed, GOAT, StockX) and
   any page needing a login.
 

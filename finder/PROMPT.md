@@ -54,10 +54,14 @@ proportion to how much taste data each has; a category with no taste data gets n
 - A **sale listing page** (a store's sale or outlet collection) shows many discounted items for
   one page read. Open the most relevant ones, then take every item on it that fits his taste.
 - Cover **every category that has taste data** with **at least 2 searches** each (different
-  brands or stores, not reworded repeats) before you may use `done`. List the categories you
-  searched in `run.categories_searched`.
+  brands or stores, not reworded repeats) **and at least one store page** read for it (a
+  product page or sale listing page; news and deal-blog results do not count). The category
+  with the most taste data (check the counts) needs the most effort, not the least. A store
+  page that fails to load or shows no sale does not count; try another store for that category.
+  List in `run.categories_searched` only the categories that met this bar.
 - Use `done` only when each such category has met that bar and the promising candidates have
-  been read. If a limit stops you first, use that limit's name instead.
+  been read. Finishing with lots of unused searches or page reads while a category is still
+  uncovered is a mistake. If a limit stops you first, use that limit's name instead.
 - If most page reads fail (store down, network or bot block), stop and use `blocked`; do not
   call that run `done`.
 

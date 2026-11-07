@@ -56,6 +56,8 @@ def test_prompt_demands_coverage_but_never_padding():
     assert "at least 2 searches" in text      # coverage floor before it may say "done"
     assert "Never pad" in text                # scarce sales mean fewer finds, not loose ones
     assert "sale listing page" in text        # one page read can surface several sales
+    assert "at least one store page" in text  # a search alone (news, blogs) is not coverage
+    assert "unused searches or page reads" in text  # no early "done" with budget left
 
 
 def test_prompt_takes_timestamp_from_clock_and_reports_blocked():

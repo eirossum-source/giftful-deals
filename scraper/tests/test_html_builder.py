@@ -414,3 +414,135 @@ def test_multi_store_winner_promos_in_winner_section():
     chip = winner_section.select_one(".promo-chip")
     assert chip is not None
     assert chip["data-code"] == "AMZN10"
+
+
+# --- S4b: finds on the page, grouped by category -------------------------------------
+
+TODAY = date(2026, 11, 9)
+
+
+def _find(name="Sale Tee", category="Casual", cur=20.0, lst=40.0, store="Shop.Example.com",
+          url=None, image_url="https://shop.example.com/img.jpg", on_sale=True):
+    return {
+        "url": url or f"https://shop.example.com/p/{name.replace(' ', '-')}",
+        "name": name, "store": store, "category": category,
+        "image_url": image_url, "current_price": cur, "list_price": lst, "on_sale": on_sale,
+    }
+
+
+def _ledger(*entries, checked_at="2026-11-09"):
+    return {"checked_at": checked_at, "items": {e["url"]: e for e in entries}, "dropped": []}
+
+
+def _render_f(deals, ledger, today=TODAY):
+    return render(deals, generated_at=NOW, finds=ledger, today=today)
+
+
+def test_stale_ledger_or_no_today_renders_same_as_no_finds():
+    deals = [_deal()]
+    base = render(deals, generated_at=NOW)
+    stale = _render_f(deals, _ledger(_find(), checked_at="2026-11-02"))
+    no_today = _render_f(deals, _ledger(_find()), today=None)
+    assert stale == base
+    assert no_today == base
+
+
+def test_only_confirmed_on_sale_finds_with_known_category_render():
+    ledger = _ledger(
+        _find("Good Tee"),
+        _find("Off Sale Tee", on_sale=False),
+        _find("Not Cheaper", cur=40.0, lst=40.0),
+        _find("Bad Category", category="Hats"),
+    )
+    html = _render_f([_deal()], ledger)
+    text = BeautifulSoup(html, "lxml").get_text()
+    assert "Good Tee" in text
+    assert "Off Sale Tee" not in text
+    assert "Not Cheaper" not in text
+    assert "Bad Category" not in text
+
+
+def test_section_headings_only_when_finds_exist_and_list_first():
+    plain = BeautifulSoup(render([_deal()], generated_at=NOW), "lxml")
+    assert not plain.select(".section-title")
+
+    soup = BeautifulSoup(_render_f([_deal()], _ledger(_find())), "lxml")
+    titles = [t.get_text(strip=True) for t in soup.select(".section-title")]
+    assert titles == ["Your list", "Suggestions for you"]
+    assert len(soup.select(".section-block")) == 2
+    names = [h.get_text(strip=True) for h in soup.select(".deal-name")]
+    assert names == ["Wireless Headphones", "Sale Tee"]
+
+
+def test_suggestions_grouped_by_categories_order_biggest_discount_first_no_cap():
+    finds = [_find(f"Tech {i}", category="Tech", cur=40.0 - i, lst=50.0) for i in range(7)]
+    finds += [
+        _find("Shoe A", category="Shoes", cur=45.0, lst=50.0),
+        _find("Acc Small", category="Accessories", cur=45.0, lst=50.0),
+        _find("Acc Big", category="Accessories", cur=10.0, lst=50.0),
+    ]
+    soup = BeautifulSoup(_render_f([], _ledger(*finds)), "lxml")
+    groups = soup.select(".category-group")
+    assert [g["data-category"] for g in groups] == ["Accessories", "Shoes", "Tech"]
+    acc = [h.get_text(strip=True) for h in groups[0].select(".deal-name")]
+    assert acc == ["Acc Big", "Acc Small"]
+    tech = [h.get_text(strip=True) for h in groups[2].select(".deal-name")]
+    assert len(tech) == 7
+    assert tech[0] == "Tech 6"
+
+
+def test_find_card_contents():
+    soup = BeautifulSoup(_render_f([], _ledger(_find("Sale Tee", cur=20.0, lst=40.0))), "lxml")
+    card = soup.select_one(".deal-card")
+    assert card["data-types"] == "price_drop"
+    assert card["data-store"] == "shop.example.com"
+    assert card.select_one("img")["src"] == "https://shop.example.com/img.jpg"
+    link = card.select_one("a")
+    assert link["href"] == "https://shop.example.com/p/Sale-Tee"
+    assert link["target"] == "_blank"
+    assert card.select_one(".deal-name").get_text(strip=True) == "Sale Tee"
+    assert card.select_one(".price-listed").get_text() == "$40.00"
+    assert card.select_one(".price-current").get_text() == "$20.00"
+    assert card.select_one(".badge-drop").get_text() == "-50%"
+    assert "price drop" in card.select_one(".tags").get_text()
+    assert card.select_one(".store").get_text() == "Shop.Example.com"
+    assert "Your list" not in card.get_text()
+
+
+def test_find_card_without_image_uses_placeholder():
+    from html_builder import _find_card_html, PLACEHOLDER_SVG
+    html = _find_card_html(_find(image_url=""))
+    assert PLACEHOLDER_SVG in html
+
+
+def test_find_card_escapes_script_in_name_url_store():
+    evil = "<script>alert(1)</script>"
+    ledger = _ledger(_find(name=evil, store=evil, url='https://x.example/?a="><script>alert(2)</script>'))
+    html = _render_f([], ledger)
+    assert "<script>alert" not in html
+    assert "&lt;script&gt;alert(1)&lt;/script&gt;" in html
+
+
+def test_store_filter_includes_find_stores_deduped_lowercased():
+    ledger = _ledger(_find("A", store="Other.Store.com"), _find("B", store="shop.example.com"))
+    html = _render_f([_deal()], ledger)
+    assert _store_options(html) == {"all", "shop.example.com", "other.store.com"}
+
+
+def test_no_deals_with_finds_shows_suggestions_without_empty_state():
+    soup = BeautifulSoup(_render_f([], _ledger(_find())), "lxml")
+    assert not soup.select(".empty-state")
+    assert [t.get_text(strip=True) for t in soup.select(".section-title")] == ["Suggestions for you"]
+    assert soup.select_one("[data-filter-store]") is not None
+    assert len(soup.select(".deal-card")) == 1
+
+
+def test_no_deals_and_no_finds_still_shows_empty_state():
+    soup = BeautifulSoup(_render_f([], _ledger(_find(on_sale=False))), "lxml")
+    assert soup.select_one(".empty-state") is not None
+    assert not soup.select(".section-title")
+
+
+def test_js_hides_empty_section_blocks():
+    html = _render_f([_deal()], _ledger(_find()))
+    assert ".section-block" in html

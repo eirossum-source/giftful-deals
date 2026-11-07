@@ -1146,3 +1146,36 @@ def test_run_without_ledger_path_sends_no_finds(tmp_path):
         now=datetime(2026, 11, 9, 7, 0, 0),
     )
     assert sender.call_args.kwargs["finds"] is None
+
+
+# --- S4b: the page receives this run's finds ledger and the run date -----------------
+
+def test_run_passes_ledger_and_run_date_to_render(tmp_path, monkeypatch):
+    import main as main_mod
+    seen = {}
+    real_render = main_mod.render
+
+    def spy(*args, **kwargs):
+        seen.update(kwargs)
+        return real_render(*args, **kwargs)
+
+    monkeypatch.setattr(main_mod, "render", spy)
+    incoming = _finds_file(tmp_path, [_a_find("https://shop.example.com/p/tee", "Sale Tee")])
+    page = "<html><head><title>Sale Tee</title></head><body><h1>Sale Tee</h1></body></html>"
+    check = MagicMock(return_value=PriceResult(current_price=20.0, list_price=30.0, html=page))
+    run(
+        fetch_items=MagicMock(return_value=[]),
+        check_price=check,
+        lookup_coupons=MagicMock(return_value=[]),
+        send_email=MagicMock(),
+        output_path=tmp_path / "index.html",
+        log_path=tmp_path / "errors.log",
+        state_path=tmp_path / "state.json",
+        review_log_path=tmp_path / "review_log.json",
+        now=datetime(2026, 11, 9, 7, 0, 0),
+        finds_incoming_path=incoming,
+        finds_ledger_path=tmp_path / "tracked_finds.json",
+    )
+    assert seen["today"] == date(2026, 11, 9)
+    assert seen["finds"]["checked_at"] == "2026-11-09"
+    assert "Sale Tee" in (tmp_path / "index.html").read_text()

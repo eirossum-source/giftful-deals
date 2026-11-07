@@ -6,7 +6,9 @@ from typing import Iterable, List
 from urllib.parse import quote, urlparse
 from zoneinfo import ZoneInfo
 
+from emailer import _eligible_finds
 from filter import Deal, DealType
+from finds import CATEGORIES
 from giftful import GIFTFUL_URL
 
 
@@ -222,8 +224,8 @@ def _domains_of(deal: Deal) -> Iterable[str]:
         yield deal.item.domain
 
 
-def _filter_bar(deals: List[Deal]) -> str:
-    domains: set = set()
+def _filter_bar(deals: List[Deal], extra_stores: Iterable[str] = ()) -> str:
+    domains: set = set(extra_stores)
     has_promo = False
     has_back_in_stock = False
     for d in deals:
@@ -283,6 +285,64 @@ def _grouped_deals_html(deals: List[Deal]) -> str:
             order.append(cat)
         grouped[cat].append(d)
     return "".join(_category_section(cat, grouped[cat]) for cat in order)
+
+
+def _find_store(entry: dict) -> str:
+    return (entry.get("store") or "").strip()
+
+
+def _find_card_html(entry: dict) -> str:
+    cur, lst = entry["current_price"], entry["list_price"]
+    name = html.escape(entry["name"])
+    url = html.escape(entry["url"])
+    store = _find_store(entry)
+    img = html.escape(entry["image_url"]) if entry.get("image_url") else PLACEHOLDER_SVG
+    pct = _pct_drop(lst, cur)
+    return (
+        f'<article class="deal-card" '
+        f'data-types="price_drop" '
+        f'data-store="{html.escape(store.lower())}">'
+        f'<a href="{url}" target="_blank" rel="noopener noreferrer">'
+        f'<div class="thumb"><img src="{img}" alt="{name}" loading="lazy"/>'
+        f'<div class="badges"><span class="badge badge-drop">-{pct}%</span></div>'
+        f"</div>"
+        f'<h3 class="deal-name">{name}</h3>'
+        f"</a>"
+        f'<div class="price-block">'
+        f'{_price_block_html(cur, lst)}'
+        f"</div>"
+        f'<div class="tags"><span class="tag tag-price_drop">price drop</span></div>'
+        f'<div class="store">{html.escape(store)}</div>'
+        f"</article>"
+    )
+
+
+def _sorted_finds(finds, today) -> List[dict]:
+    """Eligible finds in CATEGORIES order, biggest discount fraction first."""
+    rank = {c: i for i, c in enumerate(CATEGORIES)}
+    return sorted(
+        _eligible_finds(finds, today),
+        key=lambda e: (rank[e["category"]], -(1 - e["current_price"] / e["list_price"])),
+    )
+
+
+def _suggestions_html(entries: List[dict]) -> str:
+    sections = []
+    for cat in CATEGORIES:
+        cards = "".join(_find_card_html(e) for e in entries if e["category"] == cat)
+        if cards:
+            sections.append(
+                f'<section class="category-group" data-category="{html.escape(cat)}">'
+                f'<h2 class="category-heading">{html.escape(cat)}</h2>'
+                f'<div class="grid">{cards}</div>'
+                '</section>'
+            )
+    return (
+        '<div class="section-block">'
+        '<h2 class="section-title">Suggestions for you</h2>'
+        f'{"".join(sections)}'
+        '</div>'
+    )
 
 
 def _empty_state(timestamp_et: str) -> str:
@@ -392,6 +452,12 @@ main{max-width:1200px;margin:0 auto;padding:0 24px 64px}
   background-repeat:no-repeat;background-position:right 12px center;background-size:12px;
 }
 .filter-select:focus{outline:none;border-color:var(--accent)}
+.section-block{margin-bottom:24px}
+.section-title{
+  font-size:18px;font-weight:700;color:var(--ink);
+  text-transform:uppercase;letter-spacing:.12em;margin:0 0 20px;
+  padding-bottom:10px;border-bottom:1px solid var(--line);
+}
 .category-group{margin-bottom:36px}
 .category-heading{
   font-size:13px;font-weight:600;color:var(--muted);
@@ -482,6 +548,7 @@ _JS = """
 (() => {
   const cards = Array.from(document.querySelectorAll('.deal-card'));
   const groups = Array.from(document.querySelectorAll('.category-group'));
+  const blocks = Array.from(document.querySelectorAll('.section-block'));
   const state = { type: 'all', store: 'all' };
   function apply() {
     for (const card of cards) {
@@ -494,6 +561,10 @@ _JS = """
     for (const g of groups) {
       const visible = g.querySelectorAll('.deal-card:not([style*="none"])').length;
       g.style.display = visible === 0 ? 'none' : '';
+    }
+    for (const b of blocks) {
+      const visible = b.querySelectorAll('.deal-card:not([style*="none"])').length;
+      b.style.display = visible === 0 ? 'none' : '';
     }
   }
   const typeSel = document.querySelector('[data-filter-type]');
@@ -519,12 +590,25 @@ _JS = """
 """
 
 
-def render(deals: List[Deal], generated_at: datetime, review_items=None) -> str:
+def render(deals: List[Deal], generated_at: datetime, review_items=None,
+           finds=None, today=None) -> str:
     timestamp_et = _to_et_string(generated_at)
 
     review_html = _review_section_html(review_items or [])
+    find_entries = _sorted_finds(finds, today)
 
-    if not deals:
+    if find_entries:
+        find_stores = {_find_store(e).lower() for e in find_entries if _find_store(e)}
+        body = _filter_bar(deals, find_stores)
+        if deals:
+            body += (
+                '<div class="section-block">'
+                '<h2 class="section-title">Your list</h2>'
+                f'{_grouped_deals_html(deals)}'
+                '</div>'
+            )
+        body += _suggestions_html(find_entries) + review_html
+    elif not deals:
         body = _empty_state(timestamp_et) + review_html
     else:
         body = _filter_bar(deals) + _grouped_deals_html(deals) + review_html

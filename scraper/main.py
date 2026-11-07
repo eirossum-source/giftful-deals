@@ -364,7 +364,8 @@ def run(
         except Exception as exc:  # finds are extra; never block the deals email
             log.error(f"finds check failed: {exc}")
 
-    html = render(deals, generated_at=now, review_items=review_items)
+    html = render(deals, generated_at=now, review_items=review_items,
+                  finds=finds_ledger, today=today)
     output_path.parent.mkdir(parents=True, exist_ok=True)
     output_path.write_text(html, encoding="utf-8")
 

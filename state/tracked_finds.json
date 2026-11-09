@@ -1,0 +1,124 @@
+{
+  "checked_at": "2026-11-09",
+  "dropped": [
+    {
+      "name": "Fifa Box Fit Hoodie, Black / Fifa Italia 90",
+      "reason": "no longer on sale (no crossed-out price, now $89.99)",
+      "url": "https://cottonon.com/US/fifa-box-fit-hoodie/3613947-06.html"
+    },
+    {
+      "name": "Fifa Box Fit Crew Sweater, Black / Fifa Italia 90",
+      "reason": "no longer on sale (no crossed-out price, now $79.99)",
+      "url": "https://cottonon.com/US/fifa-box-fit-crew-sweater/3613946-02.html"
+    },
+    {
+      "name": "Biggie Music Box Fit Hoodie, Grey Marle",
+      "reason": "no longer on sale (no crossed-out price, now $35.00)",
+      "url": "https://cottonon.com/US/biggie-music-box-fit-hoodie/3612726-15.html"
+    },
+    {
+      "name": "Fifa Box Fit T-Shirt, Indigo",
+      "reason": "no longer on sale (no crossed-out price, now $49.99)",
+      "url": "https://cottonon.com/US/fifa-box-fit-t-shirt/3613960-01.html"
+    },
+    {
+      "name": "Fifa Box Fit T-Shirt, White / France 98",
+      "reason": "no longer on sale (no crossed-out price, now $49.99)",
+      "url": "https://cottonon.com/US/fifa-box-fit-t-shirt/3613960-02.html"
+    },
+    {
+      "name": "Pink Floyd Music Loose Fit T-Shirt",
+      "reason": "no longer on sale (no crossed-out price, now $24.98)",
+      "url": "https://cottonon.com/US/pink-floyd-music-loose-fit-t-shirt/3612085-166.html"
+    },
+    {
+      "name": "Everyday Fit Graphic T-Shirt, Vintage White / USA Football",
+      "reason": "no longer on sale (no crossed-out price, now $39.99)",
+      "url": "https://cottonon.com/US/everyday-fit-graphic-t-shirt/3613891-16.html"
+    },
+    {
+      "name": "Thank God Sticker Pack (6 pack)",
+      "reason": "no longer on sale (no crossed-out price, now $5.00)",
+      "url": "https://thankgod.com/products/sticker-pack"
+    },
+    {
+      "name": "Anker 622 Magnetic Battery (MagGo)",
+      "reason": "no longer on sale (no crossed-out price, now $47.99)",
+      "url": "https://www.anker.com/products/a1614"
+    }
+  ],
+  "items": {
+    "nike.com/t/air-force-1-07-lv8-mens-shoes-5PBzpHVE/IM5752-300": {
+      "category": "Shoes",
+      "current_price": 99.97,
+      "found_at": "2026-11-09",
+      "image_url": "https://static.nike.com/a/images/t_web_pw_592_v2/f_auto/u_9ddf04c7-2a9a-4d76-add1-d15af8f0263d,c_scale,fl_relative,w_1.0,h_1.0,fl_layer_apply/8bdab2cf-c3d0-41b5-af43-eb3b5e5bab04/AIR+FORCE+1+%2707+LV8+SPORT.png",
+      "last_checked": "2026-11-09",
+      "list_price": 125.0,
+      "misses": 0,
+      "name": "Nike Air Force 1 '07 LV8",
+      "on_sale": true,
+      "similar_to": "Nike Dunk Low Retro Men's Shoes",
+      "store": "nike.com",
+      "url": "https://www.nike.com/t/air-force-1-07-lv8-mens-shoes-5PBzpHVE/IM5752-300"
+    },
+    "nike.com/t/air-max-95-big-bubble-mens-shoes-RrmHX5n7/IB6830-001": {
+      "category": "Shoes",
+      "current_price": 160.97,
+      "found_at": "2026-11-09",
+      "image_url": "https://static.nike.com/a/images/t_web_pw_592_v2/f_auto/u_9ddf04c7-2a9a-4d76-add1-d15af8f0263d,c_scale,fl_relative,w_1.0,h_1.0,fl_layer_apply/8c0b2d20-1c91-41ef-b7ad-dd610fc276ee/NIKE+AIR+MAX+95+BIG+BUBBLE+SE.png",
+      "last_checked": "2026-11-09",
+      "list_price": 200.0,
+      "misses": 0,
+      "name": "Nike Air Max 95 Big Bubble",
+      "on_sale": true,
+      "similar_to": "Nike Dunk Low Retro Men's Shoes",
+      "store": "nike.com",
+      "url": "https://www.nike.com/t/air-max-95-big-bubble-mens-shoes-RrmHX5n7/IB6830-001"
+    },
+    "nike.com/t/free-metcon-7-amp-mens-training-shoes-1Z7a2Pdv/IR0278-001": {
+      "category": "Shoes",
+      "current_price": 79.97,
+      "found_at": "2026-11-09",
+      "image_url": "https://static.nike.com/a/images/t_web_pw_592_v2/f_auto/u_9ddf04c7-2a9a-4d76-add1-d15af8f0263d,c_scale,fl_relative,w_1.0,h_1.0,fl_layer_apply/b2c4690c-2fe3-4be6-bc6f-eb0cfb9dfe3c/NIKE+FREE+METCON+7+AMP.png",
+      "last_checked": "2026-11-09",
+      "list_price": 135.0,
+      "misses": 0,
+      "name": "Nike Free Metcon 7 AMP",
+      "on_sale": true,
+      "similar_to": "Nike Dunk Low Retro Men's Shoes",
+      "store": "nike.com",
+      "url": "https://www.nike.com/t/free-metcon-7-amp-mens-training-shoes-1Z7a2Pdv/IR0278-001"
+    },
+    "nike.com/t/pegasus-42-mens-road-running-shoes-S1bYkOza/IB1873-008": {
+      "category": "Shoes",
+      "current_price": 82.97,
+      "found_at": "2026-11-09",
+      "image_url": "https://static.nike.com/a/images/t_web_pw_592_v2/f_auto/u_9ddf04c7-2a9a-4d76-add1-d15af8f0263d,c_scale,fl_relative,w_1.0,h_1.0,fl_layer_apply/ca0587b0-8837-4b8e-90e1-98fa3ae000f5/AIR+ZOOM+PEGASUS+42.png",
+      "last_checked": "2026-11-09",
+      "list_price": 145.0,
+      "misses": 0,
+      "name": "Nike Pegasus 42",
+      "on_sale": true,
+      "similar_to": "Nike Dunk Low Retro Men's Shoes",
+      "store": "nike.com",
+      "url": "https://www.nike.com/t/pegasus-42-mens-road-running-shoes-S1bYkOza/IB1873-008"
+    },
+    "nike.com/t/reactx-rejuven8-mens-shoes-d9QTC07e/IR7543-805": {
+      "category": "Shoes",
+      "current_price": 51.97,
+      "found_at": "2026-11-09",
+      "image_url": "https://static.nike.com/a/images/t_web_pw_592_v2/f_auto/u_9ddf04c7-2a9a-4d76-add1-d15af8f0263d,c_scale,fl_relative,w_1.0,h_1.0,fl_layer_apply/67c95caa-1991-4a03-b3ea-54a8200ce318/NIKE+REACTX+REJUVEN8+-+PRINT.png",
+      "last_checked": "2026-11-09",
+      "list_price": 85.0,
+      "misses": 0,
+      "name": "Nike ReactX Rejuven8",
+      "on_sale": true,
+      "similar_to": "Nike Dunk Low Retro Men's Shoes",
+      "store": "nike.com",
+      "url": "https://www.nike.com/t/reactx-rejuven8-mens-shoes-d9QTC07e/IR7543-805"
+    }
+  },
+  "source_generated_at": "2026-11-09T03:03:44Z",
+  "version": 1
+}

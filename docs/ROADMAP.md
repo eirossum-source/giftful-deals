@@ -75,7 +75,7 @@ owner approves the first measured Claude-job usage; S5a if the quality test is p
 ### Stage 4 — Email and page
 - [x] **S4a — Photo-grid email by category** — his own list's deals first (all of them, owner request 2026-11-06), then "Suggestions for you": 2–4 finds per category, about 16; show only finds with `on_sale: true` from a `state/tracked_finds.json` whose `checked_at` is this run's date (a crashed finds check leaves last run's flags behind) (plan: `docs/superpowers/plans/2026-11-06-S4a-photo-grid-email.md`)
 - [x] **S4b — Page by category** — his list first, then "Suggestions for you" by category, every on-sale find, no cap (plan: `docs/superpowers/plans/2026-11-07-S4b-page-by-category.md`)
-- [ ] **S4c — Like / dislike on new finds** — 👍 / 👎 on each suggestion in the email and page. 👍 = keep showing this item and find more like it; 👎 = stop showing this item and find less like it. Likes teach the finder; votes are prefilled GitHub issues read into `state/feedback.json` (plan: `docs/superpowers/plans/2026-11-10-S4c-like-dislike.md`)
+- [x] **S4c — Like / dislike on new finds** — 👍 / 👎 on each suggestion in the email and page. 👍 = keep showing this item and find more like it; 👎 = stop showing this item and find less like it. Likes teach the finder; votes are prefilled GitHub issues read into `state/feedback.json` (plan: `docs/superpowers/plans/2026-11-10-S4c-like-dislike.md`)
 
 ### Stage 5 — Live search
 - [ ] **S5a — Quality test** — about 10 Google Shopping searches incl. "swim trunks" and "christian tees"; read Gemini daily limit; stop if poor

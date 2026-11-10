@@ -466,3 +466,72 @@ def test_empty_state_with_empty_fresh_ledger():
 def test_email_sets_phone_viewport():
     html = build_html([])
     assert '<meta name="viewport" content="width=device-width,initial-scale=1">' in html
+
+
+# --- S4c: like / dislike buttons on suggestions ---------------------------------------
+
+def _fb_html(entries=None, deals=None):
+    entries = entries if entries is not None else [_find("Fancy Sneaker", url="https://shoestore.com/a?x=1&y=2")]
+    return build_html(deals or [_list_deal()], _ledger(entries), TODAY)
+
+
+def _fb_text(entries=None):
+    entries = entries if entries is not None else [_find("Fancy Sneaker", url="https://shoestore.com/a?x=1&y=2")]
+    return build_text([_list_deal()], _ledger(entries), TODAY)
+
+
+def test_find_card_has_feedback_links():
+    from emailer import _find_card
+    from feedback import vote_link
+    entry = _find("Fancy Sneaker")
+    card = _find_card(entry)
+    assert card["feedback"] == {"like": vote_link("like", entry), "dislike": vote_link("dislike", entry)}
+
+
+def test_deal_cards_have_no_feedback():
+    from emailer import _deal_card
+    assert "feedback" not in _deal_card(_list_deal())
+
+
+def test_html_find_has_vote_links_escaped():
+    from emailer import _find_card
+    html = _fb_html()
+    assert "More like this" in html and "Not for me" in html
+    like = _find_card(_find("Fancy Sneaker", url="https://shoestore.com/a?x=1&y=2"))["feedback"]["like"]
+    assert f'href="{like.replace("&", "&amp;")}"' in html
+    assert f'href="{like}"' not in html or "&" not in like
+
+
+def test_html_only_find_card_gets_buttons():
+    html = _fb_html()
+    assert html.count("More like this") == 1
+    assert html.count("Not for me") == 1
+
+
+def test_html_hint_under_suggestions_heading():
+    html = _fb_html()
+    hint = "opens GitHub"
+    assert hint in html
+    assert html.index("Suggestions for you") < html.index(hint)
+
+
+def test_no_finds_no_feedback_in_html_or_text():
+    html = build_html([_list_deal()], _ledger([]), TODAY)
+    text = build_text([_list_deal()], _ledger([]), TODAY)
+    for out in (html, text):
+        assert "More like this" not in out and "Not for me" not in out and "opens GitHub" not in out
+
+
+def test_text_find_has_vote_links_and_hint():
+    from emailer import _find_card
+    text = _fb_text()
+    card = _find_card(_find("Fancy Sneaker", url="https://shoestore.com/a?x=1&y=2"))["feedback"]
+    assert f"  More like this: {card['like']}" in text
+    assert f"  Not for me: {card['dislike']}" in text
+    assert 'opens GitHub — tap "Submit new issue" to send it.' in text
+    assert text.index("Suggestions for you") < text.index("opens GitHub")
+
+
+def test_text_deal_has_no_vote_lines():
+    text = build_text([_list_deal()], _ledger([]), TODAY)
+    assert "More like this" not in text

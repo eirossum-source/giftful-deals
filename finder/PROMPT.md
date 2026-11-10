@@ -33,8 +33,13 @@ straight to "Save". Never retry the same search with small wording changes to ge
   ```
   Do not repeat those URLs (the checker keeps earlier finds alive on its own while they stay on
   sale).
-- Feedback from likes / dislikes: not available yet (added in a later milestone). When a
-  feedback file is added, these instructions will name it.
+- `state/feedback.json` — Isaac's thumbs-up / thumbs-down votes on your earlier suggestions.
+  Read it from `main` with `git show origin/main:state/feedback.json 2>/dev/null || echo "no votes"`;
+  if it is missing, there are no votes yet. Its `items` object is keyed by a URL key, and each
+  entry has `vote` (`"like"` or `"dislike"`), `url`, `name`, `category` and `store`.
+  - `"vote": "like"` is a strong taste signal: find more like them (same brand, style, category).
+  - `"vote": "dislike"` means that URL is never suggested again, and close look-alikes (same
+    brand and style) are avoided too.
 
 From these, write yourself a short taste summary per category before searching: brands, styles,
 fits, colors, themes and price range (for example "Christian streetwear tees, boxy/heavyweight,
@@ -102,8 +107,8 @@ shows the item's own link, name, photo and both prices):
   skip items marked sold out; the checker confirms stock later.
 - `url` is that one product's own page (never a collection or search results page).
 - It is **not already his**: not a URL in `state/inventory.json` (ignore tracking parameters
-  when comparing) and not the same product name as anything in `state/inventory.json` or
-  `state/taste.json`.
+  when comparing), not a disliked URL in `state/feedback.json`, and not the same product name
+  as anything in `state/inventory.json` or `state/taste.json`.
 - It is close to his taste: you could name the item in his taste it is most similar to.
 
 Men's sizing and styles only. No size filtering.

@@ -7,6 +7,7 @@ on:
 
 permissions:
   contents: write
+  issues: write
 
 jobs:
   run:
@@ -47,6 +48,8 @@ jobs:
           RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
           TO_EMAIL: ${{ secrets.TO_EMAIL }}
           FINDS_INCOMING: ${{ runner.temp }}/finds.json
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          FEEDBACK_PROCESSED: ${{ runner.temp }}/feedback_issues.txt
         run: python scraper/main.py
 
       - name: Commit updated deals page, inventory, and review log
@@ -74,12 +77,29 @@ jobs:
             git add state/tracked_finds.json
             changed="${changed} state/tracked_finds.json"
           fi
+          if [ -n "$(git status --porcelain state/feedback.json)" ]; then
+            git add state/feedback.json
+            changed="${changed} state/feedback.json"
+          fi
           if [ -n "$changed" ]; then
             git commit -m "chore: update deals page, inventory, review log"
             git pull --rebase origin main
             git push
           else
             echo "No tracked output changes."
+          fi
+
+      - name: Close recorded feedback issues
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          # Runs only after the push succeeded, so an unpushed vote stays open and is re-read.
+          if [ -f "$RUNNER_TEMP/feedback_issues.txt" ]; then
+            while read -r n; do
+              [ -n "$n" ] || continue
+              gh issue close "$n" --repo "$GITHUB_REPOSITORY" \
+                --comment "Recorded in state/feedback.json." || true
+            done < "$RUNNER_TEMP/feedback_issues.txt"
           fi
 
       - name: Upload errors.log

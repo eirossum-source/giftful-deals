@@ -31,6 +31,7 @@ from validator import (
 )
 from price_checker import recheck_via_playwright
 from taste import load_taste, refresh_taste
+import feedback
 from finds import check_finds, load_incoming, load_ledger, owned_keys, save_ledger
 
 
@@ -128,6 +129,9 @@ def run(
     page=None,
     finds_incoming_path: Optional[Path] = None,
     finds_ledger_path: Optional[Path] = None,
+    feedback_path: Optional[Path] = None,
+    fetch_feedback: Optional[Callable] = None,
+    feedback_processed_path: Optional[Path] = None,
     taste_path: Optional[Path] = None,
 ) -> dict:
     from curl_cffi import requests
@@ -356,10 +360,17 @@ def run(
 
     finds_ledger = None
     if finds_ledger_path is not None:
+        liked, disliked = frozenset(), frozenset()
+        try:
+            liked, disliked = _read_feedback(
+                feedback_path, fetch_feedback, feedback_processed_path
+            )
+        except Exception as exc:  # votes are extra; never block the run
+            log.error(f"feedback read failed: {exc}")
         try:
             finds_ledger = _check_finds(
                 items, prev_state, finds_incoming_path, finds_ledger_path, taste_path,
-                check_price, session, page, log, today,
+                check_price, session, page, log, today, liked, disliked,
             )
         except Exception as exc:  # finds are extra; never block the deals email
             log.error(f"finds check failed: {exc}")
@@ -419,9 +430,33 @@ def run(
     return summary
 
 
+def _read_feedback(feedback_path, fetch_feedback, processed_path):
+    """Record new votes in state/feedback.json; return (liked, disliked) url keys."""
+    if feedback_path is None:
+        return frozenset(), frozenset()
+    state = feedback.load_feedback(feedback_path)
+    if fetch_feedback is not None:
+        votes, numbers = [], []
+        for issue in fetch_feedback() or []:
+            vote = feedback.parse_issue(issue, feedback.OWNER)
+            if vote is not None:
+                votes.append(vote)
+                numbers.append(vote["issue"])
+        if votes:
+            state = feedback.merge_votes(state, votes)
+            feedback.save_feedback(feedback_path, state)
+        if processed_path is not None:
+            Path(processed_path).parent.mkdir(parents=True, exist_ok=True)
+            Path(processed_path).write_text(
+                "".join(f"{n}\n" for n in numbers), encoding="utf-8"
+            )
+    liked, disliked = feedback.vote_keys(state)
+    return frozenset(liked), frozenset(disliked)
+
+
 def _check_finds(
     items, prev_state, incoming_path, ledger_path, taste_path,
-    check_price, session, page, log, today,
+    check_price, session, page, log, today, liked=frozenset(), disliked=frozenset(),
 ) -> dict:
     """Re-check the finder's finds and tracked finds; write and return the ledger."""
     taste_state = load_taste(taste_path) if taste_path is not None else {"items": {}}
@@ -436,6 +471,8 @@ def _check_finds(
         owned_urls=owned_urls,
         owned_names=owned_names,
         today=today,
+        liked=liked,
+        disliked=disliked,
     )
     save_ledger(ledger_path, ledger)
     return ledger
@@ -493,6 +530,8 @@ if __name__ == "__main__":
         repo_root = Path(__file__).resolve().parents[1]
         # The workflow copies state/finds.json from the claude/finds branch here.
         incoming = os.environ.get("FINDS_INCOMING")
+        gh_token = os.environ.get("GITHUB_TOKEN")
+        processed = os.environ.get("FEEDBACK_PROCESSED")
         try:
             run(
                 fetch_items=lambda **_: items,
@@ -501,6 +540,12 @@ if __name__ == "__main__":
                 page=page,
                 finds_incoming_path=Path(incoming) if incoming else None,
                 finds_ledger_path=repo_root / "state" / "tracked_finds.json",
+                feedback_path=repo_root / "state" / "feedback.json",
+                fetch_feedback=(
+                    (lambda: feedback.fetch_open_issues(feedback.REPO, gh_token))
+                    if gh_token else None
+                ),
+                feedback_processed_path=Path(processed) if processed else None,
                 taste_path=repo_root / "state" / "taste.json",
             )
         finally:

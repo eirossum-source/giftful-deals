@@ -6,7 +6,8 @@ from typing import Iterable, List
 from urllib.parse import quote, urlparse
 from zoneinfo import ZoneInfo
 
-from emailer import _eligible_finds
+from emailer import FEEDBACK_HINT, _eligible_finds
+from feedback import vote_link
 from filter import Deal, DealType
 from finds import CATEGORIES
 from giftful import GIFTFUL_URL
@@ -291,6 +292,19 @@ def _find_store(entry: dict) -> str:
     return (entry.get("store") or "").strip()
 
 
+def _feedback_html(entry: dict) -> str:
+    like = html.escape(vote_link("like", entry))
+    dislike = html.escape(vote_link("dislike", entry))
+    return (
+        '<div class="feedback">'
+        f'<a class="vote vote-like" href="{like}" target="_blank" rel="noopener noreferrer" '
+        'aria-label="More like this" title="More like this">\U0001F44D</a>'
+        f'<a class="vote vote-dislike" href="{dislike}" target="_blank" rel="noopener noreferrer" '
+        'aria-label="Not for me" title="Not for me">\U0001F44E</a>'
+        "</div>"
+    )
+
+
 def _find_card_html(entry: dict) -> str:
     cur, lst = entry["current_price"], entry["list_price"]
     name = html.escape(entry["name"])
@@ -313,6 +327,7 @@ def _find_card_html(entry: dict) -> str:
         f"</div>"
         f'<div class="tags"><span class="tag tag-price_drop">price drop</span></div>'
         f'<div class="store">{html.escape(store)}</div>'
+        f"{_feedback_html(entry)}"
         f"</article>"
     )
 
@@ -340,6 +355,7 @@ def _suggestions_html(entries: List[dict]) -> str:
     return (
         '<div class="section-block">'
         '<h2 class="section-title">Suggestions for you</h2>'
+        f'<p class="section-hint">{html.escape(FEEDBACK_HINT)}</p>'
         f'{"".join(sections)}'
         '</div>'
     )
@@ -502,6 +518,14 @@ main{max-width:1200px;margin:0 auto;padding:0 24px 64px}
 .tags{padding:10px 14px;display:flex;flex-wrap:wrap;gap:6px}
 .tag{font-size:10px;color:var(--muted);background:#1a1c1e;padding:3px 8px;border-radius:6px;text-transform:capitalize}
 .store{padding:0 14px 14px;color:var(--muted);font-size:11px}
+.feedback{padding:0 14px 14px;display:flex;gap:8px}
+.vote{
+  background:#1a1c1e;border:1px solid var(--line);border-radius:8px;
+  padding:4px 12px;font-size:14px;line-height:1.4;text-decoration:none;
+  transition:border-color .15s;
+}
+.vote:hover{border-color:var(--accent)}
+.section-hint{font-size:13px;color:var(--muted);margin:-12px 0 20px}
 .store-winner{padding:8px 14px 4px}
 .winner-name{font-size:11px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px}
 .stores-secondary{list-style:none;margin:0;padding:0 14px 12px;display:flex;flex-direction:column;gap:4px}

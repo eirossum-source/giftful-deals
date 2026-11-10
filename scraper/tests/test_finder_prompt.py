@@ -85,3 +85,25 @@ def test_example_parses_with_all_fields():
         assert find["category"] in CATEGORIES
         assert find["url"].startswith("https://")
         assert find["seen_price"] < find["seen_list_price"]
+
+
+def test_prompt_reads_feedback_file_and_explains_votes():
+    text = _text()
+    assert "state/feedback.json" in text
+    assert "find more like them" in text            # likes are a taste signal
+    assert "never suggested again" in text          # disliked URLs are excluded for good
+    assert "close look-alikes" in text              # dislikes also rule out near copies
+    for field in ('"vote"', '"like"', '"dislike"', '"url"', '"name"',
+                  '"category"', '"store"'):
+        assert field in text, field                 # shape of feedback.json is described
+    assert "not available yet" not in text          # old placeholder is gone
+
+
+def test_prompt_not_already_his_excludes_disliked_urls():
+    text = _text()
+    start = text.index("## 4. What counts as a find")
+    end = text.index("## 5. Save")
+    section = text[start:end]
+    assert "not already his" in section
+    assert "disliked" in section
+    assert "state/feedback.json" in section

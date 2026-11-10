@@ -546,3 +546,53 @@ def test_no_deals_and_no_finds_still_shows_empty_state():
 def test_js_hides_empty_section_blocks():
     html = _render_f([_deal()], _ledger(_find()))
     assert ".section-block" in html
+
+
+# --- S4c: like / dislike buttons on suggestions ---------------------------------------
+
+def test_find_card_has_vote_buttons_escaped():
+    from feedback import vote_link
+    entry = _find("Fancy Tee", url="https://shop.example.com/p?a=1&b=2")
+    html = _render_f([_deal()], _ledger(entry))
+    soup = BeautifulSoup(html, "html.parser")
+    fb = soup.select("div.feedback")
+    assert len(fb) == 1
+    like = fb[0].select_one("a.vote.vote-like")
+    dislike = fb[0].select_one("a.vote.vote-dislike")
+    assert like["href"] == vote_link("like", entry)
+    assert dislike["href"] == vote_link("dislike", entry)
+    assert like["aria-label"] == "More like this" and dislike["aria-label"] == "Not for me"
+    assert like["target"] == "_blank" and like["rel"] == ["noopener", "noreferrer"]
+    assert like.get_text() == "\U0001F44D" and dislike.get_text() == "\U0001F44E"
+    assert like["title"] == "More like this" and dislike["title"] == "Not for me"
+    assert "&amp;" in html and 'href="' + vote_link("like", entry) + '"' not in html
+
+
+def test_feedback_comes_after_store_line():
+    html = _render_f([_deal()], _ledger(_find()))
+    assert html.index('class="store"') < html.index('class="feedback"')
+
+
+def test_deal_cards_have_no_vote_buttons():
+    soup = BeautifulSoup(render([_deal()], generated_at=NOW), "html.parser")
+    assert not soup.select("div.feedback")
+    assert "vote-like" not in soup.get_text()
+
+
+def test_section_hint_under_suggestions_title():
+    soup = BeautifulSoup(_render_f([_deal()], _ledger(_find())), "html.parser")
+    title = soup.find("h2", class_="section-title", string="Suggestions for you")
+    hint = title.find_next_sibling("p")
+    assert "section-hint" in hint["class"]
+    assert 'opens GitHub — tap "Submit new issue" to send it.' in hint.get_text()
+
+
+def test_no_finds_no_hint_or_buttons():
+    html = render([_deal()], generated_at=NOW)
+    body = html.split("</style>", 1)[1]
+    assert 'class="feedback"' not in body and "section-hint" not in body
+
+
+def test_vote_css_present():
+    html = _render_f([_deal()], _ledger(_find()))
+    assert ".feedback" in html and ".vote" in html and ".section-hint" in html

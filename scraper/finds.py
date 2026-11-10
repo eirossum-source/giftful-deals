@@ -18,7 +18,8 @@ from inventory import normalize_url
 
 CATEGORIES = ("Accessories", "Athleisure", "Casual", "Jackets", "Shoes", "Tech")
 MAX_MISSES = 2  # unreadable this many runs in a row -> dropped
-MAX_TRACKED = 60  # bounds run time; newest finds kept
+MAX_TRACKED = 60  # bounds run time; newest unliked finds kept (liked ones are exempt)
+DISLIKED_REASON = "you said \U0001F44E"
 
 
 def url_key(url: str) -> str:
@@ -158,13 +159,20 @@ def check_finds(
     owned_urls: Set[str],
     owned_names: Set[str],
     today: Optional[date] = None,
+    liked: Iterable[str] = frozenset(),
+    disliked: Iterable[str] = frozenset(),
 ) -> dict:
     """Merge new finds into the ledger, re-check every tracked find, return the new ledger.
+
+    `liked` / `disliked` are `url_key`s he voted on: disliked finds are never (re)added and are
+    removed; liked finds stay tracked (off sale) when they go off sale or sell out.
 
     `check(url)` returns a PriceResult. `resolve(name, url, price_result)` returns
     `(price_result, status, reason, identity_score)` like main._resolve_identity.
     """
     today = today or date.today()
+    liked = set(liked or ())
+    disliked = set(disliked or ())
     items = dict((ledger or {}).get("items") or {})
     source = (ledger or {}).get("source_generated_at")
     dropped: list = []
@@ -177,21 +185,29 @@ def check_finds(
                 _drop(dropped, raw, reason)
                 continue
             key = url_key(entry["url"])
+            if key in disliked:
+                _drop(dropped, entry, DISLIKED_REASON)
+                continue
             if key not in items:
                 items[key] = entry
         if generated_at:
             source = generated_at
 
     for key, entry in list(items.items()):
+        if key in disliked:
+            _drop(dropped, entry, DISLIKED_REASON)
+            del items[key]
+            continue
         if key in owned_urls or name_key(entry.get("name")) in owned_names:
             _drop(dropped, entry, "already his (on his list or checked off)")
             del items[key]
 
-    if len(items) > MAX_TRACKED:
-        ordered = sorted(items.items(), key=lambda kv: kv[1].get("found_at") or "", reverse=True)
-        for _, entry in ordered[MAX_TRACKED:]:
+    unliked = [(k, e) for k, e in items.items() if k not in liked]
+    if len(unliked) > MAX_TRACKED:
+        ordered = sorted(unliked, key=lambda kv: kv[1].get("found_at") or "", reverse=True)
+        for key, entry in ordered[MAX_TRACKED:]:
             _drop(dropped, entry, f"over the {MAX_TRACKED}-find cap")
-        items = dict(ordered[:MAX_TRACKED])
+            del items[key]
 
     kept: dict = {}
     for key, entry in items.items():
@@ -213,6 +229,13 @@ def check_finds(
                 _drop(dropped, entry, f"unreadable {entry['misses']} runs in a row ({reason})")
             else:
                 kept[key] = entry
+        elif key in liked and _keeps_when_liked(reason):
+            entry["on_sale"] = False
+            entry["misses"] = 0
+            if result is not None and result.current_price is not None:
+                entry["current_price"] = result.current_price
+                entry["list_price"] = result.list_price
+            kept[key] = entry
         else:
             _drop(dropped, entry, reason)
 
@@ -223,6 +246,11 @@ def check_finds(
         "items": kept,
         "dropped": dropped,
     }
+
+
+def _keeps_when_liked(reason: Optional[str]) -> bool:
+    """A liked find survives going off sale or selling out (not a wrong product)."""
+    return bool(reason) and (reason == "sold out" or reason.startswith("no longer on sale"))
 
 
 def _check_one(entry: dict, check: Callable, resolve: Callable):

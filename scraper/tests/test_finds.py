@@ -337,3 +337,111 @@ def test_owned_finds_do_not_take_cap_slots():
                   owned_urls={url_key(f["url"]) for f in owned})
     assert len(out["items"]) == MAX_TRACKED
     assert not [d for d in out["dropped"] if "cap" in d["reason"]]
+
+
+# --- S4c: likes keep a find, dislikes drop it --------------------------------------
+
+def _run_votes(ledger, incoming, results, liked=(), disliked=(), resolve=_ok):
+    check = _checker(results)
+    out = check_finds(
+        ledger, incoming, check=check, resolve=resolve,
+        owned_urls=set(), owned_names=set(), today=TODAY,
+        liked=frozenset(liked), disliked=frozenset(disliked),
+    )
+    return out, check
+
+
+def _tracked_with_vote(url=URL, **extra):
+    entry = {
+        "url": url, "name": "Faith Boxy Tee", "store": "shop.example.com",
+        "category": "Casual", "image_url": "https://shop.example.com/i.jpg",
+        "similar_to": "", "found_at": "2026-11-01", "last_checked": "2026-11-05",
+        "current_price": 28.0, "list_price": 40.0, "on_sale": True, "misses": 0,
+    }
+    entry.update(extra)
+    return {"version": 1, "source_generated_at": None, "items": {url_key(url): entry}}
+
+
+def test_disliked_incoming_find_is_skipped_and_never_fetched():
+    out, check = _run_votes(load_ledger(None), _incoming(_find()), {URL: SALE},
+                            disliked={url_key(URL)})
+    assert out["items"] == {}
+    assert check.calls == []
+    assert [d["reason"] for d in out["dropped"]] == ["you said \U0001F44E"]
+
+
+def test_disliked_tracked_find_is_removed():
+    out, check = _run_votes(_tracked_with_vote(), _incoming(), {URL: SALE}, disliked={url_key(URL)})
+    assert out["items"] == {}
+    assert check.calls == []
+    assert out["dropped"][0]["reason"] == "you said \U0001F44E"
+    assert out["dropped"][0]["name"] == "Faith Boxy Tee"
+
+
+def test_liked_find_stays_tracked_when_no_longer_on_sale():
+    out, _ = _run_votes(_tracked_with_vote(misses=1), _incoming(), {URL: FULL_PRICE}, liked={url_key(URL)})
+    entry = out["items"][url_key(URL)]
+    assert entry["on_sale"] is False
+    assert entry["misses"] == 0
+    assert entry["current_price"] == 40.0
+    assert out["dropped"] == []
+
+
+def test_liked_find_stays_tracked_when_sold_out():
+    def sold_out(name, url, pr):
+        return pr, "sold_out", "sold out", 0.8
+
+    out, _ = _run_votes(_tracked_with_vote(), _incoming(), {URL: SALE}, liked={url_key(URL)},
+                        resolve=sold_out)
+    entry = out["items"][url_key(URL)]
+    assert entry["on_sale"] is False
+    assert entry["misses"] == 0
+    assert out["dropped"] == []
+
+
+def test_liked_find_keeps_old_prices_when_page_gave_none():
+    def sold_out(name, url, pr):
+        return pr, "sold_out", "sold out", 0.8
+
+    out, _ = _run_votes(_tracked_with_vote(), _incoming(), {URL: NO_PRICE}, liked={url_key(URL)},
+                        resolve=sold_out)
+    entry = out["items"][url_key(URL)]
+    assert entry["current_price"] == 28.0 and entry["list_price"] == 40.0
+
+
+def test_liked_find_comes_back_on_sale():
+    ledger = _tracked_with_vote(on_sale=False, current_price=40.0, list_price=None)
+    out, _ = _run_votes(ledger, _incoming(), {URL: SALE}, liked={url_key(URL)})
+    entry = out["items"][url_key(URL)]
+    assert entry["on_sale"] is True and entry["current_price"] == 28.0
+
+
+def test_liked_find_still_dropped_when_wrong_product():
+    def wrong(name, url, pr):
+        return pr, "review", "title does not match", 0.3
+
+    out, _ = _run_votes(_tracked_with_vote(), _incoming(), {URL: SALE}, liked={url_key(URL)}, resolve=wrong)
+    assert out["items"] == {}
+    assert out["dropped"][0]["reason"] == "title does not match"
+
+
+def test_liked_find_still_dropped_after_repeated_misses():
+    out, _ = _run_votes(_tracked_with_vote(misses=MAX_MISSES - 1), _incoming(), {URL: NO_PRICE},
+                        liked={url_key(URL)})
+    assert out["items"] == {}
+    assert "unreadable" in out["dropped"][0]["reason"]
+
+
+def test_liked_finds_are_exempt_from_the_cap():
+    old_liked = [_find(url=f"https://shop.example.com/liked/{i}", found_at="2026-01-01")
+                 for i in range(3)]
+    fresh = [_find(url=f"https://shop.example.com/p/{i}", found_at="2026-11-01")
+             for i in range(MAX_TRACKED + 3)]
+    results = {f["url"]: SALE for f in old_liked + fresh}
+    out, _ = _run_votes(load_ledger(None), _incoming(*old_liked, *fresh), results,
+                        liked={url_key(f["url"]) for f in old_liked})
+    for f in old_liked:
+        assert url_key(f["url"]) in out["items"]
+    assert len(out["items"]) == MAX_TRACKED + 3
+    capped = [d for d in out["dropped"] if "cap" in d["reason"]]
+    assert len(capped) == 3

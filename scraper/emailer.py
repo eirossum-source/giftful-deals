@@ -8,6 +8,7 @@ from typing import Dict, List, Optional
 import resend
 
 from filter import Deal, DealType, _effective_reference_price
+from feedback import vote_link
 from finds import CATEGORIES
 
 
@@ -151,6 +152,10 @@ def _find_card(entry: dict) -> dict:
         "types": [],
         "alts": [],
         "discount": 1 - cur / lst,
+        "feedback": {
+            "like": vote_link("like", entry),
+            "dislike": vote_link("dislike", entry),
+        },
     }
 
 
@@ -191,6 +196,23 @@ def select_grid(deals: List[Deal], finds_ledger: Optional[dict], today: Optional
         for c in order
         if shown[c]
     ]
+
+
+FEEDBACK_HINT = '\U0001F44D / \U0001F44E opens GitHub \u2014 tap "Submit new issue" to send it.'
+
+
+def _feedback_html(card: dict) -> str:
+    fb = card.get("feedback")
+    if not fb:
+        return ""
+    style = f"color:{ACCENT};font-size:13px;text-decoration:none"
+    return (
+        '<div style="margin-top:8px;font-size:13px">'
+        f'<a href="{html_mod.escape(fb["like"])}" style="{style}">\U0001F44D More like this</a>'
+        '<span style="color:#888"> &nbsp;&middot;&nbsp; </span>'
+        f'<a href="{html_mod.escape(fb["dislike"])}" style="{style}">\U0001F44E Not for me</a>'
+        "</div>"
+    )
 
 
 def _card_html(card: dict) -> str:
@@ -235,7 +257,7 @@ def _card_html(card: dict) -> str:
         f'<a href="{url}" style="text-decoration:none;color:#1a1d1b">'
         f'<div style="font-size:14px;font-weight:600;margin-top:2px">{name}</div></a>'
         f'<div style="margin-top:6px;font-size:14px">{price}</div>'
-        f"{_promos_html(card['promos'])}{alts}"
+        f"{_promos_html(card['promos'])}{alts}{_feedback_html(card)}"
         "</td></tr></table>"
     )
 
@@ -315,6 +337,8 @@ def build_html(deals: List[Deal], finds_ledger: Optional[dict] = None,
                     'padding-top:20px;border-top:1px solid #e7ebe9">Suggestions for you</div>'
                     '<div style="font-size:13px;color:#888;margin:2px 6px 0">'
                     "On sale now, picked to match your taste.</div>"
+                    '<div style="font-size:13px;color:#888;margin:2px 6px 0">'
+                    f"{html_mod.escape(FEEDBACK_HINT)}</div>"
                 )
                 heading_done = True
             parts.append(_section_html(sec))
@@ -360,6 +384,10 @@ def _text_card(card: dict, lines: List[str]) -> None:
     for promo in card["promos"]:
         lines.append(f"  Code: {promo.code} — {promo.description}")
     lines.append(f"  {card['url']}")
+    fb = card.get("feedback")
+    if fb:
+        lines.append(f"  More like this: {fb['like']}")
+        lines.append(f"  Not for me: {fb['dislike']}")
     for a_name, a_url, a_price in card["alts"]:
         lines.append(f"  Also at: {a_name} — {_fmt_price(a_price)}")
         lines.append(f"    {a_url}")
@@ -380,6 +408,7 @@ def build_text(deals: List[Deal], finds_ledger: Optional[dict] = None,
         for section in select_grid(deals, finds_ledger, today):
             if section["part"] == "finds" and not heading_done:
                 lines.append("--- Suggestions for you ---")
+                lines.append(FEEDBACK_HINT)
                 lines.append("")
                 heading_done = True
             lines.append(f"== {section['category']} ==")

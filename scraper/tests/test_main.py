@@ -1179,3 +1179,126 @@ def test_run_passes_ledger_and_run_date_to_render(tmp_path, monkeypatch):
     assert seen["today"] == date(2026, 11, 9)
     assert seen["finds"]["checked_at"] == "2026-11-09"
     assert "Sale Tee" in (tmp_path / "index.html").read_text()
+
+
+# --- S4c: votes are read, saved and applied to the finds ----------------------------
+
+def _vote_issue(vote, url, number, login="someone", created_at="2026-11-09T05:00:00Z"):
+    return {
+        "number": number, "user": {"login": login}, "created_at": created_at,
+        "body": ("<!-- giftful-feedback v1 -->\n"
+                 f"vote: {vote}\nurl: {url}\nname: Sale Tee\ncategory: Casual\n"
+                 "store: shop.example.com\n"),
+    }
+
+
+def _run_with_feedback(tmp_path, issues, find_urls, fetch_feedback=True, processed=True,
+                       feedback_path=None, price=None):
+    page = "<html><head><title>Sale Tee</title></head><body><h1>Sale Tee</h1></body></html>"
+    price = price or PriceResult(current_price=20.0, list_price=30.0, html=page)
+    incoming = _finds_file(tmp_path, [_a_find(u, "Sale Tee") for u in find_urls])
+    kwargs = {}
+    if fetch_feedback:
+        kwargs["fetch_feedback"] = (lambda: issues) if not callable(issues) else issues
+    run(
+        fetch_items=MagicMock(return_value=[]),
+        check_price=MagicMock(return_value=price),
+        lookup_coupons=MagicMock(return_value=[]),
+        send_email=None,
+        output_path=tmp_path / "index.html",
+        log_path=tmp_path / "errors.log",
+        state_path=tmp_path / "state.json",
+        review_log_path=tmp_path / "review_log.json",
+        now=datetime(2026, 11, 9, 7, 0, 0),
+        finds_incoming_path=incoming,
+        finds_ledger_path=tmp_path / "tracked_finds.json",
+        feedback_path=feedback_path or (tmp_path / "feedback.json"),
+        feedback_processed_path=(tmp_path / "processed.txt") if processed else None,
+        **kwargs,
+    )
+    import json as _json
+    return _json.loads((tmp_path / "tracked_finds.json").read_text())
+
+
+def test_run_applies_dislike_and_records_it(tmp_path, monkeypatch):
+    import json as _json
+    import feedback as fb
+    monkeypatch.setattr(fb, "OWNER", "someone")
+    ledger = _run_with_feedback(
+        tmp_path,
+        [_vote_issue("dislike", "https://shop.example.com/p/tee", 11)],
+        ["https://shop.example.com/p/tee", "https://shop.example.com/p/hat"],
+    )
+    names = {e["url"] for e in ledger["items"].values()}
+    assert names == {"https://shop.example.com/p/hat"}
+    assert [d["reason"] for d in ledger["dropped"]] == ["you said \U0001F44E"]
+    saved = _json.loads((tmp_path / "feedback.json").read_text())
+    assert list(saved["items"].values())[0]["vote"] == "dislike"
+    assert list(saved["items"].values())[0]["issue"] == 11
+    assert (tmp_path / "processed.txt").read_text().split() == ["11"]
+
+
+def test_run_keeps_liked_find_after_it_goes_off_sale(tmp_path, monkeypatch):
+    import feedback as fb
+    monkeypatch.setattr(fb, "OWNER", "someone")
+    full = PriceResult(
+        current_price=30.0,
+        html="<html><head><title>Sale Tee</title></head><body><h1>Sale Tee</h1></body></html>")
+    ledger = _run_with_feedback(
+        tmp_path,
+        [_vote_issue("like", "https://shop.example.com/p/tee", 12)],
+        ["https://shop.example.com/p/tee"], price=full,
+    )
+    entry = next(iter(ledger["items"].values()))
+    assert entry["on_sale"] is False
+    assert ledger["dropped"] == []
+
+
+def test_run_ignores_votes_from_strangers_and_marks_only_accepted(tmp_path, monkeypatch):
+    import feedback as fb
+    monkeypatch.setattr(fb, "OWNER", "someone")
+    ledger = _run_with_feedback(
+        tmp_path,
+        [_vote_issue("dislike", "https://shop.example.com/p/tee", 13, login="stranger")],
+        ["https://shop.example.com/p/tee"],
+    )
+    assert len(ledger["items"]) == 1
+    assert not (tmp_path / "processed.txt").exists() or (tmp_path / "processed.txt").read_text() == ""
+
+
+def test_saved_votes_still_apply_when_no_new_issues(tmp_path):
+    import json as _json
+    from finds import url_key
+    fp = tmp_path / "feedback.json"
+    fp.write_text(_json.dumps({"version": 1, "items": {
+        url_key("https://shop.example.com/p/tee"): {"vote": "dislike", "issue": 1}}}))
+    ledger = _run_with_feedback(tmp_path, [], ["https://shop.example.com/p/tee"],
+                                feedback_path=fp)
+    assert ledger["items"] == {}
+
+
+def test_feedback_failure_does_not_block_run(tmp_path):
+    def boom():
+        raise RuntimeError("github down")
+
+    ledger = _run_with_feedback(tmp_path, boom, ["https://shop.example.com/p/tee"])
+    assert len(ledger["items"]) == 1
+    assert "github down" in (tmp_path / "errors.log").read_text()
+
+
+def test_feedback_not_read_without_ledger_path(tmp_path):
+    called = MagicMock(return_value=[])
+    run(
+        fetch_items=MagicMock(return_value=[]),
+        check_price=MagicMock(),
+        lookup_coupons=MagicMock(return_value=[]),
+        send_email=None,
+        output_path=tmp_path / "index.html",
+        log_path=tmp_path / "errors.log",
+        state_path=tmp_path / "state.json",
+        review_log_path=tmp_path / "review_log.json",
+        now=datetime(2026, 11, 9, 7, 0, 0),
+        fetch_feedback=called,
+        feedback_path=tmp_path / "feedback.json",
+    )
+    called.assert_not_called()

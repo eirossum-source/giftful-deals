@@ -186,10 +186,27 @@ def _extract_css(soup: BeautifulSoup) -> Optional[float]:
         el = soup.select_one(sel)
         if el is None:
             continue
-        price = _to_float(el.get_text())
+        price = _to_float(_live_price_text(el))
         if price is not None:
             return price
     return None
+
+
+# Parts of a price block that are not the live price: crossed-out old prices and
+# screen-reader labels (Cotton On's reads "standard price $89.99, sale price $30").
+_NOT_LIVE_PRICE = (
+    "s, del, strike, compare-at-price, .price-standard, .compare-at-price, "
+    "[class*='strike'], [class*='line-through'], .visually-hidden, .sr-only"
+)
+
+
+def _live_price_text(el) -> str:
+    """Text of a price block with old prices and hidden labels removed."""
+    block = BeautifulSoup(str(el), "lxml")
+    for junk in block.select(_NOT_LIVE_PRICE):
+        junk.decompose()
+    text = block.get_text()
+    return text if _to_float(text) is not None else el.get_text()
 
 
 def extract_price(html: str) -> Optional[float]:
@@ -281,13 +298,16 @@ def extract_list_price(html: str) -> Optional[float]:
         "s.price__sale",
         "del.price",
         ".compare-at-price",
+        "compare-at-price",  # Shopify themes that use a tag, e.g. thankgod.com
+        ".price-standard",  # Salesforce Commerce stores, e.g. cottonon.com
         '[class*="strike"]',
     ]
     for sel in selectors:
         for el in soup.select(sel):
             if _in_other_product_block(el):
                 continue
-            price = _to_float(el.get_text(" ", strip=True))
+            # No separator: Cotton On splits cents into <sup> ("$89<sup>.99</sup>").
+            price = _to_float(el.get_text(strip=True))
             if price is not None:
                 return price
     return None

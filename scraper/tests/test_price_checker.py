@@ -605,3 +605,45 @@ def test_extract_price_prefers_product_group_over_injected_product_block():
     </head><body><span class="price">$219.00</span></body></html>
     """
     assert extract_price(html) == 219.0
+
+
+# --- Sale formats that dropped live finds on 2026-11-09 ---
+
+def test_cottonon_reads_sale_price_not_old_price(read_fixture):
+    # Cotton On lists "standard price $89.99, sale price $30" — the live price is $30.
+    assert extract_price(read_fixture("retailer_cottonon_sale.html")) == 30.0
+
+
+def test_cottonon_old_price_is_the_list_price(read_fixture):
+    assert extract_list_price(read_fixture("retailer_cottonon_sale.html")) == 89.99
+
+
+def test_shopify_compare_at_price_tag_is_the_list_price(read_fixture):
+    html = read_fixture("retailer_shopify_compare_at_tag.html")
+    assert extract_price(html) == 5.0
+    assert extract_list_price(html) == 8.0
+
+
+def test_css_price_ignores_struck_old_price_in_same_block():
+    html = """
+    <html><body>
+      <div class="product-price"><s>$40.00</s> <span>$25.00</span></div>
+    </body></html>
+    """
+    assert extract_price(html) == 25.0
+
+
+def test_css_price_unchanged_when_block_has_one_price(read_fixture):
+    html = '<html><body><div class="product-price">$19.99</div></body></html>'
+    assert extract_price(html) == 19.99
+
+
+def test_empty_compare_at_price_tag_is_not_a_list_price():
+    # Shopify themes leave the tag empty when the item is not on sale.
+    html = """
+    <html><body>
+      <sale-price><span class="money">$12.00</span></sale-price>
+      <compare-at-price class="line-through"></compare-at-price>
+    </body></html>
+    """
+    assert extract_list_price(html) is None

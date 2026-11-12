@@ -1,59 +1,33 @@
 {
-  "checked_at": "2026-11-09",
+  "checked_at": "2026-11-12",
   "dropped": [
     {
-      "name": "Fifa Box Fit Hoodie, Black / Fifa Italia 90",
-      "reason": "no longer on sale (no crossed-out price, now $89.99)",
-      "url": "https://cottonon.com/US/fifa-box-fit-hoodie/3613947-06.html"
-    },
-    {
-      "name": "Fifa Box Fit Crew Sweater, Black / Fifa Italia 90",
-      "reason": "no longer on sale (no crossed-out price, now $79.99)",
-      "url": "https://cottonon.com/US/fifa-box-fit-crew-sweater/3613946-02.html"
-    },
-    {
-      "name": "Biggie Music Box Fit Hoodie, Grey Marle",
-      "reason": "no longer on sale (no crossed-out price, now $35.00)",
-      "url": "https://cottonon.com/US/biggie-music-box-fit-hoodie/3612726-15.html"
-    },
-    {
-      "name": "Fifa Box Fit T-Shirt, Indigo",
-      "reason": "no longer on sale (no crossed-out price, now $49.99)",
-      "url": "https://cottonon.com/US/fifa-box-fit-t-shirt/3613960-01.html"
-    },
-    {
-      "name": "Fifa Box Fit T-Shirt, White / France 98",
-      "reason": "no longer on sale (no crossed-out price, now $49.99)",
-      "url": "https://cottonon.com/US/fifa-box-fit-t-shirt/3613960-02.html"
-    },
-    {
-      "name": "Pink Floyd Music Loose Fit T-Shirt",
-      "reason": "no longer on sale (no crossed-out price, now $24.98)",
-      "url": "https://cottonon.com/US/pink-floyd-music-loose-fit-t-shirt/3612085-166.html"
-    },
-    {
-      "name": "Everyday Fit Graphic T-Shirt, Vintage White / USA Football",
-      "reason": "no longer on sale (no crossed-out price, now $39.99)",
-      "url": "https://cottonon.com/US/everyday-fit-graphic-t-shirt/3613891-16.html"
-    },
-    {
-      "name": "Thank God Sticker Pack (6 pack)",
-      "reason": "no longer on sale (no crossed-out price, now $5.00)",
-      "url": "https://thankgod.com/products/sticker-pack"
-    },
-    {
-      "name": "Anker 622 Magnetic Battery (MagGo)",
-      "reason": "no longer on sale (no crossed-out price, now $47.99)",
-      "url": "https://www.anker.com/products/a1614"
+      "name": "ADSR Drum Machine + 10 Expansions Bundle",
+      "reason": "no longer on sale (no crossed-out price, now $99.00)",
+      "url": "https://www.adsrsounds.com/product/comprised-bundle/adsr-drum-machine-10-expansions-bundle/"
     }
   ],
   "items": {
+    "nike.com/t/air-force-1-07-edge-mens-shoes-XVPIszaq/IM5750-100": {
+      "category": "Shoes",
+      "current_price": 72.97,
+      "found_at": "2026-11-12",
+      "image_url": "https://static.nike.com/a/images/t_web_pw_592_v2/f_auto/u_9ddf04c7-2a9a-4d76-add1-d15af8f0263d,c_scale,fl_relative,w_1.0,h_1.0,fl_layer_apply/b5fe6c36-2d4d-4370-9423-cdd282017a14/AIR+FORCE+1+%2707+EDGE.png",
+      "last_checked": "2026-11-12",
+      "list_price": 125.0,
+      "misses": 0,
+      "name": "Nike Air Force 1 '07 Edge",
+      "on_sale": true,
+      "similar_to": "Nike Dunk Low Retro Men's Shoes",
+      "store": "nike.com",
+      "url": "https://www.nike.com/t/air-force-1-07-edge-mens-shoes-XVPIszaq/IM5750-100"
+    },
     "nike.com/t/air-force-1-07-lv8-mens-shoes-5PBzpHVE/IM5752-300": {
       "category": "Shoes",
-      "current_price": 99.97,
+      "current_price": 87.97,
       "found_at": "2026-11-09",
       "image_url": "https://static.nike.com/a/images/t_web_pw_592_v2/f_auto/u_9ddf04c7-2a9a-4d76-add1-d15af8f0263d,c_scale,fl_relative,w_1.0,h_1.0,fl_layer_apply/8bdab2cf-c3d0-41b5-af43-eb3b5e5bab04/AIR+FORCE+1+%2707+LV8+SPORT.png",
-      "last_checked": "2026-11-09",
+      "last_checked": "2026-11-12",
       "list_price": 125.0,
       "misses": 0,
       "name": "Nike Air Force 1 '07 LV8",
@@ -62,12 +36,26 @@
       "store": "nike.com",
       "url": "https://www.nike.com/t/air-force-1-07-lv8-mens-shoes-5PBzpHVE/IM5752-300"
     },
+    "nike.com/t/air-force-1-07-lx-vibram-mens-shoes-aoSlOBEx/IH1943-002": {
+      "category": "Shoes",
+      "current_price": 79.97,
+      "found_at": "2026-11-12",
+      "image_url": "https://static.nike.com/a/images/t_web_pw_592_v2/f_auto/u_9ddf04c7-2a9a-4d76-add1-d15af8f0263d,c_scale,fl_relative,w_1.0,h_1.0,fl_layer_apply/aaaa391d-1b03-4834-98a6-dcca6039f10c/AIR+FORCE+1+%2707+LX+VIBRAM.png",
+      "last_checked": "2026-11-12",
+      "list_price": 140.0,
+      "misses": 0,
+      "name": "Nike Air Force 1 '07 LX Vibram",
+      "on_sale": true,
+      "similar_to": "Nike Dunk Low Retro Men's Shoes",
+      "store": "nike.com",
+      "url": "https://www.nike.com/t/air-force-1-07-lx-vibram-mens-shoes-aoSlOBEx/IH1943-002"
+    },
     "nike.com/t/air-max-95-big-bubble-mens-shoes-RrmHX5n7/IB6830-001": {
       "category": "Shoes",
       "current_price": 160.97,
       "found_at": "2026-11-09",
       "image_url": "https://static.nike.com/a/images/t_web_pw_592_v2/f_auto/u_9ddf04c7-2a9a-4d76-add1-d15af8f0263d,c_scale,fl_relative,w_1.0,h_1.0,fl_layer_apply/8c0b2d20-1c91-41ef-b7ad-dd610fc276ee/NIKE+AIR+MAX+95+BIG+BUBBLE+SE.png",
-      "last_checked": "2026-11-09",
+      "last_checked": "2026-11-12",
       "list_price": 200.0,
       "misses": 0,
       "name": "Nike Air Max 95 Big Bubble",
@@ -76,12 +64,54 @@
       "store": "nike.com",
       "url": "https://www.nike.com/t/air-max-95-big-bubble-mens-shoes-RrmHX5n7/IB6830-001"
     },
+    "nike.com/t/club-unstructured-futura-wash-cap-77d39b/FB5368-108": {
+      "category": "Accessories",
+      "current_price": 21.97,
+      "found_at": "2026-11-12",
+      "image_url": "https://static.nike.com/a/images/t_web_pw_592_v2/f_auto/u_9ddf04c7-2a9a-4d76-add1-d15af8f0263d,c_scale,fl_relative,w_1.0,h_1.0,fl_layer_apply/480cffb4-5671-4122-b400-1f07e904ab90/U+NK+CLUB+CAP+U+CB+FUT+WSH+L.png",
+      "last_checked": "2026-11-12",
+      "list_price": 28.0,
+      "misses": 0,
+      "name": "Nike Club Unstructured Futura Wash Cap",
+      "on_sale": true,
+      "similar_to": "'SERVANT' Premium SnapBack - Cream/Black",
+      "store": "nike.com",
+      "url": "https://www.nike.com/t/club-unstructured-futura-wash-cap-77d39b/FB5368-108"
+    },
+    "nike.com/t/club-unstructured-swoosh-cap-fcrZ5f/FB5369-663": {
+      "category": "Accessories",
+      "current_price": 21.97,
+      "found_at": "2026-11-12",
+      "image_url": "https://static.nike.com/a/images/t_web_pw_592_v2/f_auto/u_9ddf04c7-2a9a-4d76-add1-d15af8f0263d,c_scale,fl_relative,w_1.0,h_1.0,fl_layer_apply/50188b47-b2be-4897-9aca-4e2c0c07d9dc/U+NK+CLUB+CAP+U+CB+SWSH+L.png",
+      "last_checked": "2026-11-12",
+      "list_price": 28.0,
+      "misses": 0,
+      "name": "Nike Club Unstructured Swoosh Cap",
+      "on_sale": true,
+      "similar_to": "'SERVANT' Premium SnapBack - Cream/Black",
+      "store": "nike.com",
+      "url": "https://www.nike.com/t/club-unstructured-swoosh-cap-fcrZ5f/FB5369-663"
+    },
+    "nike.com/t/court-legacy-mens-shoes-75ljqX/DH3162-001": {
+      "category": "Shoes",
+      "current_price": 44.97,
+      "found_at": "2026-11-12",
+      "image_url": "https://static.nike.com/a/images/t_web_pw_592_v2/f_auto/u_9ddf04c7-2a9a-4d76-add1-d15af8f0263d,c_scale,fl_relative,w_1.0,h_1.0,fl_layer_apply/922139e1-3221-4e96-a9f9-3fbb67926e17/NIKE+COURT+LEGACY+NN.png",
+      "last_checked": "2026-11-12",
+      "list_price": 70.0,
+      "misses": 0,
+      "name": "Nike Court Legacy",
+      "on_sale": true,
+      "similar_to": "Nike Dunk Low Retro Men's Shoes",
+      "store": "nike.com",
+      "url": "https://www.nike.com/t/court-legacy-mens-shoes-75ljqX/DH3162-001"
+    },
     "nike.com/t/free-metcon-7-amp-mens-training-shoes-1Z7a2Pdv/IR0278-001": {
       "category": "Shoes",
       "current_price": 79.97,
       "found_at": "2026-11-09",
       "image_url": "https://static.nike.com/a/images/t_web_pw_592_v2/f_auto/u_9ddf04c7-2a9a-4d76-add1-d15af8f0263d,c_scale,fl_relative,w_1.0,h_1.0,fl_layer_apply/b2c4690c-2fe3-4be6-bc6f-eb0cfb9dfe3c/NIKE+FREE+METCON+7+AMP.png",
-      "last_checked": "2026-11-09",
+      "last_checked": "2026-11-12",
       "list_price": 135.0,
       "misses": 0,
       "name": "Nike Free Metcon 7 AMP",
@@ -90,12 +120,26 @@
       "store": "nike.com",
       "url": "https://www.nike.com/t/free-metcon-7-amp-mens-training-shoes-1Z7a2Pdv/IR0278-001"
     },
+    "nike.com/t/gato-mens-shoes-IZnqPPCC/HQ6019-001": {
+      "category": "Shoes",
+      "current_price": 68.97,
+      "found_at": "2026-11-12",
+      "image_url": "https://static.nike.com/a/images/t_web_pw_592_v2/f_auto/u_9ddf04c7-2a9a-4d76-add1-d15af8f0263d,c_scale,fl_relative,w_1.0,h_1.0,fl_layer_apply/55cc9c90-398d-4485-833e-516b695f4670/NIKE+GATO.png",
+      "last_checked": "2026-11-12",
+      "list_price": 115.0,
+      "misses": 0,
+      "name": "Nike Gato",
+      "on_sale": true,
+      "similar_to": "Nike Zoom Vomero 5 SE SP Men's Shoes",
+      "store": "nike.com",
+      "url": "https://www.nike.com/t/gato-mens-shoes-IZnqPPCC/HQ6019-001"
+    },
     "nike.com/t/pegasus-42-mens-road-running-shoes-S1bYkOza/IB1873-008": {
       "category": "Shoes",
       "current_price": 82.97,
       "found_at": "2026-11-09",
       "image_url": "https://static.nike.com/a/images/t_web_pw_592_v2/f_auto/u_9ddf04c7-2a9a-4d76-add1-d15af8f0263d,c_scale,fl_relative,w_1.0,h_1.0,fl_layer_apply/ca0587b0-8837-4b8e-90e1-98fa3ae000f5/AIR+ZOOM+PEGASUS+42.png",
-      "last_checked": "2026-11-09",
+      "last_checked": "2026-11-12",
       "list_price": 145.0,
       "misses": 0,
       "name": "Nike Pegasus 42",
@@ -109,7 +153,7 @@
       "current_price": 51.97,
       "found_at": "2026-11-09",
       "image_url": "https://static.nike.com/a/images/t_web_pw_592_v2/f_auto/u_9ddf04c7-2a9a-4d76-add1-d15af8f0263d,c_scale,fl_relative,w_1.0,h_1.0,fl_layer_apply/67c95caa-1991-4a03-b3ea-54a8200ce318/NIKE+REACTX+REJUVEN8+-+PRINT.png",
-      "last_checked": "2026-11-09",
+      "last_checked": "2026-11-12",
       "list_price": 85.0,
       "misses": 0,
       "name": "Nike ReactX Rejuven8",
@@ -117,8 +161,134 @@
       "similar_to": "Nike Dunk Low Retro Men's Shoes",
       "store": "nike.com",
       "url": "https://www.nike.com/t/reactx-rejuven8-mens-shoes-d9QTC07e/IR7543-805"
+    },
+    "nike.com/t/sb-heritage-vulc-skate-shoes-JH6qWt/CD5010-003": {
+      "category": "Shoes",
+      "current_price": 52.97,
+      "found_at": "2026-11-12",
+      "image_url": "https://static.nike.com/a/images/t_web_pw_592_v2/f_auto/u_9ddf04c7-2a9a-4d76-add1-d15af8f0263d,c_scale,fl_relative,w_1.0,h_1.0,fl_layer_apply/7e59d0d9-eca3-4d6b-a141-678b7b6b6f7c/NIKE+SB+HERITAGE+VULC.png",
+      "last_checked": "2026-11-12",
+      "list_price": 70.0,
+      "misses": 0,
+      "name": "Nike SB Heritage Vulc",
+      "on_sale": true,
+      "similar_to": "Nike Dunk Low Retro Men's Shoes",
+      "store": "nike.com",
+      "url": "https://www.nike.com/t/sb-heritage-vulc-skate-shoes-JH6qWt/CD5010-003"
+    },
+    "nike.com/t/sportswear-ken-griffey-jr-mens-max90-short-sleeve-t-shirt-1A11TiTR/IW3029-100": {
+      "category": "Casual",
+      "current_price": 31.97,
+      "found_at": "2026-11-12",
+      "image_url": "https://static.nike.com/a/images/t_web_pw_592_v2/f_auto/u_9ddf04c7-2a9a-4d76-add1-d15af8f0263d,c_scale,fl_relative,w_1.0,h_1.0,fl_layer_apply/fbe392a5-936d-46ce-a34c-cc2d43f59be1/M+NSW+SS+MAX90+TEE+KGJ2.png",
+      "last_checked": "2026-11-12",
+      "list_price": 45.0,
+      "misses": 0,
+      "name": "Nike Sportswear \"Ken Griffey Jr.\" Men's Max90 T-Shirt",
+      "on_sale": true,
+      "similar_to": "\"HOLY VIBES\" TEE (BLACK)",
+      "store": "nike.com",
+      "url": "https://www.nike.com/t/sportswear-ken-griffey-jr-mens-max90-short-sleeve-t-shirt-1A11TiTR/IW3029-100"
+    },
+    "nike.com/t/sportswear-mens-max90-t-shirt-NnkjU1J7/IQ1008-133": {
+      "category": "Casual",
+      "current_price": 32.97,
+      "found_at": "2026-11-12",
+      "image_url": "https://static.nike.com/a/images/t_web_pw_592_v2/f_auto/f23d01c2-cc4b-41b1-9c71-ea28e93ec6d5/M+NSW+SS+MAX+90+TEE+DNAR+6.png",
+      "last_checked": "2026-11-12",
+      "list_price": 47.0,
+      "misses": 0,
+      "name": "Nike Sportswear Men's Max90 T-Shirt",
+      "on_sale": true,
+      "similar_to": "ASOS DESIGN boxy oversized T-shirt in cream boucle",
+      "store": "nike.com",
+      "url": "https://www.nike.com/t/sportswear-mens-max90-t-shirt-NnkjU1J7/IQ1008-133"
+    },
+    "nike.com/t/sportswear-windrunner-mens-lined-jacket-ub6cEoon/IR6946-323": {
+      "category": "Jackets",
+      "current_price": 67.97,
+      "found_at": "2026-11-12",
+      "image_url": "https://static.nike.com/a/images/t_web_pw_592_v2/f_auto/u_9ddf04c7-2a9a-4d76-add1-d15af8f0263d,c_scale,fl_relative,w_1.0,h_1.0,fl_layer_apply/74e4c3af-e8e8-497b-ace6-3c90d424b659/M+NK+WR+LND+JKT+26+FTBL+MXCO+A.png",
+      "last_checked": "2026-11-12",
+      "list_price": 115.0,
+      "misses": 0,
+      "name": "Nike Sportswear Windrunner Men's Lined Jacket",
+      "on_sale": true,
+      "similar_to": "Carhartt J97 Detroit Jacket PTL",
+      "store": "nike.com",
+      "url": "https://www.nike.com/t/sportswear-windrunner-mens-lined-jacket-ub6cEoon/IR6946-323"
+    },
+    "nike.com/t/t90-sp-mens-shoes-iYm7kMSK/HJ9351-001": {
+      "category": "Shoes",
+      "current_price": 69.97,
+      "found_at": "2026-11-12",
+      "image_url": "https://static.nike.com/a/images/t_web_pw_592_v2/f_auto/u_9ddf04c7-2a9a-4d76-add1-d15af8f0263d,c_scale,fl_relative,w_1.0,h_1.0,fl_layer_apply/13c890c4-bdf9-4470-aecf-f249d7acfc9f/T90+SP.png",
+      "last_checked": "2026-11-12",
+      "list_price": 115.0,
+      "misses": 0,
+      "name": "Nike T90 SP",
+      "on_sale": true,
+      "similar_to": "Nike Zoom Vomero 5 SE SP Men's Shoes",
+      "store": "nike.com",
+      "url": "https://www.nike.com/t/t90-sp-mens-shoes-iYm7kMSK/HJ9351-001"
+    },
+    "nike.com/t/tech-mens-fleece-joggers-MOfTXHdz/HV0959-303": {
+      "category": "Athleisure",
+      "current_price": 83.97,
+      "found_at": "2026-11-12",
+      "image_url": "https://static.nike.com/a/images/t_web_pw_592_v2/f_auto/u_9ddf04c7-2a9a-4d76-add1-d15af8f0263d,c_scale,fl_relative,w_1.0,h_1.0,fl_layer_apply/71f3fc2d-5a07-4c41-91d5-d10d55612cbd/M+NK+TCH+FLC+JGGR.png",
+      "last_checked": "2026-11-12",
+      "list_price": 120.0,
+      "misses": 0,
+      "name": "Nike Tech Men's Fleece Joggers",
+      "on_sale": true,
+      "similar_to": "Nike Tech Men's Shori Loose Pants",
+      "store": "nike.com",
+      "url": "https://www.nike.com/t/tech-mens-fleece-joggers-MOfTXHdz/HV0959-303"
+    },
+    "nike.com/t/tech-mens-open-hem-fleece-pants-w2uZ9PQN/IM0697-303": {
+      "category": "Athleisure",
+      "current_price": 91.97,
+      "found_at": "2026-11-12",
+      "image_url": "https://static.nike.com/a/images/t_web_pw_592_v2/f_auto/u_9ddf04c7-2a9a-4d76-add1-d15af8f0263d,c_scale,fl_relative,w_1.0,h_1.0,fl_layer_apply/85777b14-0166-43bb-add7-699b9df13f84/M+NK+TECH+FLC+OH+PANT.png",
+      "last_checked": "2026-11-12",
+      "list_price": 130.0,
+      "misses": 0,
+      "name": "Nike Tech Men's Open-Hem Fleece Pants",
+      "on_sale": true,
+      "similar_to": "Nike Tech Men's Shori Loose Pants",
+      "store": "nike.com",
+      "url": "https://www.nike.com/t/tech-mens-open-hem-fleece-pants-w2uZ9PQN/IM0697-303"
+    },
+    "nike.com/t/tech-mens-woven-jacket-AgGbz2ab/HM7151-010": {
+      "category": "Jackets",
+      "current_price": 75.97,
+      "found_at": "2026-11-12",
+      "image_url": "https://static.nike.com/a/images/t_web_pw_592_v2/f_auto/u_9ddf04c7-2a9a-4d76-add1-d15af8f0263d,c_scale,fl_relative,w_1.0,h_1.0,fl_layer_apply/5b12cb94-7822-4af0-8684-6f12d8cd0044/M+NK+DF+TCH+WVN+WR+FZ+JKT.png",
+      "last_checked": "2026-11-12",
+      "list_price": 130.0,
+      "misses": 0,
+      "name": "Nike Tech Men's Woven Jacket",
+      "on_sale": true,
+      "similar_to": "Carhartt J97 Detroit Jacket PTL",
+      "store": "nike.com",
+      "url": "https://www.nike.com/t/tech-mens-woven-jacket-AgGbz2ab/HM7151-010"
+    },
+    "nike.com/t/windrunner-mens-unlined-full-zip-uv-jacket-Mn7Q011l/IO9627-394": {
+      "category": "Jackets",
+      "current_price": 57.97,
+      "found_at": "2026-11-12",
+      "image_url": "https://static.nike.com/a/images/t_web_pw_592_v2/f_auto/u_9ddf04c7-2a9a-4d76-add1-d15af8f0263d,c_scale,fl_relative,w_1.0,h_1.0,fl_layer_apply/9fc0e8d7-8050-4e12-b695-76ff69c8c38b/M+NK+WR+LTWT+UNLND+FZ+UV+JKT.png",
+      "last_checked": "2026-11-12",
+      "list_price": 95.0,
+      "misses": 0,
+      "name": "Nike Windrunner Men's Unlined Full-Zip UV Jacket",
+      "on_sale": true,
+      "similar_to": "DRY-EX UV Protection Full-Zip Hoodie",
+      "store": "nike.com",
+      "url": "https://www.nike.com/t/windrunner-mens-unlined-full-zip-uv-jacket-Mn7Q011l/IO9627-394"
     }
   },
-  "source_generated_at": "2026-11-09T03:03:44Z",
+  "source_generated_at": "2026-11-12T03:15:05Z",
   "version": 1
 }

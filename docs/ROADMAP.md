@@ -12,6 +12,47 @@ what he's gotten and wants. Target: first full email by 2026-11-13, ready for Bl
 price-checks them and sends the email; SerpApi Google Shopping (250/month, stops at 230),
 Gemini free tier and Vercel free plan run live search. No credit cards on any free service.
 
+## GAME PLAN UPDATE (2026-11-15) — READ FIRST; `/next-slice` must follow it
+
+Decided in Isaac's Claude Duet "giftful-deals" channel (Nov 11–15). **The repo's job is being
+replaced** by a Claude Duet routine. Until the switchover is confirmed, this repo stays exactly as
+it is and no new slice starts.
+
+**The new setup (lives in Claude Duet, not in this repo)**
+1. One Duet routine does both parts: checks his Giftful list items for sales (only items not
+   checked off) and suggests new on-sale picks guided by the checked-off items.
+2. Results go to a Claude dashboard, "Giftful Finds": his list deals on top, picks with
+   Like / Pass underneath. **No email, no GitHub page.**
+3. Schedule: Mon + Thu 12:47 PM ET, plus daily Nov 20 to Nov 30 (Black Friday / Cyber Monday).
+4. Rules added there: a cheaper store in Giftful's price dialog (5%+ below, no marketplaces)
+   counts as a price drop for items whose store page can't be read; Amazon and unreadable stores
+   use Giftful's price.
+5. Its working files (list-check, taste, claimed items, price history, finds history) live in the
+   dashboard's own database, **not in this repo**.
+
+**Trial and switchover**
+- Run both side by side through Mon Nov 16 and Thu Nov 19; compare the dashboard with the GitHub
+  deals email.
+- If they match, Isaac turns off the "Run deals" GitHub Actions workflow around Nov 19, and the
+  old "giftful-deals finder" routine (Sun/Wed 10 PM ET, reads `finder/PROMPT.md`) is stopped.
+  Both are Isaac's actions, not a slice.
+- Known gap from the Nov 12 comparison: the repo caught a Tom Ford FT5737-B promo (code) that the
+  new setup missed; the cheaper-store rule is meant to close most of that.
+
+**Until the switchover: do not change** `.github/workflows/run_deals.yml`, `finder/PROMPT.md` or
+any file in `state/`.
+
+**Roadmap effect**
+- **S5a (live search test) and S5b (Vercel votes/search service): PAUSED.** Do not start them.
+  After the switchover they are marked **superseded**.
+- The 👍 / 👎 GitHub-issue votes (S4c) are replaced by the dashboard's Like / Pass; mark S4c's
+  vote mechanism superseded at switchover (the S4c checkbox stays ticked: it shipped).
+- Not decided in the channel, held for Isaac: **S5c** (search box depends on S5b), **S6a** (daily
+  runs by editing the Actions schedule, which would change the deals workflow) and **S6b** (check
+  first real runs). The Duet routine already covers the daily Black Friday window, so these are
+  likely superseded too; ask Isaac before touching them.
+- `/next-slice`: stop and report this section instead of starting S5a.
+
 ## How to execute each milestone (copy-paste recipe)
 
 Fresh session, auto-approve permission mode. Then:
@@ -31,7 +72,8 @@ session summary is saved`.
 **Plans are written just-in-time** by each `/next-slice` session into `docs/superpowers/plans/`;
 do not pre-write plans for later slices.
 
-**Hard stops `/next-slice` must not chain past:** S5a/S5b until the owner has created the free
+**Hard stops `/next-slice` must not chain past:** the whole roadmap while the game plan update
+above is active (S5a/S5b paused); S5a/S5b until the owner has created the free
 SerpApi, Google AI Studio and Vercel accounts and added their keys as secrets; S3c until the
 owner approves the first measured Claude-job usage; S5a if the quality test is poor (go/no-go).
 
@@ -75,11 +117,11 @@ owner approves the first measured Claude-job usage; S5a if the quality test is p
 ### Stage 4 — Email and page
 - [x] **S4a — Photo-grid email by category** — his own list's deals first (all of them, owner request 2026-11-06), then "Suggestions for you": 2–4 finds per category, about 16; show only finds with `on_sale: true` from a `state/tracked_finds.json` whose `checked_at` is this run's date (a crashed finds check leaves last run's flags behind) (plan: `docs/superpowers/plans/2026-11-06-S4a-photo-grid-email.md`)
 - [x] **S4b — Page by category** — his list first, then "Suggestions for you" by category, every on-sale find, no cap (plan: `docs/superpowers/plans/2026-11-07-S4b-page-by-category.md`)
-- [x] **S4c — Like / dislike on new finds** — 👍 / 👎 on each suggestion in the email and page. 👍 = keep showing this item and find more like it; 👎 = stop showing this item and find less like it. Likes teach the finder; votes are prefilled GitHub issues read into `state/feedback.json` (plan: `docs/superpowers/plans/2026-11-10-S4c-like-dislike.md`)
+- [x] **S4c — Like / dislike on new finds** — 👍 / 👎 on each suggestion in the email and page. 👍 = keep showing this item and find more like it; 👎 = stop showing this item and find less like it. Likes teach the finder; votes are prefilled GitHub issues read into `state/feedback.json` (plan: `docs/superpowers/plans/2026-11-10-S4c-like-dislike.md`). *Vote mechanism to be superseded by the dashboard's Like / Pass at switchover (game plan 2026-11-15).*
 
 ### Stage 5 — Live search
-- [ ] **S5a — Quality test** — about 10 Google Shopping searches incl. "swim trunks" and "christian tees"; read Gemini daily limit; stop if poor
-- [ ] **S5b — Search service on Vercel** — passcode, search counter (stops at 230), Gemini ranking with fallback
+- [ ] **S5a — PAUSED (game plan 2026-11-15; superseded at switchover) — Quality test** — about 10 Google Shopping searches incl. "swim trunks" and "christian tees"; read Gemini daily limit; stop if poor
+- [ ] **S5b — PAUSED (game plan 2026-11-15; superseded at switchover) — Search service on Vercel** — passcode, search counter (stops at 230), Gemini ranking with fallback
 - [ ] **S5c — Search box on the page** — on sale by default, all-prices switch
 
 ### Stage 6 — Black Friday

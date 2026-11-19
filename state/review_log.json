@@ -1,6 +1,335 @@
 {
-  "run_at": "2026-11-16T16:34:13.791388",
+  "run_at": "2026-11-19T16:09:55.352500",
   "items": [
+    {
+      "name": "Ashley beanie",
+      "url": "https://www.farfetch.com/shopping/men/carhartt-wip-ashley-beanie-item-37455083.aspx",
+      "store": "farfetch.com",
+      "status": "ok",
+      "reason": null
+    },
+    {
+      "name": "Tom Ford FT6170-B",
+      "url": "https://www.smartbuyglasses.com/designer-eyeglasses/Tom-Ford/Tom-Ford-FT6170-B-045-Blue-Light-Block-764640.html",
+      "store": "smartbuyglasses.com",
+      "status": "ok",
+      "reason": null
+    },
+    {
+      "name": "Dark Brown Belt",
+      "url": "https://suitsupply.com/en-us/men/accessories/belts/dark-brown-belt/A24109.html",
+      "store": "suitsupply.com",
+      "status": "sold_out",
+      "reason": "out of stock"
+    },
+    {
+      "name": "MADE FOR KINDNESS",
+      "url": "https://www.goodqualityhuman.com/collections/hats/products/made-for-kindness",
+      "store": "goodqualityhuman.com",
+      "status": "ok",
+      "reason": null
+    },
+    {
+      "name": "Ashley beanie hat",
+      "url": "https://www.farfetch.com/shopping/men/carhartt-wip-ashley-beanie-hat-item-31354541.aspx",
+      "store": "farfetch.com",
+      "status": "ok",
+      "reason": null
+    },
+    {
+      "name": "Tom Ford FT5944-B",
+      "url": "https://www.smartbuyglasses.com/designer-eyeglasses/Tom-Ford/Tom-Ford-FT5944-B-003-Blue-Light-Block-681980.html",
+      "store": "smartbuyglasses.com",
+      "status": "ok",
+      "reason": null
+    },
+    {
+      "name": "Museum Classic",
+      "url": "https://www.movado.com/us/en/shop-watches/museum-classic-0607200.html",
+      "store": "movado.com",
+      "status": "ok",
+      "reason": null
+    },
+    {
+      "name": "Pure Heart / Classic Hat",
+      "url": "https://www.higherculturela.com/products/pure-heart-hat",
+      "store": "higherculturela.com",
+      "status": "review",
+      "reason": "product name mismatch (score 0.00, saw: \"\u2013 Higher Culture\")"
+    },
+    {
+      "name": "Curtis ribbed-knit beanie hat",
+      "url": "https://www.farfetch.com/shopping/men/carhartt-wip-curtis-ribbed-knit-beanie-hat-item-37395009.aspx",
+      "store": "farfetch.com",
+      "status": "ok",
+      "reason": null
+    },
+    {
+      "name": "Hand-Braided Black Leather 1\" Belt",
+      "url": "https://sartolane.com/products/handbraided-black-belt-1",
+      "store": "sartolane.com",
+      "status": "ok",
+      "reason": null
+    },
+    {
+      "name": "Movado Men's Signature Yellow Gold Black Dial Leather Band S...",
+      "url": "https://www.walmart.com/ip/Movado-Men-s-Signature-Yellow-Gold-Black-Dial-Leather-Band-Swiss-Watch/15934473050?wmlspartner=wlpa&selectedSellerId=101422885&selectedOfferId=0819F4F494B23B58BA0CA8C1CC9CBFF5&conditionGroupCode=1&sourceid=dsn_gdn_2005b0c9-e4c7-4f46-8aaa-443883a5e447&veh=dsn&wmlspartner=dsn_gdn_2005b0c9-e4c7-4f46-8aaa-443883a5e447&cn=00c3_fy27_mp_mp_lo_int_dis_pmax-main&wl9=pla&wl11=online&gad_source=1&gad_campaignid=23143211640&gbraid=0AAAAADmfBIohpf2ikgaQNnYHhG6HMuJP1&gclid=CjwKCAjw7vzOBhBxEiwAc7WNr_e_5eCbeaQFHjf9FYP6np1lhL1D3rrbzKpQ3zPagmG5R_R9NJbqShoCDR8QAvD_BwE",
+      "store": "walmart.com",
+      "status": "ok",
+      "reason": null
+    },
+    {
+      "name": "Tom Ford FT5737-B",
+      "url": "https://www.smartbuyglasses.com/designer-eyeglasses/Tom-Ford/Tom-Ford-FT5737-B-045-Blue-Light-Block-566083.html",
+      "store": "smartbuyglasses.com",
+      "status": "ok",
+      "reason": null
+    },
+    {
+      "name": "Black Short Satin Lined Beanie",
+      "url": "https://kinapparel.org/products/black-short-satin-lined-beanie",
+      "store": "kinapparel.org",
+      "status": "ok",
+      "reason": null
+    },
+    {
+      "name": "Black Belt",
+      "url": "https://suitsupply.com/en-us/men/accessories/belts/black-belt/A25204.html",
+      "store": "suitsupply.com",
+      "status": "sold_out",
+      "reason": "out of stock"
+    },
+    {
+      "name": "\u2018SERVANT\u2019 Premium SnapBack - Cream/Black",
+      "url": "https://malta-apparel.com/products/servant-premium-snapback-cream-black",
+      "store": "malta-apparel.com",
+      "status": "ok",
+      "reason": null
+    },
+    {
+      "name": "Carhartt 103828 Detroit Jacket BLK",
+      "url": "https://www.etsy.com/listing/4557741571/carhartt-103828-detroit-jacket-blk?ref=shop_home_active_27&pro=1&logging_key=14eafe15b6b137d96cb8b28611fce57b49658a6a:4557741571",
+      "store": "etsy.com",
+      "status": "ok",
+      "reason": null
+    },
+    {
+      "name": "Carhartt WIP J130 OG Active Jacket Women's Black",
+      "url": "https://www.etsy.com/listing/4505486499/carhartt-wip-j130-og-active-jacket?ref=shop_home_active_25&pro=1&logging_key=94eb32df79e3b6a0f655a0856bd7b139cfc9b682:4505486499",
+      "store": "etsy.com",
+      "status": "ok",
+      "reason": null
+    },
+    {
+      "name": "Carhartt J14 Santa Fe Jacket CML",
+      "url": "https://www.etsy.com/listing/4540174536/carhartt-j14-santa-fe-jacket-cml?ref=shop_home_active_12&pro=1&logging_key=bc5166658afdce57913fcbaed3e32db0fea8b390:4540174536",
+      "store": "etsy.com",
+      "status": "ok",
+      "reason": null
+    },
+    {
+      "name": "REGULAR-FIT WOOL-BLEND COAT",
+      "url": "https://www.zara.com/us/en/regular-fit-wool-coat-p02949001.html?sv1=affiliate&sv_campaign_id=1454410&awc=21094_1795104435_d16a55a9fb9a2869308119d8f752b67d&utm_source=awin&utm_medium=affiliation&utm_campaign=1454410&utm_content=Giftful&utm_term=21094_1795104435_d16a55a9fb9a2869308119d8f752b67d",
+      "store": "zara.com",
+      "status": "ok",
+      "reason": null
+    },
+    {
+      "name": "SJEFOJ 1pc Man' Cross Believe Print Black TShirt Crew Neck C...",
+      "url": "https://m.shein.com/us/SJEFOJ-1pc-Man-Cross-Believe-Print-Black-TShirt-Crew-Neck-Casual-Cotton-Tee-Medium-Stretch-Knit-Fabric-Regular-Fit-For-Boys-Man-Perfect-p-419575266.html?ref=us&rep=dir&ret=mus",
+      "store": "m.shein.com",
+      "status": "review",
+      "reason": "product name mismatch (score 0.00, saw: \"SHEIN.com is mainly design and produce fashion clothing for women all over the world for about 5 years. Shop for latest \")"
+    },
+    {
+      "name": "Embossed Tee",
+      "url": "https://thankgod.com/products/embossed-tee",
+      "store": "thankgod.com",
+      "status": "ok",
+      "reason": null
+    },
+    {
+      "name": "Ask Me About Jesus Tee",
+      "url": "https://thankgod.com/products/ask-me-about-jesus-tee",
+      "store": "thankgod.com",
+      "status": "ok",
+      "reason": null
+    },
+    {
+      "name": "Faith Sweatshirt, Faith Gift, Christian Sweatshirt, Faith Cr...",
+      "url": "https://www.etsy.com/listing/1840466647/faith-sweatshirt-faith-gift-christian?ref=share_v4_lx",
+      "store": "etsy.com",
+      "status": "ok",
+      "reason": null
+    },
+    {
+      "name": "JESUS IS ENOUGH OAT GRAY TEE",
+      "url": "https://nhimapparel.com/products/jesus-is-enough-oat-gray-tee?variant=53986256650556",
+      "store": "nhimapparel.com",
+      "status": "ok",
+      "reason": null
+    },
+    {
+      "name": "GOD IS - CREW",
+      "url": "https://www.newerahope.com/products/god-is-crew",
+      "store": "newerahope.com",
+      "status": "ok",
+      "reason": null
+    },
+    {
+      "name": "Help Comes From The Lord Boxy Tee- Black",
+      "url": "https://artofhomage.com/products/help-comes-from-the-lord-boxy-tee-black#!",
+      "store": "artofhomage.com",
+      "status": "ok",
+      "reason": null
+    },
+    {
+      "name": "Weekday Simon hoodie in black in scuba-style fabric",
+      "url": "https://www.asos.com/us/weekday/weekday-simon-hoodie-in-scuba-style-fabric-in-black/prd/209038557",
+      "store": "asos.com",
+      "status": "ok",
+      "reason": null
+    },
+    {
+      "name": "ASOS DESIGN essentials oversized boxy hoodie in navy",
+      "url": "https://www.asos.com/us/asos-design/asos-design-essentials-oversized-boxy-hoodie-in-navy/prd/211432993",
+      "store": "asos.com",
+      "status": "ok",
+      "reason": null
+    },
+    {
+      "name": "Excellence Oversized Vintage Tee",
+      "url": "https://thankgod.com/products/excellence-vintage-tee",
+      "store": "thankgod.com",
+      "status": "ok",
+      "reason": null
+    },
+    {
+      "name": "God First Hoodie - Black on Black",
+      "url": "https://redletterclo.com/products/god-first-hoodie-black-on-black-1",
+      "store": "redletterclo.com",
+      "status": "sold_out",
+      "reason": "out of stock"
+    },
+    {
+      "name": "God Has A Plan Tee",
+      "url": "https://thankgod.com/products/god-has-a-plan-tee",
+      "store": "thankgod.com",
+      "status": "ok",
+      "reason": null
+    },
+    {
+      "name": "Embossed Hoodie",
+      "url": "https://thankgod.com/products/embossed-hoodie",
+      "store": "thankgod.com",
+      "status": "sold_out",
+      "reason": "out of stock"
+    },
+    {
+      "name": "4505 Icon heavyweight cotton oversized long sleeve T-shirt w...",
+      "url": "https://www.asos.com/us/4505/4505-icon-heavyweight-cotton-oversized-long-sleeve-t-shirt-with-quick-dry-finish-in-off-white/prd/209570706?acquisitionsource=pasteboard",
+      "store": "asos.com",
+      "status": "ok",
+      "reason": null
+    },
+    {
+      "name": "Hollister baggy track pants in black",
+      "url": "https://www.asos.com/us/hollister/hollister-baggy-track-pants-in-black/prd/211694738",
+      "store": "asos.com",
+      "status": "ok",
+      "reason": null
+    },
+    {
+      "name": "Nike Tech Helios Men's Dri-FIT Shorts",
+      "url": "https://www.nike.com/t/tech-helios-mens-dri-fit-shorts-6VBPbV8p/IF1304-010?referrer=singular_click_id%3Da4d7b8be-44ab-414f-b22d-c4e3db0ea220",
+      "store": "nike.com",
+      "status": "ok",
+      "reason": null
+    },
+    {
+      "name": "Wide Sweat Shorts",
+      "url": "https://www.uniqlo.com/us/en/products/E482758-000/00?colorDisplayCode=31&sizeDisplayCode=005&pldDisplayCode=000&utm_medium=social&utm_source=appshare",
+      "store": "uniqlo.com",
+      "status": "ok",
+      "reason": null
+    },
+    {
+      "name": "Weekday oversized wide leg sweatpants with seam detail in gr...",
+      "url": "https://www.asos.com/us/weekday/weekday-oversized-wide-leg-sweatpants-with-seam-detail-in-gray/prd/211035875",
+      "store": "asos.com",
+      "status": "ok",
+      "reason": null
+    },
+    {
+      "name": "Lightweight Track Jogger Reflective Effect",
+      "url": "https://shop.lululemon.com/p/lightweight-track-jogger-reflective-effect/y4b3zqznp7?color=0001&cid=pdp_floating_navigation_bar_share_icon&cid=aff_con&sv1=affiliate&sv_campaign_id=1454410&awc=30347_1795104459_50a24006fdcd41172140bfc1d6350646",
+      "store": "shop.lululemon.com",
+      "status": "ok",
+      "reason": null
+    },
+    {
+      "name": "RELAXED FIT INTERLOCK JOGGER SHORTS",
+      "url": "https://www.zara.com/us/en/relaxed-fit-interlock-sweat-shorts-p00761491.html?sv1=affiliate&sv_campaign_id=1454410&awc=21094_1795104461_853ef5373094c806704d9b274527156b&utm_source=awin&utm_medium=affiliation&utm_campaign=1454410&utm_content=Giftful&utm_term=21094_1795104461_853ef5373094c806704d9b274527156b",
+      "store": "zara.com",
+      "status": "ok",
+      "reason": null
+    },
+    {
+      "name": "Weekday velour sweatpants in dark gray - part of a set",
+      "url": "https://www.asos.com/us/weekday/weekday-velour-sweatpants-in-dark-gray-part-of-a-set/prd/210149397",
+      "store": "asos.com",
+      "status": "ok",
+      "reason": null
+    },
+    {
+      "name": "Beach to Trail Lined Short 7\"",
+      "url": "https://shop.lululemon.com/p/beach-to-trail-lined-short-7/s82swr65kc?color=76994&sz=L&skuId=159400862&cid=pdp_floating_navigation_bar_share_icon&cid=aff_con&sv1=affiliate&sv_campaign_id=1454410&awc=30347_1795104464_abce23de1cdde08bcb8a3c5822313365",
+      "store": "shop.lululemon.com",
+      "status": "ok",
+      "reason": null
+    },
+    {
+      "name": "Heavyweight Soft Jersey Short 8.5\"",
+      "url": "https://shop.lululemon.com/p/heavy-soft-jersey-short-8-5/djsb6i5kl1?awc=30347_1795104466_24e5b168b92ccfa7244b4897b8beb123&cid=pdp_share_header_link_icon&cid=aff_con&color=72761&skuId=158101952&sv1=affiliate&sv_campaign_id=1454410&sz=L",
+      "store": "shop.lululemon.com",
+      "status": "ok",
+      "reason": null
+    },
+    {
+      "name": "Nike Air Men's Track Pants",
+      "url": "https://www.nike.com/t/air-mens-track-pants-2KhUfSVL/IF1306-010?referrer=singular_click_id%3Da4bfba87-0875-4e81-b68c-c51668967298",
+      "store": "nike.com",
+      "status": "ok",
+      "reason": null
+    },
+    {
+      "name": "Men's Italian Swim Trunk - 9\" in Black",
+      "url": "https://www.quince.com/men/men-s-italian-swim-trunk---9?color=black",
+      "store": "quince.com",
+      "status": "sold_out",
+      "reason": "out of stock"
+    },
+    {
+      "name": "WASHED BALLOON FIT JOGGING PANTS",
+      "url": "https://www.zara.com/us/en/washed-balloon-fit-jogging-pants-p03443425.html?sv1=affiliate&sv_campaign_id=1454410&awc=21094_1795104472_509b76ff375e1a20180f16593d3ecd84&utm_source=awin&utm_medium=affiliation&utm_campaign=1454410&utm_content=Giftful&utm_term=21094_1795104472_509b76ff375e1a20180f16593d3ecd84",
+      "store": "zara.com",
+      "status": "ok",
+      "reason": null
+    },
+    {
+      "name": "PAVTROS Men's Slogan Embossed Drop Shoulder Loose Casual T-S...",
+      "url": "https://m.shein.com/us/PAVTROS-Men-s-Slogan-Embossed-Drop-Shoulder-Loose-Casual-T-Shirt-Goth-p-564493397.html?ref=us&rep=dir&ret=mus",
+      "store": "m.shein.com",
+      "status": "ok",
+      "reason": null
+    },
+    {
+      "name": "ASOS DESIGN super oversized ribbed knitted cardigan in stone",
+      "url": "https://www.asos.com/us/asos-design/asos-design-super-oversized-ribbed-knitted-cardigan-in-stone/prd/211232554",
+      "store": "asos.com",
+      "status": "ok",
+      "reason": null
+    },
     {
       "name": "Grace & Mercy Washed Print Tee",
       "url": "https://www.newerahope.com/products/keep-praying-tee-white-black-copy",
@@ -17,7 +346,7 @@
     },
     {
       "name": "RELAXED FIT INTERLOCK SWEATSHIRT",
-      "url": "https://www.zara.com/us/en/interlock-relaxed-fit-sweatshirt-p00761490.html?sv1=affiliate&sv_campaign_id=1454410&awc=21094_1794846704_16a629b3840e672845099ad0eb342b33&utm_source=awin&utm_medium=affiliation&utm_campaign=1454410&utm_content=Giftful&utm_term=21094_1794846704_16a629b3840e672845099ad0eb342b33",
+      "url": "https://www.zara.com/us/en/interlock-relaxed-fit-sweatshirt-p00761490.html?sv1=affiliate&sv_campaign_id=1454410&awc=21094_1795104480_54ae2db6c74aebc01eee670524465be4&utm_source=awin&utm_medium=affiliation&utm_campaign=1454410&utm_content=Giftful&utm_term=21094_1795104480_54ae2db6c74aebc01eee670524465be4",
       "store": "zara.com",
       "status": "ok",
       "reason": null
@@ -44,6 +373,20 @@
       "reason": "product name mismatch (score 0.00, saw: \"\u2013 Higher Culture\")"
     },
     {
+      "name": "Manfinity Roghcode Men's Summer Slogan Graphic Streetwear Ci...",
+      "url": "https://m.shein.com/us/Manfinity-Roghcode-Men-s-Summer-Slogan-Graphic-Streetwear-City-Break-T-Shirt-God-Has-A-Plan-Faith-Over-Fear-Letter-Print-100-Cotton-Acid-Wash-Oversized-Short-Sleeve-Tee-Brown-p-423645270.html?ref=us&rep=dir&ret=mus",
+      "store": "m.shein.com",
+      "status": "ok",
+      "reason": null
+    },
+    {
+      "name": "Jack & Jones relaxed fit fluffy sweater in brown",
+      "url": "https://www.asos.com/us/jack-jones/jack-jones-relaxed-fit-fluffy-sweater-in-brown/prd/210909768",
+      "store": "asos.com",
+      "status": "ok",
+      "reason": null
+    },
+    {
       "name": "Not Luck Just God Waffle Longsleeve Loose Fit Tee Beige | Ho...",
       "url": "https://thehouseofpeace.us/products/not-luck-just-god-waffle-longsleeve-loose-fit-tee-beige-house-of-peace%c2%ae",
       "store": "thehouseofpeace.us",
@@ -66,7 +409,7 @@
     },
     {
       "name": "REGULAR FIT WAFFLE JUMPER",
-      "url": "https://www.zara.com/us/en/regular-fit-waffle-jumper-p03332301.html?v1=489339320&sv1=affiliate&sv_campaign_id=1454410&awc=21094_1794846713_c4f3c77fcd1a59130e8e9e0742f9fe26&utm_source=awin&utm_medium=affiliation&utm_campaign=1454410&utm_content=Giftful&utm_term=21094_1794846713_c4f3c77fcd1a59130e8e9e0742f9fe26",
+      "url": "https://www.zara.com/us/en/regular-fit-waffle-jumper-p03332301.html?v1=489339320&sv1=affiliate&sv_campaign_id=1454410&awc=21094_1795104493_f461a3608fabde576747753154df30ce&utm_source=awin&utm_medium=affiliation&utm_campaign=1454410&utm_content=Giftful&utm_term=21094_1795104493_f461a3608fabde576747753154df30ce",
       "store": "zara.com",
       "status": "ok",
       "reason": null
@@ -75,6 +418,20 @@
       "name": "Men's Long-Sleeve Classic Waffle Tee | Men's | Abercrombie.c...",
       "url": "https://www.abercrombie.com/shop/us/p/long-sleeve-classic-waffle-tee-61005322?categoryId=12202&faceout=model&seq=06&pagefm=navigation-grid&prodvm=navigation-grid",
       "store": "abercrombie.com",
+      "status": "ok",
+      "reason": null
+    },
+    {
+      "name": "WAFFLE TEXTURE JUMPER",
+      "url": "https://www.zara.com/us/en/waffle-texture-sweater-p09598330.html?sv1=affiliate&sv_campaign_id=1454410&awc=21094_1795104496_9f03d71a82c60678b11c16474d942904&utm_source=awin&utm_medium=affiliation&utm_campaign=1454410&utm_content=Giftful&utm_term=21094_1795104496_9f03d71a82c60678b11c16474d942904",
+      "store": "zara.com",
+      "status": "ok",
+      "reason": null
+    },
+    {
+      "name": "ASOS DESIGN oversized knitted fisherman rib cardigan in brow...",
+      "url": "https://www.asos.com/us/asos-design/asos-design-oversized-knitted-fisherman-rib-cardigan-in-brown/prd/211232426",
+      "store": "asos.com",
       "status": "ok",
       "reason": null
     },
@@ -114,6 +471,20 @@
       "reason": "out of stock"
     },
     {
+      "name": "Topman relaxed fit loose knit sweater in light gray",
+      "url": "https://www.asos.com/us/topman/topman-relaxed-fit-loose-knit-sweater-in-light-gray/prd/210745475",
+      "store": "asos.com",
+      "status": "ok",
+      "reason": null
+    },
+    {
+      "name": "God is Everywhere Fog Gray Frayed Hoodie",
+      "url": "https://nhimapparel.com/products/god-is-everywhere-fog-gray-frayed-hoodie?variant=54025151316284",
+      "store": "nhimapparel.com",
+      "status": "ok",
+      "reason": null
+    },
+    {
       "name": "Regular-Fit Resort Shirt",
       "url": "https://www2.hm.com/en_us/productpage.1290470003.html",
       "store": "www2.hm.com",
@@ -136,7 +507,7 @@
     },
     {
       "name": "WAFFLE TEXTURED T-SHIRT",
-      "url": "https://www.zara.com/us/en/waffle-textured-t-shirt-p00526345.html?v1=480810139&sv1=affiliate&sv_campaign_id=1454410&awc=21094_1794846732_1ac9bab4c5a34bd450a06922263c87f6&utm_source=awin&utm_medium=affiliation&utm_campaign=1454410&utm_content=Giftful&utm_term=21094_1794846732_1ac9bab4c5a34bd450a06922263c87f6",
+      "url": "https://www.zara.com/us/en/waffle-textured-t-shirt-p00526345.html?v1=480810139&sv1=affiliate&sv_campaign_id=1454410&awc=21094_1795104519_f5e096536d5d89b582316136b104e202&utm_source=awin&utm_medium=affiliation&utm_campaign=1454410&utm_content=Giftful&utm_term=21094_1795104519_f5e096536d5d89b582316136b104e202",
       "store": "zara.com",
       "status": "ok",
       "reason": null
@@ -150,71 +521,15 @@
     },
     {
       "name": "Relaxed-Fit Pants",
-      "url": "https://www2.hm.com/en_us/productpage.1299855001.html",
+      "url": "https://www2.hm.com/en_us/index.html",
       "store": "www2.hm.com",
       "status": "ok",
       "reason": null
     },
     {
       "name": "Men's Daydrift Relaxed-Fit Pleated Trouser Tall",
-      "url": "https://shop.lululemon.com/p/mens-daydrift-relaxed-fit-pleated-trouser-tall/cri5v3r1qp?color=0001&locale=en_US&sl=US&sz=M",
-      "store": "shop.lululemon.com",
-      "status": "ok",
-      "reason": null
-    },
-    {
-      "name": "Men's Baggy 5-Pocket Pant | Men's Bottoms | Abercrombie.com",
-      "url": "https://www.abercrombie.com/shop/us/p/baggy-workwear-pant-59860093?faceout=model&seq=16&pagefm=navigation-grid&prodvm=navigation-grid",
-      "store": "abercrombie.com",
-      "status": "ok",
-      "reason": null
-    },
-    {
-      "name": "Baggy Jean",
-      "url": "https://cottonon.com/US/baggy-jean/3611774-123.html?dwvar_3611774-123_color=3611774-123&cgid=co&originalPid=3611774-123#q=Baggy&start=14&sz=60&newWindow=true",
-      "store": "cottonon.com",
-      "status": "ok",
-      "reason": null
-    },
-    {
-      "name": "ASOS DESIGN pleated wide leg dress pants in charcoal wool bl...",
-      "url": "https://www.asos.com/us/asos-design/asos-design-pleated-wide-leg-dress-pants-in-charcoal-wool-blend/prd/208811441?acquisitionsource=pasteboard",
-      "store": "asos.com",
-      "status": "ok",
-      "reason": null
-    },
-    {
-      "name": "CARPENTER POCKET SHORTS",
-      "url": "https://www.zara.com/us/en/carpenter-pocket-shorts-p00108475.html?sv1=affiliate&sv_campaign_id=1454410&awc=21094_1794846743_1ff0f607baf3f297fb9e21bd3fb84c45&utm_source=awin&utm_medium=affiliation&utm_campaign=1454410&utm_content=Giftful&utm_term=21094_1794846743_1ff0f607baf3f297fb9e21bd3fb84c45",
-      "store": "zara.com",
-      "status": "ok",
-      "reason": null
-    },
-    {
-      "name": "Men's Baggy Jean | Men's Bottoms | Abercrombie.com",
-      "url": "https://www.abercrombie.com/shop/us/p/baggy-jean-62043322",
-      "store": "abercrombie.com",
-      "status": "ok",
-      "reason": null
-    },
-    {
-      "name": "578\u2122 Baggy Men's Jeans",
-      "url": "https://www.levi.com/US/en_US/clothing/men/jeans/loose/578TM-baggy-mens-jeans/p/A47500022",
-      "store": "levi.com",
-      "status": "ok",
-      "reason": null
-    },
-    {
-      "name": "ASOS DESIGN smart pleated linen blend barrel pants in ecru",
-      "url": "https://www.asos.com/us/asos-design/asos-design-smart-pleated-linen-blend-barrel-pants-in-ecru/prd/209917520?acquisitionsource=pasteboard",
-      "store": "asos.com",
-      "status": "ok",
-      "reason": null
-    },
-    {
-      "name": "100% LINEN RELAXED FIT SHORTS",
-      "url": "https://www.zara.com/us/en/100-linen-relaxed-fit-shorts-p05070903.html?v1=495680223&v2=2432164&sv1=affiliate&sv_campaign_id=1454410&awc=21094_1794846748_927f9cbec8d027b69a1cedf946362da2&utm_source=awin&utm_medium=affiliation&utm_campaign=1454410&utm_content=Giftful&utm_term=21094_1794846748_927f9cbec8d027b69a1cedf946362da2",
-      "store": "zara.com",
+      "url": "",
+      "store": "",
       "status": "ok",
       "reason": null
     },
@@ -226,8 +541,8 @@
       "reason": null
     },
     {
-      "name": "ASOS DESIGN pleated wide leg dress pants with belt detail in...",
-      "url": "https://www.asos.com/us/asos-design/asos-design-pleated-wide-leg-dress-pants-with-belt-detail-in-mink/prd/208783602?acquisitionsource=pasteboard",
+      "name": "ASOS DESIGN pleated wide leg dress pants in charcoal wool bl...",
+      "url": "https://www.asos.com/us/asos-design/asos-design-pleated-wide-leg-dress-pants-in-charcoal-wool-blend/prd/208811441?acquisitionsource=pasteboard",
       "store": "asos.com",
       "status": "ok",
       "reason": null
@@ -247,303 +562,58 @@
       "reason": null
     },
     {
-      "name": "GOD IS - CREW",
-      "url": "https://www.newerahope.com/products/god-is-crew",
-      "store": "newerahope.com",
-      "status": "ok",
-      "reason": null
-    },
-    {
-      "name": "Help Comes From The Lord Boxy Tee- Black",
-      "url": "https://artofhomage.com/products/help-comes-from-the-lord-boxy-tee-black#!",
-      "store": "artofhomage.com",
-      "status": "ok",
-      "reason": null
-    },
-    {
-      "name": "4505 Icon heavyweight cotton oversized t-shirt with quick dr...",
-      "url": "https://www.asos.com/us/4505/4505-icon-heavyweight-cotton-oversized-t-shirt-with-quick-dry-finish-in-off-white/prd/207632239?acquisitionsource=pasteboard",
+      "name": "ASOS DESIGN smart pleated linen blend barrel pants in ecru",
+      "url": "https://www.asos.com/us/asos-design/asos-design-smart-pleated-linen-blend-barrel-pants-in-ecru/prd/209917520?acquisitionsource=pasteboard",
       "store": "asos.com",
       "status": "ok",
       "reason": null
     },
     {
-      "name": "4505 Icon heavyweight cotton oversized long sleeve T-shirt w...",
-      "url": "https://www.asos.com/us/4505/4505-icon-heavyweight-cotton-oversized-long-sleeve-t-shirt-with-quick-dry-finish-in-off-white/prd/209570706?acquisitionsource=pasteboard",
+      "name": "Men's Baggy 5-Pocket Pant | Men's Bottoms | Abercrombie.com",
+      "url": "https://www.abercrombie.com/shop/us/p/baggy-workwear-pant-59860093?faceout=model&seq=16&pagefm=navigation-grid&prodvm=navigation-grid",
+      "store": "abercrombie.com",
+      "status": "ok",
+      "reason": null
+    },
+    {
+      "name": "Baggy Jean",
+      "url": "https://cottonon.com/US/baggy-jean/3611774-123.html?dwvar_3611774-123_color=3611774-123&cgid=co&originalPid=3611774-123#q=Baggy&start=14&sz=60&newWindow=true",
+      "store": "cottonon.com",
+      "status": "ok",
+      "reason": "identity unverified this run (score 0.00); prior run matched (1.00) \u2014 trusting prior"
+    },
+    {
+      "name": "ASOS DESIGN pleated wide leg dress pants with belt detail in...",
+      "url": "https://www.asos.com/us/asos-design/asos-design-pleated-wide-leg-dress-pants-with-belt-detail-in-mink/prd/208783602?acquisitionsource=pasteboard",
       "store": "asos.com",
       "status": "ok",
       "reason": null
     },
     {
-      "name": "Excellence Oversized Vintage Tee",
-      "url": "https://thankgod.com/products/excellence-vintage-tee",
-      "store": "thankgod.com",
+      "name": "Men's Baggy Jean | Men's Bottoms | Abercrombie.com",
+      "url": "https://www.abercrombie.com/shop/us/p/baggy-jean-62043322",
+      "store": "abercrombie.com",
       "status": "ok",
       "reason": null
     },
     {
-      "name": "God First Hoodie - Black on Black",
-      "url": "https://redletterclo.com/products/god-first-hoodie-black-on-black-1",
-      "store": "redletterclo.com",
-      "status": "sold_out",
-      "reason": "out of stock"
-    },
-    {
-      "name": "4505 Icon quick dry mesh training T-shirt in black",
-      "url": "https://www.asos.com/us/4505/4505-icon-quick-dry-mesh-training-t-shirt-in-black/prd/205579830",
-      "store": "asos.com",
+      "name": "578\u2122 Baggy Men's Jeans",
+      "url": "https://www.levi.com/US/en_US/clothing/men/jeans/loose/578TM-baggy-mens-jeans/p/A47500022",
+      "store": "levi.com",
       "status": "ok",
       "reason": null
     },
     {
-      "name": "Faith Sweatshirt, Faith Gift, Christian Sweatshirt, Faith Cr...",
-      "url": "https://www.etsy.com/listing/1840466647/faith-sweatshirt-faith-gift-christian?ref=share_v4_lx",
-      "store": "etsy.com",
-      "status": "ok",
-      "reason": null
-    },
-    {
-      "name": "Embossed Hoodie",
-      "url": "https://thankgod.com/products/embossed-hoodie",
-      "store": "thankgod.com",
-      "status": "sold_out",
-      "reason": "out of stock"
-    },
-    {
-      "name": "4505 Icon heavyweight cotton oversized t-shirt with quick dr...",
-      "url": "https://www.asos.com/us/4505/4505-icon-heavyweight-cotton-oversized-t-shirt-with-quick-dry-finish-in-off-white/prd/209567035",
-      "store": "asos.com",
-      "status": "ok",
-      "reason": null
-    },
-    {
-      "name": "4505 Icon cotton oversized pump training tank with quick dry...",
-      "url": "https://www.asos.com/us/4505/4505-icon-cotton-oversized-pump-training-tank-with-quick-dry-finish-in-off-white/prd/209562162",
-      "store": "asos.com",
-      "status": "ok",
-      "reason": null
-    },
-    {
-      "name": "Weekday Simon hoodie in black in scuba-style fabric",
-      "url": "https://www.asos.com/us/weekday/weekday-simon-hoodie-in-scuba-style-fabric-in-black/prd/209038557?acquisitionsource=pasteboard",
-      "store": "asos.com",
-      "status": "ok",
-      "reason": null
-    },
-    {
-      "name": "Ask Me About Jesus Tee",
-      "url": "https://thankgod.com/products/ask-me-about-jesus-tee",
-      "store": "thankgod.com",
-      "status": "ok",
-      "reason": null
-    },
-    {
-      "name": "Topman relaxed fit t-shirt in white",
-      "url": "https://www.asos.com/us/topman/topman-relaxed-fit-t-shirt-in-white/prd/208302434?acquisitionsource=pasteboard",
-      "store": "asos.com",
-      "status": "ok",
-      "reason": null
-    },
-    {
-      "name": "4505 long sleeve oversized cotton training T-shirt with quic...",
-      "url": "https://www.asos.com/us/4505/4505-long-sleeve-oversized-cotton-training-t-shirt-with-quick-dry-finish-in-off-white/prd/209298511?acquisitionsource=pasteboard",
-      "store": "asos.com",
-      "status": "ok",
-      "reason": null
-    },
-    {
-      "name": "Lightweight Track Jogger Reflective Effect",
-      "url": "https://shop.lululemon.com/p/lightweight-track-jogger-reflective-effect/y4b3zqznp7?color=0001&cid=pdp_floating_navigation_bar_share_icon&cid=aff_con&sv1=affiliate&sv_campaign_id=1454410&awc=30347_1794846781_d8a64adef27000cfbc794f8ee14c9964",
-      "store": "shop.lululemon.com",
-      "status": "ok",
-      "reason": null
-    },
-    {
-      "name": "Nike Club washed shorts in brown",
-      "url": "https://www.asos.com/us/nike/nike-club-washed-shorts-in-brown/prd/209187461?acquisitionsource=pasteboard",
-      "store": "asos.com",
-      "status": "ok",
-      "reason": null
-    },
-    {
-      "name": "Pace Breaker Linerless Short 9\"",
-      "url": "https://shop.lululemon.com/p/pace-breaker-short-linerless-updated/qwxpgxg9s3?awc=30347_1794846784_685eba8acdbac342f05be05ef66971bb&cid=pdp_share_header_link_icon&cid=aff_con&color=33928&skuId=153837590&sv1=affiliate&sv_campaign_id=1454410&sz=L",
-      "store": "shop.lululemon.com",
-      "status": "ok",
-      "reason": null
-    },
-    {
-      "name": "WASHED BALLOON FIT JOGGING PANTS",
-      "url": "https://www.zara.com/us/en/washed-balloon-fit-jogging-pants-p03443425.html?sv1=affiliate&sv_campaign_id=1454410&awc=21094_1794846786_b3d27e754875fd6be48ae1b4f76fca0f&utm_source=awin&utm_medium=affiliation&utm_campaign=1454410&utm_content=Giftful&utm_term=21094_1794846786_b3d27e754875fd6be48ae1b4f76fca0f",
-      "store": "zara.com",
-      "status": "ok",
-      "reason": null
-    },
-    {
-      "name": "Unshaken Relaxed-Fit Pant Regular",
-      "url": "https://shop.lululemon.com/p/unshaken-relaxed-pull-on-pant-regular/v3gwtrgtgs?color=0001&cid=pdp_floating_navigation_bar_share_icon&cid=aff_con&sv1=affiliate&sv_campaign_id=1454410&awc=30347_1794846787_6e0b21de6baf16b8cfae57bf87bc6fde",
-      "store": "shop.lululemon.com",
-      "status": "ok",
-      "reason": null
-    },
-    {
-      "name": "Nike Tech Men's Dri-FIT Shori Knit Shorts",
-      "url": "https://www.nike.com/t/tech-mens-dri-fit-shori-knit-shorts-6PkNu38K/IF1125-010?referrer=singular_click_id%3Dbc35705e-a887-4e9c-bd6d-cc84d674fa54",
-      "store": "nike.com",
-      "status": "ok",
-      "reason": null
-    },
-    {
-      "name": "RELAXED FIT INTERLOCK JOGGER SHORTS",
-      "url": "https://www.zara.com/us/en/relaxed-fit-interlock-sweat-shorts-p00761491.html?sv1=affiliate&sv_campaign_id=1454410&awc=21094_1794846790_ea6984389c8dee4a4fc42cb8aaaede71&utm_source=awin&utm_medium=affiliation&utm_campaign=1454410&utm_content=Giftful&utm_term=21094_1794846790_ea6984389c8dee4a4fc42cb8aaaede71",
-      "store": "zara.com",
-      "status": "ok",
-      "reason": null
-    },
-    {
-      "name": "Beach to Trail Lined Short 7\"",
-      "url": "https://shop.lululemon.com/p/beach-to-trail-lined-short-7/s82swr65kc?color=76994&sz=L&skuId=159400862&cid=pdp_floating_navigation_bar_share_icon&cid=aff_con&sv1=affiliate&sv_campaign_id=1454410&awc=30347_1794846792_0e40c7d9563696a6198244413cf36614",
-      "store": "shop.lululemon.com",
-      "status": "ok",
-      "reason": null
-    },
-    {
-      "name": "Nike Club Men's Fleece Shorts",
-      "url": "https://www.nike.com/t/club-mens-fleece-shorts-fKfOAroW/IQ5903-289?referrer=singular_click_id%3Deb3f1c3d-2920-4a2f-876c-9d3c93edfbac",
-      "store": "nike.com",
-      "status": "ok",
-      "reason": null
-    },
-    {
-      "name": "Pace Breaker Linerless Short 9\"",
-      "url": "https://shop.lululemon.com/p/pace-breaker-short-linerless-updated/qwxpgxg9s3?color=19222&locale=en_US&sl=US&sz=XL",
-      "store": "shop.lululemon.com",
-      "status": "ok",
-      "reason": null
-    },
-    {
-      "name": "Men's Italian Swim Trunk - 9\" in Black",
-      "url": "https://www.quince.com/men/men-s-italian-swim-trunk---9?color=black",
-      "store": "quince.com",
-      "status": "sold_out",
-      "reason": "out of stock"
-    },
-    {
-      "name": "Wide Sweat Shorts",
-      "url": "https://www.uniqlo.com/us/en/products/E482758-000/00?colorDisplayCode=31&sizeDisplayCode=005&pldDisplayCode=000&utm_medium=social&utm_source=appshare",
-      "store": "uniqlo.com",
-      "status": "sold_out",
-      "reason": "out of stock"
-    },
-    {
-      "name": "Heavyweight Soft Jersey Short 8.5\"",
-      "url": "https://shop.lululemon.com/p/heavy-soft-jersey-short-8-5/djsb6i5kl1?awc=30347_1794846798_87c41e0870ef0fd6ea457dcd0108844e&cid=pdp_share_header_link_icon&cid=aff_con&color=72761&skuId=158101952&sv1=affiliate&sv_campaign_id=1454410&sz=L",
-      "store": "shop.lululemon.com",
-      "status": "ok",
-      "reason": null
-    },
-    {
-      "name": "Omnisphere 3 Standard Upgrade",
-      "url": "https://www.spectrasonics.net/products/omnisphere/buyomnisphere.php#top-anchor",
-      "store": "spectrasonics.net",
-      "status": "ok",
-      "reason": null
-    },
-    {
-      "name": "Ozone 12 Standard",
-      "url": "https://www.izotope.com/products/ozone-standard",
-      "store": "izotope.com",
-      "status": "ok",
-      "reason": null
-    },
-    {
-      "name": "Supernote Nomad",
-      "url": "https://supernote.com/pages/supernote-nomad",
-      "store": "supernote.com",
-      "status": "ok",
-      "reason": null
-    },
-    {
-      "name": "AirPods Pro 3",
-      "url": "https://www.apple.com/shop/buy-airpods/airpods-pro-3",
-      "store": "apple.com",
-      "status": "ok",
-      "reason": null
-    },
-    {
-      "name": "WIWU Keyboard Case for iPad",
-      "url": "https://www.amazon.com/dp/B0FK5871F1?lv=shuf&rsd=Di7jdGfNUG34J7%2Fq2iIy%2BEbe0rHjr5KgdE6e82CFdRKM9T0WaOU67NWQQEqaQHM7MgBeYrz1IEh3hVhoq%2B2aHvQmSGb9hKs5FiXX%2BYC%2BPGdd6bc5&edk=AQIDAHi1lw%2FM8UbbSMD9ScOOFEmBMHMthHeEhqDaQYPJUAX3jQHpM%2F1tWE0rklNCCd3S2asBAAAAfjB8BgkqhkiG9w0BBwagbzBtAgEAMGgGCSqGSIb3DQEHATAeBglghkgBZQMEAS4wEQQM8QmnDox2JSHWvEK8AgEQgDtfbwDQXayHY1Xv04fmiiIJwxbYwJ18QMKiKIB7IPj9zrhp7lxv1r%2B4%2Ffwpzi3LeLa54Hzab8pYbglPWw%3D%3D&social_share=cm_sw_r_apin_dp_5NGMS5XBE3MEZBXH79WN&channelId=704&ref_=cm_sw_r_apin_dp_5NGMS5XBE3MEZBXH79WN&plpRedirect=mhFallback&tag=giftful04-20&linkCode=ogi&th=1&psc=1",
+      "name": "HOLOSUN 510C & HM3X Combo RED/Green Multi-Reticle Circle Dot...",
+      "url": "https://www.amazon.com/dp/B0F7Y9HV87?tag=giftful04-20&linkCode=ogi&th=1&psc=1",
       "store": "amazon.com",
       "status": "ok",
       "reason": null
     },
     {
-      "name": "FabFilter Pro-Q 4",
-      "url": "https://www.sweetwater.com/store/detail/FFProQ4--fabfilter-pro-q-4-eq-and-filter-plug-in",
-      "store": "sweetwater.com",
-      "status": "review",
-      "reason": "product name mismatch (score 0.00, saw: \"Access to this page has been denied\")"
-    },
-    {
-      "name": "Trezor Safe 5 - Crypto Hardware Wallet",
-      "url": "https://www.amazon.com/dp/B0D8FH3W7C?tag=giftful04-20&linkCode=ogi&th=1&psc=1",
-      "store": "amazon.com",
-      "status": "ok",
-      "reason": null
-    },
-    {
-      "name": "Anker MagSafe Charger",
-      "url": "https://www.amazon.com/dp/B0D8PN1GBP?tag=giftful04-20&linkCode=ogi&th=1&psc=1",
-      "store": "amazon.com",
-      "status": "ok",
-      "reason": null
-    },
-    {
-      "name": "IK Multimedia iLoud Micro Monitor Travel Bag",
-      "url": "https://www.bhphotovideo.com/c/product/1633238-REG/ik_multimedia_bag_iloudmm_001_iloud_micro_monitor_travel.html",
-      "store": "bhphotovideo.com",
-      "status": "ok",
-      "reason": null
-    },
-    {
-      "name": "Norelco Philips All-in-One 7000 Series 23-Piece Trimmer - El...",
-      "url": "https://www.amazon.com/dp/B0D68XZY2S?tag=giftful04-20&linkCode=ogi&th=1&psc=1",
-      "store": "amazon.com",
-      "status": "ok",
-      "reason": null
-    },
-    {
-      "name": "Xfer Serum 2",
-      "url": "https://www.adsrsounds.com/product/software/serum/",
-      "store": "adsrsounds.com",
-      "status": "ok",
-      "reason": null
-    },
-    {
-      "name": "Trezor Safe 7 - Crypto Hardware Wallet with Bluetooth, Color...",
-      "url": "https://www.amazon.com/dp/B0G2LX4TFC?tag=giftful04-20&linkCode=ogi&th=1&psc=1",
-      "store": "amazon.com",
-      "status": "ok",
-      "reason": null
-    },
-    {
-      "name": "Beats Powerbeats Pro 2 - Wireless Noise Cancelling Workout E...",
-      "url": "https://www.amazon.com/dp/B0DT2344N3?tag=giftful04-20&linkCode=ogi&th=1&psc=1",
-      "store": "amazon.com",
-      "status": "ok",
-      "reason": null
-    },
-    {
-      "name": "The Men's Clog - ReVelvet\u2122 Bistro",
-      "url": "https://rothys.com/products/mens-clog-revelvet-bistro",
-      "store": "rothys.com",
-      "status": "sold_out",
-      "reason": "out of stock"
-    },
-    {
-      "name": "UGG\u00ae Men's Classic Ultra Mini Weather Hybrid Suede Classic B...",
-      "url": "https://www.ugg.com/men-boots/cl-ultra-mini-weather-hybrid/1174196.html",
-      "store": "ugg.com",
+      "name": "Men's SwayDay Mule",
+      "url": "https://shop.lululemon.com/p/mens-swayday-mule/eyditr2kiy?color=4310&cid=aff_con&sv1=affiliate&sv_campaign_id=1454410&awc=30347_1795104554_01a3fc116e6d07796194b708446cf83b",
+      "store": "shop.lululemon.com",
       "status": "ok",
       "reason": null
     },
@@ -569,95 +639,151 @@
       "reason": null
     },
     {
-      "name": "REGULAR FIT WOOL BLEND COAT",
-      "url": "https://www.zara.com/us/en/regular-fit-wool-blend-coat-p05070100.html?sv1=affiliate&sv_campaign_id=1454410&awc=21094_1794846824_2d345825be9847b249cd7adea5c55161&utm_source=awin&utm_medium=affiliation&utm_campaign=1454410&utm_content=Giftful&utm_term=21094_1794846824_2d345825be9847b249cd7adea5c55161",
-      "store": "zara.com",
+      "name": "Omnisphere 3 Standard Upgrade",
+      "url": "https://www.spectrasonics.net/products/omnisphere/buyomnisphere.php#top-anchor",
+      "store": "spectrasonics.net",
       "status": "ok",
       "reason": null
     },
     {
-      "name": "The North Face Full Zip Cabin Fleece in black",
-      "url": "https://www.asos.com/us/the-north-face/the-north-face-full-zip-cabin-fleece-in-black/prd/208018284?acquisitionsource=pasteboard",
-      "store": "asos.com",
+      "name": "Trezor Safe 7 - Crypto Hardware Wallet with Bluetooth, Color...",
+      "url": "https://www.amazon.com/dp/B0G2LX4TFC?tag=giftful04-20&linkCode=ogi&th=1&psc=1",
+      "store": "amazon.com",
       "status": "ok",
       "reason": null
     },
     {
-      "name": "Hand-Braided Black Leather 1\" Belt",
-      "url": "https://sartolane.com/products/handbraided-black-belt-1",
-      "store": "sartolane.com",
+      "name": "Beats Powerbeats Pro 2 - Wireless Noise Cancelling Workout E...",
+      "url": "https://www.amazon.com/dp/B0DT2344N3?tag=giftful04-20&linkCode=ogi&th=1&psc=1",
+      "store": "amazon.com",
       "status": "ok",
       "reason": null
     },
     {
-      "name": "Movado Men's Signature Yellow Gold Black Dial Leather Band S...",
-      "url": "https://www.walmart.com/ip/Movado-Men-s-Signature-Yellow-Gold-Black-Dial-Leather-Band-Swiss-Watch/15934473050?wmlspartner=wlpa&selectedSellerId=101422885&selectedOfferId=0819F4F494B23B58BA0CA8C1CC9CBFF5&conditionGroupCode=1&sourceid=dsn_gdn_2005b0c9-e4c7-4f46-8aaa-443883a5e447&veh=dsn&wmlspartner=dsn_gdn_2005b0c9-e4c7-4f46-8aaa-443883a5e447&cn=00c3_fy27_mp_mp_lo_int_dis_pmax-main&wl9=pla&wl11=online&gad_source=1&gad_campaignid=23143211640&gbraid=0AAAAADmfBIohpf2ikgaQNnYHhG6HMuJP1&gclid=CjwKCAjw7vzOBhBxEiwAc7WNr_e_5eCbeaQFHjf9FYP6np1lhL1D3rrbzKpQ3zPagmG5R_R9NJbqShoCDR8QAvD_BwE",
-      "store": "walmart.com",
+      "name": "Xfer Serum 2",
+      "url": "https://www.adsrsounds.com/product/software/serum/",
+      "store": "adsrsounds.com",
+      "status": "ok",
+      "reason": null
+    },
+    {
+      "name": "Supernote Nomad",
+      "url": "https://supernote.com/pages/supernote-nomad",
+      "store": "supernote.com",
+      "status": "ok",
+      "reason": null
+    },
+    {
+      "name": "Ozone 12 Standard",
+      "url": "https://www.izotope.com/products/ozone-standard",
+      "store": "izotope.com",
+      "status": "ok",
+      "reason": null
+    },
+    {
+      "name": "Trezor Safe 5 - Crypto Hardware Wallet",
+      "url": "https://www.amazon.com/dp/B0D8FH3W7C?tag=giftful04-20&linkCode=ogi&th=1&psc=1",
+      "store": "amazon.com",
+      "status": "ok",
+      "reason": null
+    },
+    {
+      "name": "FabFilter Pro-Q 4",
+      "url": "https://www.sweetwater.com/store/detail/FFProQ4--fabfilter-pro-q-4-eq-and-filter-plug-in",
+      "store": "sweetwater.com",
+      "status": "review",
+      "reason": "product name mismatch (score 0.00, saw: \"Access to this page has been denied\")"
+    },
+    {
+      "name": "Norelco Philips All-in-One 7000 Series 23-Piece Trimmer - El...",
+      "url": "https://www.amazon.com/dp/B0D68XZY2S?tag=giftful04-20&linkCode=ogi&th=1&psc=1",
+      "store": "amazon.com",
+      "status": "ok",
+      "reason": null
+    },
+    {
+      "name": "UGG\u00ae Men's Classic Ultra Mini Weather Hybrid Suede Classic B...",
+      "url": "",
+      "store": "",
+      "status": "ok",
+      "reason": null
+    },
+    {
+      "name": "Blinkerfluid Beanie Carhartt Wip",
+      "url": "",
+      "store": "",
+      "status": "ok",
+      "reason": null
+    },
+    {
+      "name": "graphic-print beanie hat",
+      "url": "",
+      "store": "",
+      "status": "ok",
+      "reason": null
+    },
+    {
+      "name": "Anker Nano Power Strip, Desk Clamp, 70W Max, 1500J Surge Pro...",
+      "url": "",
+      "store": "",
       "status": "ok",
       "reason": null
     },
     {
       "name": "Second Skin Boxer Brief 8\" (3-Pack)",
-      "url": "https://www.tommyjohn.com/products/second-skin-boxer-brief-8-3-pack-31?variant=33953202536493",
-      "store": "tommyjohn.com",
+      "url": "",
+      "store": "",
       "status": "ok",
       "reason": null
     },
     {
-      "name": "Black Belt",
-      "url": "https://suitsupply.com/en-us/men/accessories/belts/black-belt/A25204.html",
-      "store": "suitsupply.com",
-      "status": "sold_out",
-      "reason": "out of stock"
+      "name": "Sony WH-1000XM5 Premium Noise Cancelling Wireless Headphones...",
+      "url": "",
+      "store": "",
+      "status": "ok",
+      "reason": null
     },
     {
-      "name": "\u2018SERVANT\u2019 Premium SnapBack - Cream/Black",
-      "url": "https://malta-apparel.com/products/servant-premium-snapback-cream-black",
-      "store": "malta-apparel.com",
+      "name": "100% WOOL RELAXED-FIT FROCK COAT",
+      "url": "",
+      "store": "",
+      "status": "ok",
+      "reason": null
+    },
+    {
+      "name": "Second Skin Luxe Rib Sleep Pant",
+      "url": "",
+      "store": "",
+      "status": "ok",
+      "reason": null
+    },
+    {
+      "name": "Belkin 67W GaN USB C Retractable Charger Block Fast Charging...",
+      "url": "",
+      "store": "",
       "status": "ok",
       "reason": null
     },
     {
       "name": "Bailey 7.5 in. Rope Chain Bracelet (3.3mm)",
-      "url": "https://www.brilliantearth.com/Bailey-7.5-in.-Rope-Chain-Bracelet-(3.3mm)-14K-Gold-BE5SRC75/",
-      "store": "brilliantearth.com",
+      "url": "",
+      "store": "",
       "status": "ok",
       "reason": null
     },
     {
-      "name": "Dark Brown Belt",
-      "url": "https://suitsupply.com/en-us/men/accessories/belts/dark-brown-belt/A24109.html",
-      "store": "suitsupply.com",
-      "status": "sold_out",
-      "reason": "out of stock"
-    },
-    {
-      "name": "MADE FOR KINDNESS",
-      "url": "https://www.goodqualityhuman.com/collections/hats/products/made-for-kindness",
-      "store": "goodqualityhuman.com",
+      "name": "Anker MagSafe Charger",
+      "url": "",
+      "store": "",
       "status": "ok",
       "reason": null
     },
     {
-      "name": "Tom Ford FT5737-B",
-      "url": "https://www.smartbuyglasses.com/designer-eyeglasses/Tom-Ford/Tom-Ford-FT5737-B-045-Blue-Light-Block-566083.html",
-      "store": "smartbuyglasses.com",
+      "name": "AKKYAJAURE Mac mini Dock Stand, Aluminum Desktop Stand Mount...",
+      "url": "",
+      "store": "",
       "status": "ok",
       "reason": null
-    },
-    {
-      "name": "Museum Classic",
-      "url": "https://www.movado.com/us/en/shop-watches/museum-classic-0607200.html",
-      "store": "movado.com",
-      "status": "ok",
-      "reason": null
-    },
-    {
-      "name": "Pure Heart / Classic Hat",
-      "url": "https://www.higherculturela.com/products/pure-heart-hat",
-      "store": "higherculturela.com",
-      "status": "review",
-      "reason": "product name mismatch (score 0.00, saw: \"\u2013 Higher Culture\")"
     }
   ]
 }

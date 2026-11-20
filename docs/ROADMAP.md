@@ -1,6 +1,9 @@
 # Roadmap: giftful-deals — personal shopper revamp
 
-## Status: IN PROGRESS
+## Status: PAUSED (2026-11-19) — replaced by the Claude Duet "Giftful Finds" dashboard
+
+The deals job now runs in Claude Duet. The "Run deals" workflow and the "giftful-deals finder"
+routine are switched off (not deleted). `/next-slice`: do not start anything; see "How to restart".
 
 **What this is:** the Giftful deals email becomes a personal shopper. It still reports sales,
 codes and restocks on Isaac's Giftful wishes, and adds similar on-sale items that aren't on his
@@ -12,7 +15,34 @@ what he's gotten and wants. Target: first full email by 2026-11-13, ready for Bl
 price-checks them and sends the email; SerpApi Google Shopping (250/month, stops at 230),
 Gemini free tier and Vercel free plan run live search. No credit cards on any free service.
 
-## GAME PLAN UPDATE (2026-11-15) — READ FIRST; `/next-slice` must follow it
+## SWITCHOVER DONE (2026-11-19) — repo decommissioned, restartable
+
+Side-by-side checks on Nov 16 and Nov 19 found the Duet dashboard more accurate than the Resend
+email (which flagged code-only, full-price, sold-out and mispriced items). Isaac decided to
+decommission the GitHub version:
+- "Run deals" workflow **disabled** (`gh workflow disable`): no more email or page updates.
+- "giftful-deals finder" routine (`trig_01GXWy7kpi3nyUqmAxiCLnZA`, Sun/Wed 10 PM ET) **disabled**
+  (enabled false, not deleted).
+- Code, workflow file, secrets and GitHub Pages setup are untouched. The page at
+  `docs/index.html` stays up showing the last run's deals (stale).
+- **S5a and S5b: superseded** by the Claude Duet dashboard (Like / Pass, live price checks).
+  S4c's GitHub-issue votes are superseded the same way.
+- **S5c, S6a, S6b: left for Isaac to decide** (S6a would edit the now-disabled workflow schedule).
+
+### How to restart
+
+1. Re-enable the workflow: `gh workflow enable "Run deals"`. Secrets (`RESEND_API_KEY`,
+   `TO_EMAIL`) are unchanged; schedule stays Mon + Thu 07:00 UTC. Test with
+   `gh workflow run "Run deals"` — a manual dispatch sends the real email.
+2. Re-enable the finder routine: set `enabled: true` on `trig_01GXWy7kpi3nyUqmAxiCLnZA`
+   (claude.ai/code/routines) so `state/finds.json` on `claude/finds` is refreshed again.
+3. Pages needs nothing: still served from `main:/docs`; the next run rebuilds `docs/index.html`.
+4. Expect a gap: `state/inventory.json` and `state/tracked_finds.json` are as of the last run, so
+   the first run after a long pause may show stale "back in stock" / price-drop comparisons.
+   Votes recorded in `state/feedback.json` stay valid; open vote issues are read on the next run.
+5. If the Duet routines are still running, turn them off first, to avoid two competing feeds.
+
+## GAME PLAN UPDATE (2026-11-15) — historical; superseded by the switchover above
 
 Decided in Isaac's Claude Duet "giftful-deals" channel (Nov 11–15). **The repo's job is being
 replaced** by a Claude Duet routine. Until the switchover is confirmed, this repo stays exactly as
@@ -120,8 +150,8 @@ owner approves the first measured Claude-job usage; S5a if the quality test is p
 - [x] **S4c — Like / dislike on new finds** — 👍 / 👎 on each suggestion in the email and page. 👍 = keep showing this item and find more like it; 👎 = stop showing this item and find less like it. Likes teach the finder; votes are prefilled GitHub issues read into `state/feedback.json` (plan: `docs/superpowers/plans/2026-11-10-S4c-like-dislike.md`). *Vote mechanism to be superseded by the dashboard's Like / Pass at switchover (game plan 2026-11-15).*
 
 ### Stage 5 — Live search
-- [ ] **S5a — PAUSED (game plan 2026-11-15; superseded at switchover) — Quality test** — about 10 Google Shopping searches incl. "swim trunks" and "christian tees"; read Gemini daily limit; stop if poor
-- [ ] **S5b — PAUSED (game plan 2026-11-15; superseded at switchover) — Search service on Vercel** — passcode, search counter (stops at 230), Gemini ranking with fallback
+- [ ] **S5a — SUPERSEDED by the Claude Duet dashboard (2026-11-19) — Quality test** — about 10 Google Shopping searches incl. "swim trunks" and "christian tees"; read Gemini daily limit; stop if poor
+- [ ] **S5b — SUPERSEDED by the Claude Duet dashboard (2026-11-19) — Search service on Vercel** — passcode, search counter (stops at 230), Gemini ranking with fallback
 - [ ] **S5c — Search box on the page** — on sale by default, all-prices switch
 
 ### Stage 6 — Black Friday

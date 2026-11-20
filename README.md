@@ -1,5 +1,10 @@
 # giftful-deals
 
+> **Paused 2026-11-19.** The deals job now runs in Claude Duet (the "Giftful Finds" dashboard).
+> The "Run deals" workflow and the finder routine are switched off, so the email and the page
+> below are no longer updated. Nothing was deleted. To restart, see "How to restart" in
+> [`docs/ROADMAP.md`](docs/ROADMAP.md).
+
 Automated deal tracker for [Giftful](https://giftful.com) wishlists. Runs weekly, checks retailer prices and stock, and publishes a deals page.
 
 ## Live output

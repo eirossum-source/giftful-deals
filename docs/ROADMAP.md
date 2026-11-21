@@ -27,7 +27,7 @@ decommission the GitHub version:
   `docs/index.html` stays up showing the last run's deals (stale).
 - **S5a and S5b: superseded** by the Claude Duet dashboard (Like / Pass, live price checks).
   S4c's GitHub-issue votes are superseded the same way.
-- **S5c, S6a, S6b: left for Isaac to decide** (S6a would edit the now-disabled workflow schedule).
+- **S5c, S6a, S6b: superseded too** (decided 2026-11-21). Every open item is now superseded.
 
 ### How to restart
 
@@ -152,8 +152,8 @@ owner approves the first measured Claude-job usage; S5a if the quality test is p
 ### Stage 5 — Live search
 - [ ] **S5a — SUPERSEDED by the Claude Duet dashboard (2026-11-19) — Quality test** — about 10 Google Shopping searches incl. "swim trunks" and "christian tees"; read Gemini daily limit; stop if poor
 - [ ] **S5b — SUPERSEDED by the Claude Duet dashboard (2026-11-19) — Search service on Vercel** — passcode, search counter (stops at 230), Gemini ranking with fallback
-- [ ] **S5c — Search box on the page** — on sale by default, all-prices switch
+- [ ] **S5c — SUPERSEDED by the Claude Duet dashboard (2026-11-21) — Search box on the page** — on sale by default, all-prices switch
 
 ### Stage 6 — Black Friday
-- [ ] **S6a — Daily runs 2026-11-23 to 2026-12-01**, then back to twice weekly
-- [ ] **S6b — Check first real runs** — links, prices, usage
+- [ ] **S6a — SUPERSEDED by the Claude Duet routines (daily Nov 20–30) (2026-11-21) — Daily runs 2026-11-23 to 2026-12-01**, then back to twice weekly
+- [ ] **S6b — SUPERSEDED (2026-11-21; checked in the Duet side-by-side trial instead) — Check first real runs** — links, prices, usage
